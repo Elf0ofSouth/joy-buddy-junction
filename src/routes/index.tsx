@@ -287,7 +287,7 @@ function Index() {
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
           
-          <div className="flex flex-col lg:flex-row items-center gap-12 glass border-primary/10 rounded-3xl p-8 md:p-12 relative overflow-hidden">
+          <div className="flex flex-col lg:flex-row items-center gap-12 relative">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -z-10" />
             
             {/* Left Side Content */}
