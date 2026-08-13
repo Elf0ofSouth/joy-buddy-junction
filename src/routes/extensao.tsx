@@ -312,33 +312,221 @@ function ExtensionPage() {
             </div>
           </div>
 
-          {/* Pricing Section */}
+          {/* SECTION 1: COMPARISON */}
           <section className="mt-32 pt-24 border-t border-primary/10">
             <div className="text-center mb-16">
-              <h2 className="text-4xl font-black chrome-text mb-4 uppercase italic tracking-tighter">PLANOS E PREÇOS</h2>
-              <p className="text-primary font-mono text-xs tracking-[0.3em] uppercase">ESCOLHA SEU NÍVEL DE ACESSO</p>
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <div className="h-[1px] w-8 bg-primary/30" />
+                <span className="text-primary font-mono text-[10px] tracking-[0.3em] uppercase">— A DIFERENÇA —</span>
+                <div className="h-[1px] w-8 bg-primary/30" />
+              </div>
+              <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter">
+                O mesmo Lovable. <span className="text-primary italic font-light italic-text-shadow">Sem o freio.</span>
+              </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <PricingCard 
-                title="BASIC" 
-                price="R$ 5,00" 
-                period="/mês" 
-                features={["7 dias de acesso", "Créditos ilimitados", "Suporte padrão"]} 
-              />
-              <PricingCard 
-                title="PREMIUM" 
-                price="R$ 15,00" 
-                period="/mês" 
-                popular
-                features={["30 dias de acesso", "Créditos ilimitados", "Suporte prioritário", "Badge no Discord"]} 
-              />
-              <PricingCard 
-                title="LIFETIME" 
-                price="R$ 49,90" 
-                period="" 
-                features={["Acesso vitalício", "Créditos ilimitados", "Suporte VIP", "Badge personalizada"]} 
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Left Card - Sem a extensão */}
+              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-red-500/10 text-red-500">
+                    <X className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white uppercase tracking-wider">Sem a extensão</h3>
+                    <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Como é hoje</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    "Trava no limite de prompts do plano gratuito",
+                    "Espera o ciclo renovar para continuar",
+                    "Mensalidade em dólar para liberar mais créditos",
+                    "Projeto parado no meio do desenvolvimento"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <X className="w-4 h-4 text-red-500/50 mt-0.5" />
+                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Card - Com a extensão */}
+              <div className="p-8 rounded-2xl border border-primary/40 bg-primary/5 glass shadow-[0_0_40px_rgba(139,47,232,0.1)] flex flex-col gap-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -z-10" />
+                
+                <div className="flex items-center gap-4">
+                  <div className="p-3 rounded-xl bg-primary/20 text-primary shadow-[0_0_20px_rgba(139,47,232,0.4)]">
+                    <InfinityIcon className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-white uppercase tracking-wider">Com a extensão</h3>
+                    <p className="text-primary text-[10px] font-bold uppercase tracking-widest">A partir de hoje</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    "Prompts ilimitados, sem contador para acompanhar",
+                    "Continua construindo na hora, sem esperar nada",
+                    "Pagamento único em real, via PIX",
+                    "Projeto entregue no seu ritmo, do início ao fim"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5" />
+                      <span className="text-xs font-bold text-white uppercase tracking-wide">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION 2: TUDO CHEGA NA HORA */}
+          <section className="mt-32 pt-24">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter mb-4">
+                Tudo chega <span className="text-primary italic font-light italic-text-shadow">na hora</span>
+              </h2>
+              <p className="text-muted-foreground text-sm font-bold uppercase tracking-wider max-w-2xl mx-auto opacity-80">
+                Sem espera e sem conversa no chat. Assim que o pagamento é confirmado, tudo aparece na página do seu pedido.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 max-w-6xl mx-auto">
+              {/* Large Featured Card (Left) */}
+              <div className="md:col-span-5 p-8 rounded-2xl border border-primary/10 bg-white/5 glass relative overflow-hidden group">
+                <div className="absolute -bottom-8 -right-8 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-700">
+                  <InfinityIcon className="w-64 h-64 text-primary" />
+                </div>
+                
+                <div className="relative z-10 flex flex-col h-full">
+                  <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-8">
+                    <InfinityIcon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-4">Prompts ilimitados</h3>
+                  <p className="text-muted-foreground text-sm font-bold uppercase tracking-widest leading-relaxed">
+                    O contador de créditos deixa de existir. Você gera, refaz e itera quantas vezes precisar até o projeto ficar do jeito certo.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column Grid */}
+              <div className="md:col-span-7 flex flex-col gap-4">
+                {/* Top Full Width */}
+                <div className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                    <Globe className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white uppercase tracking-wider text-sm">Funciona no seu navegador</h4>
+                    <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Chrome, Edge, Brave e Opera. O tutorial cobre a instalação em cada um.</p>
+                  </div>
+                </div>
+
+                {/* Bottom Row Side-by-Side */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                      <Clock className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white uppercase tracking-wider text-sm flex items-baseline gap-1">
+                        &lt;5<span className="text-[10px]">min</span>
+                      </h4>
+                      <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Do PIX ao uso.</p>
+                    </div>
+                  </div>
+                  <div className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                      <ShieldCheck className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white uppercase tracking-wider text-sm">Licença só sua</h4>
+                      <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Chave exclusiva, reservada na compra.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Row Side-by-Side (Full Row below) */}
+              <div className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                  <Download className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white uppercase tracking-wider text-sm">Download liberado na hora</h4>
+                  <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">O arquivo da extensão fica salvo na página do pedido, com acesso permanente.</p>
+                </div>
+              </div>
+              <div className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
+                  <FileCode className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white uppercase tracking-wider text-sm">Tutorial passo a passo</h4>
+                  <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Do zero até funcionando, sem precisar de conhecimento técnico. Com suporte no Discord se travar.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* SECTION 3: PRICING */}
+          <PricingSection />
+
+          {/* SECTION 4: TUDO QUE ESTÁ INCLUÍDO + REQUISITOS */}
+          <section className="mt-32 pt-24 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Left Card: Incluído */}
+              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+                <div className="flex items-center gap-4">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">Tudo que está incluído</h3>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4">
+                  {[
+                    "Créditos ilimitados para gerar projetos",
+                    "Instalação simples via navegador",
+                    "Tutorial de instalação passo a passo incluído",
+                    "Licença entregue na hora após o pagamento",
+                    "Funciona em Chrome, Edge, Brave e Opera",
+                    "Suporte no Discord durante toda a vigência do plano"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Card: Requisitos */}
+              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+                <div className="flex items-center gap-4">
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                    <Shield className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">Requisitos</h3>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    "Navegador baseado em Chromium (Chrome, Edge, Brave ou Opera)",
+                    "Computador com Windows, macOS ou Linux",
+                    "Conta ativa na plataforma Lovable"
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
+                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
         </div>
