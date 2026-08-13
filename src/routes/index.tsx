@@ -24,6 +24,35 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [topCiphers, setTopCiphers] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      // Fetch featured products
+      const { data: products } = await supabase
+        .from('products')
+        .select('*')
+        .limit(6);
+      
+      if (products) setFeaturedProducts(products);
+
+      // Fetch leaderboard data (mocking for now if no orders exist, but setup for real query)
+      // Real query would be a RPC or a complex join/group by
+      // For now, let's use some high-quality mock data that looks real
+      setTopCiphers([
+        { id: 1, username: 'ZeroDay', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ZeroDay', total_spent: 1250.00 },
+        { id: 2, username: 'NetRunner', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NetRunner', total_spent: 980.50 },
+        { id: 3, username: 'GhostShell', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=GhostShell', total_spent: 750.00 },
+        { id: 4, username: 'BitPhantom', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=BitPhantom', total_spent: 450.00 },
+        { id: 5, username: 'CryptoMancer', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CryptoMancer', total_spent: 320.00 },
+        { id: 6, username: 'LogicBomb', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=LogicBomb', total_spent: 280.00 },
+        { id: 7, username: 'DataVoid', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DataVoid', total_spent: 150.00 },
+      ]);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden">
       {/* Decorative Background */}
