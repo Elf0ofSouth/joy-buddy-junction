@@ -4,6 +4,7 @@ import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLin
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import logoAsset from "@/assets/cipher-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
