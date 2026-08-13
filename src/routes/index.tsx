@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal, Gift, Lock, Star } from "lucide-react";
+import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal, Gift, Lock, Star, Dices, Headset } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -313,18 +313,18 @@ function Index() {
                 />
                 <BenefitItem 
                   icon={<Shield className="w-5 h-5" />} 
-                  title="SEGURANÇA GARANTIDA" 
-                  description="Pagamentos protegidos e entrega 100% automatizada." 
+                  title="PAGAMENTO AUTOMATIZADO E CRIPTOGRAFADO" 
+                  description="Transações protegidas de ponta a ponta, sem intermediários." 
                 />
                 <BenefitItem 
-                  icon={<Zap className="w-5 h-5" />} 
-                  title="ENTREGA INSTANTÂNEA" 
-                  description="Seus itens aplicados em segundos após o pagamento." 
+                  icon={<Dices className="w-5 h-5" />} 
+                  title="SORTEIOS EXCLUSIVOS MENSALMENTE" 
+                  description="Participe automaticamente e concorra a prêmios todo mês." 
                 />
                 <BenefitItem 
-                  icon={<Star className="w-5 h-5" />} 
-                  title="SUPORTE PRIORITÁRIO" 
-                  description="Atendimento exclusivo para membros VIP." 
+                  icon={<Headset className="w-5 h-5" />} 
+                  title="SUPORTE DEDICADO 24/7" 
+                  description="Atendimento humano disponível a qualquer hora do dia." 
                 />
               </div>
             </div>
