@@ -4,6 +4,7 @@ import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLin
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import logoAsset from "@/assets/cipher-logo.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -28,9 +29,7 @@ function Index() {
       <nav className="sticky top-0 z-50 glass border-b border-primary/20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 group cursor-pointer">
-            <div className="w-8 h-8 bg-primary neon-border flex items-center justify-center transform rotate-45">
-              <Zap className="w-5 h-5 text-white transform -rotate-45" />
-            </div>
+            <img src={logoAsset.url} alt="Cipher Project" className="w-8 h-8 object-contain" />
             <span className="font-bold text-xl tracking-tighter chrome-text">CIPHER PROJECT</span>
           </div>
           
@@ -59,8 +58,8 @@ function Index() {
           
           <div className="mb-8 flex justify-center">
             <div className="relative">
-              <div className="w-32 h-32 bg-primary/20 neon-border flex items-center justify-center transform rotate-45 overflow-hidden group">
-                 <Zap className="w-16 h-16 text-primary transform -rotate-45 group-hover:scale-110 transition-transform" />
+              <div className="w-32 h-32 flex items-center justify-center group">
+                 <img src={logoAsset.url} alt="Cipher Project" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-[0_0_15px_rgba(139,47,232,0.5)]" />
               </div>
               <div className="absolute -inset-4 border border-primary/10 rounded-full animate-[spin_10s_linear_infinite]" />
             </div>
@@ -156,9 +155,7 @@ function Index() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-primary neon-border flex items-center justify-center transform rotate-45">
-                <Zap className="w-4 h-4 text-white transform -rotate-45" />
-              </div>
+              <img src={logoAsset.url} alt="Cipher Project" className="w-6 h-6 object-contain" />
               <span className="font-bold text-lg chrome-text">CIPHER PROJECT</span>
             </div>
             <div className="flex gap-6">
