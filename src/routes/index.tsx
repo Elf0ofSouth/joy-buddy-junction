@@ -306,7 +306,7 @@ function Index() {
 
 
         {/* Why Choose Cipher Section */}
-        <section className="container mx-auto px-4 py-24 relative overflow-hidden">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 py-32 relative overflow-hidden">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
           
@@ -323,7 +323,7 @@ function Index() {
                 Elevamos sua experiência no Discord com tecnologia de ponta e benefícios que você não encontra em nenhum outro lugar.
               </p>
 
-              <div className="space-y-4">
+              <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="space-y-4">
                 <BenefitItem 
                   icon={<Trophy className="w-5 h-5" />} 
                   title="PROGRAMA DE RECOMPENSAS" 
@@ -349,7 +349,7 @@ function Index() {
                   title="SUPORTE DEDICADO 24/7" 
                   description="Atendimento humano disponível a qualquer hora do dia." 
                 />
-              </div>
+              </motion.div>
             </div>
 
             {/* Right Side Character Illustration */}
@@ -367,7 +367,7 @@ function Index() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Featured Embed Section */}
         <section className="container mx-auto px-4 py-24 border-t border-primary/10">
