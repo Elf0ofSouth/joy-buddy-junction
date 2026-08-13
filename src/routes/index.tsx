@@ -300,38 +300,32 @@ function Index() {
                 Elevamos sua experiência no Discord com tecnologia de ponta e benefícios que você não encontra em nenhum outro lugar.
               </p>
 
-              <div className="space-y-8">
+              <div className="space-y-4">
                 <BenefitItem 
-                  icon={<Trophy className="w-6 h-6" />} 
+                  icon={<Trophy className="w-5 h-5" />} 
                   title="PROGRAMA DE RECOMPENSAS" 
                   description="Suba de rank conforme compra e desbloqueie benefícios exclusivos." 
                 />
                 <BenefitItem 
-                  icon={<Gift className="w-6 h-6" />} 
+                  icon={<Gift className="w-5 h-5" />} 
                   title="ROLETA CIPHER" 
                   description="Gire e ganhe brindes, descontos e itens exclusivos." 
                 />
                 <BenefitItem 
-                  icon={<Shield className="w-6 h-6" />} 
+                  icon={<Shield className="w-5 h-5" />} 
                   title="SEGURANÇA GARANTIDA" 
                   description="Pagamentos protegidos e entrega 100% automatizada." 
                 />
                 <BenefitItem 
-                  icon={<Zap className="w-6 h-6" />} 
+                  icon={<Zap className="w-5 h-5" />} 
                   title="ENTREGA INSTANTÂNEA" 
                   description="Seus itens aplicados em segundos após o pagamento." 
                 />
                 <BenefitItem 
-                  icon={<Star className="w-6 h-6" />} 
+                  icon={<Star className="w-5 h-5" />} 
                   title="SUPORTE PRIORITÁRIO" 
                   description="Atendimento exclusivo para membros VIP." 
                 />
-              </div>
-
-              <div className="mt-12">
-                <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-6 text-lg font-bold h-auto shadow-[0_0_20px_rgba(139,47,232,0.4)]">
-                  VER LOJA <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
               </div>
             </div>
 
@@ -434,12 +428,12 @@ function Step({ number, title, description }: { number: string; title: string; d
 function BenefitItem({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
     <div className="flex gap-4 group">
-      <div className="flex-shrink-0 w-12 h-12 glass border-primary/30 flex items-center justify-center text-primary group-hover:neon-border transition-all duration-300">
+      <div className="flex-shrink-0 w-10 h-10 glass border-primary/30 flex items-center justify-center text-primary group-hover:neon-border transition-all duration-300">
         {icon}
       </div>
       <div>
-        <h4 className="font-bold text-foreground mb-1 tracking-wider uppercase">{title}</h4>
-        <p className="text-sm text-muted-foreground uppercase text-[10px] tracking-widest">{description}</p>
+        <h4 className="font-bold text-foreground mb-0.5 tracking-wider uppercase text-sm">{title}</h4>
+        <p className="text-muted-foreground uppercase text-[9px] tracking-widest leading-tight max-w-xs">{description}</p>
       </div>
     </div>
   );
