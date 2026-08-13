@@ -732,7 +732,7 @@ function PricingSection() {
 
       <div className="mt-12 flex justify-center px-4">
         <Button size="lg" className="bg-primary hover:opacity-90 px-12 py-8 text-xl font-black h-auto w-full max-w-md shadow-[0_0_30px_rgba(139,47,232,0.4)] group">
-          COMPRAR AGORA — {currentPlan.price}
+          COMPRAR AGORA — {currentPlan?.price || "R$ 22,00"}
           <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>
