@@ -102,7 +102,7 @@ function Index() {
 
       <main className="relative z-10">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 pt-20 pb-32 text-center relative">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 pt-20 pb-32 text-center relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-[120px] -z-10 animate-pulse" />
           
           <div className="mb-8 flex justify-center">
@@ -129,7 +129,7 @@ function Index() {
               ENTRAR NO DISCORD
             </Button>
           </div>
-        </section>
+        </motion.section>
 
         {/* Featured Products Carousel */}
         <section id="featured" className="container mx-auto px-4 py-24 border-t border-primary/10">
