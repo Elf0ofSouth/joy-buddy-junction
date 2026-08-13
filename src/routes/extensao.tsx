@@ -40,6 +40,25 @@ export const Route = createFileRoute("/extensao")({
 
 type AnimationState = "limited" | "activating" | "unlocked";
 
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.8, ease: "easeOut" as const }
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: { transition: { staggerChildren: 0.1 } },
+  viewport: { once: true, amount: 0.2 }
+};
+
+const staggerItem = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: "easeOut" as const }
+};
+
 function ExtensionPage() {
   const [animState, setAnimState] = useState<AnimationState>("limited");
 
@@ -84,7 +103,7 @@ function ExtensionPage() {
 
       <main className="relative z-10 pt-12 pb-24">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-16 lg:items-center">
+          <motion.div {...fadeInUp} className="flex flex-col lg:flex-row gap-16 lg:items-center py-20">
             
             {/* Left Column */}
             <div className="flex-1 space-y-8">
@@ -310,10 +329,10 @@ function ExtensionPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* SECTION 1: COMPARISON */}
-          <section className="mt-32 pt-24 border-t border-primary/10">
+          <motion.section {...fadeInUp} className="mt-32 pt-24 border-t border-primary/10">
             <div className="text-center mb-16">
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="h-[1px] w-8 bg-primary/30" />
@@ -382,10 +401,10 @@ function ExtensionPage() {
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* SECTION 2: TUDO CHEGA NA HORA */}
-          <section className="mt-32 pt-24">
+          <motion.section {...fadeInUp} className="mt-32 pt-24">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter mb-4">
                 Tudo chega <span className="text-primary italic font-light italic-text-shadow">na hora</span>
@@ -395,9 +414,9 @@ function ExtensionPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 max-w-6xl mx-auto">
+            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-12 gap-4 max-w-6xl mx-auto">
               {/* Large Featured Card (Left) */}
-              <div className="md:col-span-5 p-8 rounded-2xl border border-primary/10 bg-white/5 glass relative overflow-hidden group">
+              <motion.div variants={staggerItem} className="md:col-span-5 p-8 rounded-2xl border border-primary/10 bg-white/5 glass relative overflow-hidden group">
                 <div className="absolute -bottom-8 -right-8 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-700">
                   <InfinityIcon className="w-64 h-64 text-primary" />
                 </div>
@@ -411,12 +430,12 @@ function ExtensionPage() {
                     O contador de créditos deixa de existir. Você gera, refaz e itera quantas vezes precisar até o projeto ficar do jeito certo.
                   </p>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Right Column Grid */}
               <div className="md:col-span-7 flex flex-col gap-4">
                 {/* Top Full Width */}
-                <div className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                <motion.div variants={staggerItem} className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
                   <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
                     <Globe className="w-5 h-5" />
                   </div>
@@ -424,11 +443,11 @@ function ExtensionPage() {
                     <h4 className="font-bold text-white uppercase tracking-wider text-sm">Funciona no seu navegador</h4>
                     <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Chrome, Edge, Brave e Opera. O tutorial cobre a instalação em cada um.</p>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Bottom Row Side-by-Side */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                  <motion.div variants={staggerItem} className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
                     <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
                       <Clock className="w-5 h-5" />
                     </div>
@@ -438,8 +457,8 @@ function ExtensionPage() {
                       </h4>
                       <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Do PIX ao uso.</p>
                     </div>
-                  </div>
-                  <div className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+                  </motion.div>
+                  <motion.div variants={staggerItem} className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
                     <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
                       <ShieldCheck className="w-5 h-5" />
                     </div>
@@ -447,12 +466,12 @@ function ExtensionPage() {
                       <h4 className="font-bold text-white uppercase tracking-wider text-sm">Licença só sua</h4>
                       <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Chave exclusiva, reservada na compra.</p>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
 
               {/* Bottom Row Side-by-Side (Full Row below) */}
-              <div className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+              <motion.div variants={staggerItem} className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
                 <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
                   <Download className="w-5 h-5" />
                 </div>
@@ -460,8 +479,8 @@ function ExtensionPage() {
                   <h4 className="font-bold text-white uppercase tracking-wider text-sm">Download liberado na hora</h4>
                   <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">O arquivo da extensão fica salvo na página do pedido, com acesso permanente.</p>
                 </div>
-              </div>
-              <div className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
+              </motion.div>
+              <motion.div variants={staggerItem} className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
                 <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
                   <FileCode className="w-5 h-5" />
                 </div>
@@ -469,18 +488,18 @@ function ExtensionPage() {
                   <h4 className="font-bold text-white uppercase tracking-wider text-sm">Tutorial passo a passo</h4>
                   <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Do zero até funcionando, sem precisar de conhecimento técnico. Com suporte no Discord se travar.</p>
                 </div>
-              </div>
-            </div>
-          </section>
+              </motion.div>
+            </motion.div>
+          </motion.section>
 
           {/* SECTION 3: PRICING */}
           <PricingSection />
 
           {/* SECTION 4: TUDO QUE ESTÁ INCLUÍDO + REQUISITOS */}
-          <section className="mt-32 pt-24 mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <motion.section {...fadeInUp} className="mt-32 pt-24 mb-12">
+            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {/* Left Card: Incluído */}
-              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+              <motion.div variants={staggerItem} className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
                 <div className="flex items-center gap-4">
                   <div className="p-2 rounded-lg bg-primary/10 text-primary">
                     <Sparkles className="w-5 h-5" />
@@ -503,10 +522,10 @@ function ExtensionPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Right Card: Requisitos */}
-              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+              <motion.div variants={staggerItem} className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
                 <div className="flex items-center gap-4">
                   <div className="p-2 rounded-lg bg-primary/10 text-primary">
                     <Shield className="w-5 h-5" />
@@ -526,9 +545,9 @@ function ExtensionPage() {
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-          </section>
+              </motion.div>
+            </motion.div>
+          </motion.section>
         </div>
       </main>
 

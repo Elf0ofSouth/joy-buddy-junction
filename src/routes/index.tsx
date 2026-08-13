@@ -7,10 +7,30 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import characterAsset from "@/assets/cipher-character-new.png.asset.json";
 import extensionIconAsset from "@/assets/extension-icon.png.asset.json";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.8, ease: "easeOut" as const }
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: { transition: { staggerChildren: 0.1 } },
+  viewport: { once: true, amount: 0.2 }
+};
+
+const staggerItem = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  transition: { duration: 0.6, ease: "easeOut" as const }
+};
 
 
 export const Route = createFileRoute("/")({
@@ -88,7 +108,7 @@ function Index() {
 
       <main className="relative z-10">
         {/* Hero Section */}
-        <section className="container mx-auto px-4 pt-20 pb-32 text-center relative">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 pt-20 pb-32 text-center relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-[120px] -z-10 animate-pulse" />
           
           <div className="mb-8 flex justify-center">
@@ -115,10 +135,10 @@ function Index() {
               ENTRAR NO DISCORD
             </Button>
           </div>
-        </section>
+        </motion.section>
 
         {/* Featured Products Carousel */}
-        <section id="featured" className="container mx-auto px-4 py-24 border-t border-primary/10">
+        <motion.section {...fadeInUp} id="featured" className="container mx-auto px-4 py-32 border-t border-primary/10">
           <div className="flex justify-between items-center mb-12">
             <div>
               <h2 className="text-3xl font-bold chrome-text">EM DESTAQUE</h2>
@@ -178,12 +198,10 @@ function Index() {
             <CarouselPrevious className="hidden md:flex -left-12 border-primary/20" />
             <CarouselNext className="hidden md:flex -right-12 border-primary/20" />
           </Carousel>
-        </section>
-
+        </motion.section>
 
         {/* Leaderboard Section */}
-
-        <section id="leaderboard" className="container mx-auto px-4 py-24 border-t border-primary/10 relative">
+        <motion.section {...fadeInUp} id="leaderboard" className="container mx-auto px-4 py-32 border-t border-primary/10 relative">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black chrome-text mb-2 italic">TOP CIPHERS</h2>
@@ -191,10 +209,10 @@ function Index() {
           </div>
 
           {/* Podium (Top 3) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end max-w-5xl mx-auto mb-16">
+          <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end max-w-5xl mx-auto mb-16">
             {/* Rank 2 */}
             {topCiphers[1] && (
-              <div className="order-2 md:order-1 flex flex-col items-center">
+              <motion.div variants={staggerItem} className="order-2 md:order-1 flex flex-col items-center">
                 <div className="relative mb-6 group">
                   <div className="absolute -inset-1 bg-gradient-to-b from-slate-400 to-transparent rounded-full blur group-hover:blur-md transition-all" />
                   <Avatar className="w-24 h-24 border-2 border-slate-400/50 relative z-10">
@@ -209,12 +227,12 @@ function Index() {
                   <h3 className="font-bold text-lg chrome-text">{topCiphers[1].username}</h3>
                   <p className="text-primary font-mono text-sm">R$ {topCiphers[1].total_spent.toFixed(2)}</p>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Rank 1 */}
             {topCiphers[0] && (
-              <div className="order-1 md:order-2 flex flex-col items-center">
+              <motion.div variants={staggerItem} className="order-1 md:order-2 flex flex-col items-center">
                 <div className="relative mb-8 group">
                   <div className="absolute -inset-2 bg-gradient-to-b from-yellow-500 to-transparent rounded-full blur-md group-hover:blur-lg transition-all" />
                   <Avatar className="w-32 h-32 border-4 border-yellow-500/50 relative z-10 scale-110">
@@ -232,12 +250,12 @@ function Index() {
                   <h2 className="font-black text-2xl chrome-text uppercase tracking-tighter">{topCiphers[0].username}</h2>
                   <p className="text-primary font-mono text-lg font-bold">R$ {topCiphers[0].total_spent.toFixed(2)}</p>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Rank 3 */}
             {topCiphers[2] && (
-              <div className="order-3 md:order-3 flex flex-col items-center">
+              <motion.div variants={staggerItem} className="order-3 md:order-3 flex flex-col items-center">
                 <div className="relative mb-6 group">
                   <div className="absolute -inset-1 bg-gradient-to-b from-amber-700 to-transparent rounded-full blur group-hover:blur-md transition-all" />
                   <Avatar className="w-24 h-24 border-2 border-amber-700/50 relative z-10">
@@ -252,20 +270,21 @@ function Index() {
                   <h3 className="font-bold text-lg chrome-text">{topCiphers[2].username}</h3>
                   <p className="text-primary font-mono text-sm">R$ {topCiphers[2].total_spent.toFixed(2)}</p>
                 </div>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
 
           {/* List (Rank 4-10) */}
-          <div className="max-w-3xl mx-auto glass border-primary/10 overflow-hidden rounded-xl">
-            {topCiphers.slice(3, 10).map((user, index) => (
-              <div 
+          <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="max-w-3xl mx-auto glass border-primary/10 overflow-hidden rounded-xl">
+            {topCiphers.slice(3, 10).map((user) => (
+              <motion.div 
+                variants={staggerItem}
                 key={user.id} 
                 className="flex items-center justify-between p-4 border-b border-primary/5 hover:bg-primary/5 transition-colors group"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-8 font-mono text-muted-foreground group-hover:text-primary transition-colors">
-                    #{index + 4}
+                    #{topCiphers.indexOf(user) + 1}
                   </div>
                   <Avatar className="w-10 h-10 border border-primary/20">
                     <AvatarImage src={user.avatar_url} />
@@ -276,17 +295,18 @@ function Index() {
                 <div className="font-mono text-primary font-bold">
                   R$ {user.total_spent.toFixed(2)}
                 </div>
-              </div>
+              </motion.div>
             ))}
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
+
 
         {/* Product Catalog */}
 
 
 
         {/* Why Choose Cipher Section */}
-        <section className="container mx-auto px-4 py-24 relative overflow-hidden">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 py-32 relative overflow-hidden">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
           
@@ -303,7 +323,7 @@ function Index() {
                 Elevamos sua experiência no Discord com tecnologia de ponta e benefícios que você não encontra em nenhum outro lugar.
               </p>
 
-              <div className="space-y-4">
+              <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="space-y-4">
                 <BenefitItem 
                   icon={<Trophy className="w-5 h-5" />} 
                   title="PROGRAMA DE RECOMPENSAS" 
@@ -329,7 +349,7 @@ function Index() {
                   title="SUPORTE DEDICADO 24/7" 
                   description="Atendimento humano disponível a qualquer hora do dia." 
                 />
-              </div>
+              </motion.div>
             </div>
 
             {/* Right Side Character Illustration */}
@@ -347,10 +367,10 @@ function Index() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Featured Embed Section */}
-        <section className="container mx-auto px-4 py-24 border-t border-primary/10">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 py-32 border-t border-primary/10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-white italic tracking-tighter uppercase leading-none mb-4">
               EXTENSÃO <span className="text-primary italic">EXCLUSIVA</span> CIPHER
@@ -441,7 +461,7 @@ function Index() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
       </main>
 
@@ -504,7 +524,7 @@ function Step({ number, title, description }: { number: string; title: string; d
 
 function BenefitItem({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="flex gap-4 group">
+    <motion.div variants={staggerItem} className="flex gap-4 group">
       <div className="flex-shrink-0 w-10 h-10 glass border-primary/30 flex items-center justify-center text-primary group-hover:neon-border transition-all duration-300">
         {icon}
       </div>
@@ -512,6 +532,6 @@ function BenefitItem({ icon, title, description }: { icon: React.ReactNode; titl
         <h4 className="font-bold text-foreground mb-0.5 tracking-wider uppercase text-sm">{title}</h4>
         <p className="text-muted-foreground uppercase text-[9px] tracking-widest leading-tight max-w-xs">{description}</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
