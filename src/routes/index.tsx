@@ -138,7 +138,7 @@ function Index() {
         </motion.section>
 
         {/* Featured Products Carousel */}
-        <section id="featured" className="container mx-auto px-4 py-24 border-t border-primary/10">
+        <motion.section {...fadeInUp} id="featured" className="container mx-auto px-4 py-32 border-t border-primary/10">
           <div className="flex justify-between items-center mb-12">
             <div>
               <h2 className="text-3xl font-bold chrome-text">EM DESTAQUE</h2>
@@ -198,12 +198,10 @@ function Index() {
             <CarouselPrevious className="hidden md:flex -left-12 border-primary/20" />
             <CarouselNext className="hidden md:flex -right-12 border-primary/20" />
           </Carousel>
-        </section>
-
+        </motion.section>
 
         {/* Leaderboard Section */}
-
-        <section id="leaderboard" className="container mx-auto px-4 py-24 border-t border-primary/10 relative">
+        <motion.section {...fadeInUp} id="leaderboard" className="container mx-auto px-4 py-32 border-t border-primary/10 relative">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black chrome-text mb-2 italic">TOP CIPHERS</h2>
@@ -214,7 +212,7 @@ function Index() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end max-w-5xl mx-auto mb-16">
             {/* Rank 2 */}
             {topCiphers[1] && (
-              <div className="order-2 md:order-1 flex flex-col items-center">
+              <motion.div variants={staggerItem} className="order-2 md:order-1 flex flex-col items-center">
                 <div className="relative mb-6 group">
                   <div className="absolute -inset-1 bg-gradient-to-b from-slate-400 to-transparent rounded-full blur group-hover:blur-md transition-all" />
                   <Avatar className="w-24 h-24 border-2 border-slate-400/50 relative z-10">
