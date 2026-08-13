@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal } from "lucide-react";
+import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal, Gift, Lock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -281,15 +281,89 @@ function Index() {
 
 
 
-        {/* How it Works */}
-        <section id="how-it-works" className="container mx-auto px-4 py-24 bg-primary/5 relative">
-          <div className="absolute inset-0 circuit-bg pointer-events-none opacity-10" />
-          <h2 className="text-center text-3xl font-bold mb-16 chrome-text">ACESSO CONCEDIDO: PROCESSO</h2>
+        {/* Why Choose Cipher Section */}
+        <section className="container mx-auto px-4 py-24 relative overflow-hidden">
+          <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-            <Step number="01" title="SELECIONE O ITEM" description="Navegue por nossa seleção curada de melhorias de servidor." />
-            <Step number="02" title="PAGAMENTO RÁPIDO" description="Pague instantaneamente via PIX. Totalmente automatizado e seguro." />
-            <Step number="03" title="ENTREGA INSTANTÂNEA" description="Seus cargos são aplicados automaticamente pelo nosso bot." />
+          <div className="flex flex-col lg:flex-row items-center gap-12 glass border-primary/10 rounded-3xl p-8 md:p-12 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -z-10" />
+            
+            {/* Left Side Content */}
+            <div className="w-full lg:w-[55%] relative z-10">
+              <span className="text-primary font-mono text-xs mb-4 block tracking-[0.3em] uppercase">[ VANTAGENS CIPHER ]</span>
+              <h2 className="text-4xl md:text-5xl font-black mb-6 chrome-text leading-tight">
+                POR QUE ESCOLHER A <br /> CIPHER STORE
+              </h2>
+              <p className="text-muted-foreground mb-10 max-w-lg uppercase text-sm tracking-widest leading-relaxed">
+                Elevamos sua experiência no Discord com tecnologia de ponta e benefícios que você não encontra em nenhum outro lugar.
+              </p>
+
+              <div className="space-y-8">
+                <BenefitItem 
+                  icon={<Trophy className="w-6 h-6" />} 
+                  title="PROGRAMA DE RECOMPENSAS" 
+                  description="Suba de rank conforme compra e desbloqueie benefícios exclusivos." 
+                />
+                <BenefitItem 
+                  icon={<Gift className="w-6 h-6" />} 
+                  title="ROLETA CIPHER" 
+                  description="Gire e ganhe brindes, descontos e itens exclusivos." 
+                />
+                <BenefitItem 
+                  icon={<Shield className="w-6 h-6" />} 
+                  title="SEGURANÇA GARANTIDA" 
+                  description="Pagamentos protegidos e entrega 100% automatizada." 
+                />
+                <BenefitItem 
+                  icon={<Zap className="w-6 h-6" />} 
+                  title="ENTREGA INSTANTÂNEA" 
+                  description="Seus itens aplicados em segundos após o pagamento." 
+                />
+                <BenefitItem 
+                  icon={<Star className="w-6 h-6" />} 
+                  title="SUPORTE PRIORITÁRIO" 
+                  description="Atendimento exclusivo para membros VIP." 
+                />
+              </div>
+
+              <div className="mt-12">
+                <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-6 text-lg font-bold h-auto shadow-[0_0_20px_rgba(139,47,232,0.4)]">
+                  VER LOJA <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Right Side Illustration */}
+            <div className="w-full lg:w-[45%] flex justify-center relative">
+              <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center">
+                {/* Background Glows */}
+                <div className="absolute inset-0 bg-primary/20 rounded-full blur-[100px] animate-pulse" />
+                <div className="absolute inset-0 bg-primary/10 rounded-full blur-[60px]" />
+                
+                {/* Character Image Placeholder (AI style character) */}
+                <img 
+                  src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000&auto=format&fit=crop" 
+                  alt="Cipher Agent" 
+                  className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_30px_rgba(139,47,232,0.4)]"
+                  style={{
+                    maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+                    WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
+                  }}
+                />
+
+                {/* Floating Badges */}
+                <div className="absolute top-10 right-0 glass border-primary/40 p-3 rounded-xl animate-bounce duration-[3000ms] z-20">
+                  <Badge variant="outline" className="border-primary/50 text-primary font-mono bg-black/80">RANK: S</Badge>
+                </div>
+                <div className="absolute bottom-20 left-0 glass border-primary/40 p-3 rounded-xl animate-bounce duration-[4000ms] z-20">
+                  <Zap className="w-6 h-6 text-primary drop-shadow-[0_0_10px_rgba(139,47,232,0.8)]" />
+                </div>
+                <div className="absolute top-1/2 -right-4 glass border-primary/40 p-2 rounded-full z-20">
+                  <Lock className="w-5 h-5 text-primary" />
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -368,6 +442,20 @@ function Step({ number, title, description }: { number: string; title: string; d
       <p className="text-sm text-muted-foreground uppercase tracking-widest leading-relaxed">
         {description}
       </p>
+    </div>
+  );
+}
+
+function BenefitItem({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+  return (
+    <div className="flex gap-4 group">
+      <div className="flex-shrink-0 w-12 h-12 glass border-primary/30 flex items-center justify-center text-primary group-hover:neon-border transition-all duration-300">
+        {icon}
+      </div>
+      <div>
+        <h4 className="font-bold text-foreground mb-1 tracking-wider uppercase">{title}</h4>
+        <p className="text-sm text-muted-foreground uppercase text-[10px] tracking-widest">{description}</p>
+      </div>
     </div>
   );
 }
