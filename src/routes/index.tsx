@@ -430,7 +430,7 @@ function Index() {
 
                   {/* CTA */}
                   <a 
-                    href="#" 
+                    href="/extensao" 
                     className="flex items-center gap-2 text-primary font-bold uppercase tracking-[0.2em] text-sm group/link hover:brightness-125 transition-all"
                   >
                     Ver planos e preços 
