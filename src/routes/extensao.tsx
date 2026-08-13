@@ -594,40 +594,149 @@ function TypingPlaceholder({ isActive }: { isActive: boolean }) {
   );
 }
 
-function PricingCard({ title, price, period, features, popular = false }: { 
-  title: string; 
-  price: string; 
-  period: string; 
-  features: string[];
-  popular?: boolean;
-}) {
+function PricingSection() {
+  const [selectedPlan, setSelectedPlan] = useState<number>(2); // 0-indexed, 3rd plan (30 DIAS) is default
+
+  const plans = [
+    {
+      id: 0,
+      badge: "TESTE",
+      duration: "1 DIA",
+      subtitle: "A partir da ativação",
+      price: "R$ 5,00",
+      highlight: false,
+      disabled: false
+    },
+    {
+      id: 1,
+      badge: "ESGOTADO",
+      duration: "7 DIAS",
+      subtitle: "A partir da ativação",
+      price: "R$ 10,90",
+      originalPrice: "R$ 24,90",
+      discount: "56% OFF",
+      perDay: "R$ 1,56 / dia",
+      highlight: false,
+      disabled: true
+    },
+    {
+      id: 2,
+      badge: "MAIS VENDIDO",
+      duration: "30 DIAS",
+      subtitle: "A partir da ativação",
+      price: "R$ 22,00",
+      originalPrice: "R$ 59,90",
+      discount: "63% OFF",
+      perDay: "R$ 0,73 / dia",
+      highlight: true,
+      disabled: false
+    },
+    {
+      id: 3,
+      duration: "90 DIAS",
+      subtitle: "A partir da ativação",
+      price: "R$ 45,00",
+      originalPrice: "R$ 149,90",
+      discount: "70% OFF",
+      perDay: "R$ 0,50 / dia",
+      highlight: false,
+      disabled: false
+    },
+    {
+      id: 4,
+      duration: "1 ANO",
+      subtitle: "A partir da ativação",
+      price: "R$ 100,00",
+      originalPrice: "R$ 259,90",
+      discount: "62% OFF",
+      perDay: "R$ 0,27 / dia",
+      highlight: false,
+      disabled: false
+    },
+    {
+      id: 5,
+      badge: "MELHOR CUSTO",
+      duration: "VITALÍCIO",
+      subtitle: "Sem data de expiração",
+      price: "R$ 149,00",
+      originalPrice: "R$ 349,90",
+      discount: "57% OFF",
+      highlight: false,
+      disabled: false
+    }
+  ];
+
+  const currentPlan = plans.find(p => p.id === selectedPlan) || plans[2];
+
   return (
-    <div className={`relative p-8 rounded-2xl border ${popular ? 'border-primary shadow-[0_0_30px_rgba(139,47,232,0.2)]' : 'border-primary/20'} bg-black/40 glass group hover:neon-border transition-all duration-500 flex flex-col`}>
-      {popular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[9px] font-black px-4 py-1 rounded-full uppercase tracking-widest">
-          MAIS POPULAR
-        </div>
-      )}
-      
-      <h3 className="text-xl font-bold mb-2 chrome-text tracking-widest uppercase">{title}</h3>
-      <div className="flex items-baseline gap-1 mb-8">
-        <span className="text-4xl font-black text-white">{price}</span>
-        <span className="text-muted-foreground text-xs uppercase font-bold">{period}</span>
+    <section className="mt-32 pt-24 border-t border-primary/10">
+      <div className="text-center mb-16">
+        <span className="text-primary font-mono text-[10px] tracking-[0.3em] uppercase mb-4 block">— ESCOLHA A DURAÇÃO —</span>
+        <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter mb-4">
+          Pague uma vez. <span className="text-primary italic font-light italic-text-shadow">Use à vontade.</span>
+        </h2>
+        <p className="text-muted-foreground text-sm font-bold uppercase tracking-wider max-w-2xl mx-auto opacity-80">
+          Quanto maior o período, menor o custo por dia. Comece com 1 dia para testar ou garanta o vitalício e nunca mais pense nisso.
+        </p>
       </div>
 
-      <div className="space-y-4 mb-10 flex-1">
-        {features.map((f, i) => (
-          <div key={i} className="flex items-center gap-3 text-xs text-muted-foreground font-bold uppercase tracking-wider">
-            <CheckCircle2 className="w-4 h-4 text-primary" />
-            {f}
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto px-4">
+        {plans.map((plan) => (
+          <button
+            key={plan.id}
+            disabled={plan.disabled}
+            onClick={() => setSelectedPlan(plan.id)}
+            className={`relative p-6 rounded-2xl border text-left transition-all duration-300 group
+              ${plan.disabled ? 'opacity-40 grayscale cursor-not-allowed border-primary/5 bg-white/[0.02]' : 
+                selectedPlan === plan.id ? 'border-primary bg-primary/5 shadow-[0_0_30px_rgba(139,47,232,0.15)] ring-1 ring-primary' : 
+                'border-primary/10 bg-white/5 hover:border-primary/40 hover:bg-primary/[0.02]'}`}
+          >
+            {/* Radio indicator */}
+            <div className={`absolute top-6 right-6 w-5 h-5 rounded-full border flex items-center justify-center transition-colors
+              ${selectedPlan === plan.id ? 'bg-primary border-primary' : 'border-primary/20 bg-black/40'}`}>
+              {selectedPlan === plan.id && <CheckCircle2 className="w-3 h-3 text-white" />}
+            </div>
+
+            {/* Badge */}
+            {plan.badge && (
+              <div className={`mb-4 inline-block px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest
+                ${plan.badge === 'ESGOTADO' ? 'bg-muted text-muted-foreground' : 'bg-primary text-white shadow-[0_0_10px_rgba(139,47,232,0.4)]'}`}>
+                {plan.badge}
+              </div>
+            )}
+
+            <div className="space-y-1 mb-6">
+              <h3 className="text-2xl font-black text-white uppercase tracking-tighter">{plan.duration}</h3>
+              <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">{plan.subtitle}</p>
+            </div>
+
+            <div className="mt-auto">
+              <div className="flex items-baseline gap-2 mb-1">
+                <span className="text-xl font-black text-white">{plan.price}</span>
+                {plan.originalPrice && (
+                  <span className="text-muted-foreground text-xs line-through">{plan.originalPrice}</span>
+                )}
+                {plan.discount && (
+                  <span className="text-green-500 text-[10px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded bg-green-500/10 border border-green-500/20">
+                    {plan.discount}
+                  </span>
+                )}
+              </div>
+              {plan.perDay && (
+                <p className="text-primary text-[10px] font-bold uppercase tracking-widest">{plan.perDay}</p>
+              )}
+            </div>
+          </button>
         ))}
       </div>
 
-      <Button className={`w-full py-6 font-black uppercase tracking-widest ${popular ? 'bg-primary hover:opacity-90' : 'bg-transparent border border-primary/40 hover:bg-primary/10'}`}>
-        SELECIONAR
-      </Button>
-    </div>
+      <div className="mt-12 flex justify-center px-4">
+        <Button size="lg" className="bg-primary hover:opacity-90 px-12 py-8 text-xl font-black h-auto w-full max-w-md shadow-[0_0_30px_rgba(139,47,232,0.4)] group">
+          COMPRAR AGORA — {currentPlan.price}
+          <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
+        </Button>
+      </div>
+    </section>
   );
 }
 
