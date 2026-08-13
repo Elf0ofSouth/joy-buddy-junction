@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
-import characterAsset from "@/assets/cipher-character.png.asset.json";
+import characterAsset from "@/assets/cipher-character-new.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
