@@ -9,11 +9,11 @@ import logoAsset from "@/assets/cipher-logo.png.asset.json";
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
-    title: "Cipher Project | Premium Discord Perks",
+    title: "Cipher Project | Vantagens Premium para Discord",
     meta: [
-      { name: "description", content: "Exclusive digital perks for the elite Discord community. VIP roles, custom badges, and more." },
+      { name: "description", content: "Vantagens digitais exclusivas para a elite da comunidade Discord. Cargos VIP, emblemas personalizados e muito mais." },
       { property: "og:title", content: "Cipher Project" },
-      { property: "og:description", content: "Exclusive digital perks for the elite Discord community." },
+      { property: "og:description", content: "Vantagens digitais exclusivas para a elite da comunidade Discord." },
       { name: "twitter:card", content: "summary_large_image" }
     ],
   }),
@@ -34,18 +34,18 @@ function Index() {
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest text-muted-foreground">
-            <a href="#store" className="hover:text-primary transition-colors">Store</a>
-            <a href="#how-it-works" className="hover:text-primary transition-colors">Process</a>
-            <a href="#faq" className="hover:text-primary transition-colors">Support</a>
+            <a href="#store" className="hover:text-primary transition-colors">Loja</a>
+            <a href="#how-it-works" className="hover:text-primary transition-colors">Processo</a>
+            <a href="#faq" className="hover:text-primary transition-colors">Suporte</a>
           </div>
 
           <div className="flex items-center gap-4">
              <Button variant="outline" size="sm" className="hidden sm:flex border-primary/40 hover:neon-border transition-all">
-               <ShoppingCart className="w-4 h-4 mr-2" />
-               Cart (0)
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Carrinho (0)
              </Button>
              <Button size="sm" className="bg-primary hover:opacity-90 transition-all font-bold">
-               LOGIN
+               ENTRAR
              </Button>
           </div>
         </div>
@@ -66,18 +66,18 @@ function Index() {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-black mb-6 chrome-text max-w-4xl mx-auto leading-tight">
-            THE ELITE NETWORK FOR <span className="text-primary">CIPHERS</span>
+            A REDE DE ELITE PARA <span className="text-primary">CIPHERS</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed uppercase tracking-wider">
-            Premium Discord perks, exclusive digital items, and automated delivery. Welcome to the syndicate.
+            Vantagens premium no Discord, itens digitais exclusivos e entrega automatizada. Bem-vindo ao sindicato.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button size="lg" className="bg-primary hover:opacity-90 px-8 py-6 text-lg font-bold h-auto min-w-[200px] shadow-[0_0_20px_rgba(139,47,232,0.4)]">
-              BROWSE STORE <ArrowRight className="ml-2 w-5 h-5" />
+              VER LOJA <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button size="lg" variant="outline" className="border-primary/40 hover:neon-border px-8 py-6 text-lg font-bold h-auto min-w-[200px] glass">
-              JOIN DISCORD
+              ENTRAR NO DISCORD
             </Button>
           </div>
         </section>
@@ -86,8 +86,8 @@ function Index() {
         <section id="store" className="container mx-auto px-4 py-24 border-t border-primary/10">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl font-bold mb-2 chrome-text">DIGITAL ARMORY</h2>
-              <p className="text-primary uppercase tracking-[0.2em] text-sm">Exclusive Server Perks</p>
+              <h2 className="text-3xl font-bold mb-2 chrome-text">ARSENAL DIGITAL</h2>
+              <p className="text-primary uppercase tracking-[0.2em] text-sm">Vantagens Exclusivas do Servidor</p>
             </div>
             <div className="hidden sm:block text-xs font-mono text-muted-foreground opacity-50">
               [ STATUS: ONLINE ]
@@ -96,22 +96,22 @@ function Index() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <ProductCard 
-              name="VIP ROLE" 
+              name="CARGO VIP" 
               price="R$ 15,00" 
               icon={<Shield className="w-6 h-6" />}
-              description="Gain access to the exclusive VIP lounge, custom colors, and priority support."
+              description="Ganhe acesso ao lounge VIP exclusivo, cores personalizadas e suporte prioritário."
             />
             <ProductCard 
-              name="BOOSTER BADGE" 
+              name="EMBLEMA BOOSTER" 
               price="R$ 10,00" 
               icon={<Zap className="w-6 h-6" />}
-              description="A unique glowing badge next to your name in all channels."
+              description="Um emblema brilhante exclusivo ao lado do seu nome em todos os canais."
             />
             <ProductCard 
-              name="CUSTOM TAG" 
+              name="TAG PERSONALIZADA" 
               price="R$ 25,00" 
               icon={<Tag className="w-6 h-6" />}
-              description="Your own custom role with a name and color of your choice."
+              description="Seu próprio cargo personalizado com o nome e a cor de sua escolha."
             />
           </div>
         </section>
@@ -119,30 +119,30 @@ function Index() {
         {/* How it Works */}
         <section id="how-it-works" className="container mx-auto px-4 py-24 bg-primary/5 relative">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-10" />
-          <h2 className="text-center text-3xl font-bold mb-16 chrome-text">ACCESS GRANTED: PROCESS</h2>
+          <h2 className="text-center text-3xl font-bold mb-16 chrome-text">ACESSO CONCEDIDO: PROCESSO</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-            <Step number="01" title="SELECT ITEM" description="Browse our curated selection of server enhancements." />
-            <Step number="02" title="FAST PAYMENT" description="Pay instantly via PIX. Fully automated and secure." />
-            <Step number="03" title="INSTANT DELIVERY" description="Your roles are applied automatically by our bot." />
+            <Step number="01" title="SELECIONE O ITEM" description="Navegue por nossa seleção curada de melhorias de servidor." />
+            <Step number="02" title="PAGAMENTO RÁPIDO" description="Pague instantaneamente via PIX. Totalmente automatizado e seguro." />
+            <Step number="03" title="ENTREGA INSTANTÂNEA" description="Seus cargos são aplicados automaticamente pelo nosso bot." />
           </div>
         </section>
 
         {/* FAQ */}
         <section id="faq" className="container mx-auto px-4 py-24">
-          <h2 className="text-center text-3xl font-bold mb-16 chrome-text">FREQUENTLY ASKED</h2>
+          <h2 className="text-center text-3xl font-bold mb-16 chrome-text">PERGUNTAS FREQUENTES</h2>
           <div className="max-w-3xl mx-auto glass p-8">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="item-1" className="border-primary/20">
-                <AccordionTrigger className="hover:text-primary transition-colors text-left uppercase tracking-wider">HOW DO I RECEIVE MY ITEM?</AccordionTrigger>
+                <AccordionTrigger className="hover:text-primary transition-colors text-left uppercase tracking-wider">COMO RECEBO MEU ITEM?</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground uppercase text-xs leading-relaxed">
-                  After your PIX payment is confirmed, our Discord bot will automatically assign your roles and perks based on your Discord ID.
+                  Após a confirmação do seu pagamento via PIX, nosso bot do Discord atribuirá automaticamente seus cargos e vantagens com base no seu ID do Discord.
                 </AccordionContent>
               </AccordionItem>
               <AccordionItem value="item-2" className="border-primary/20">
-                <AccordionTrigger className="hover:text-primary transition-colors text-left uppercase tracking-wider">DO PERKS EXPIRE?</AccordionTrigger>
+                <AccordionTrigger className="hover:text-primary transition-colors text-left uppercase tracking-wider">AS VANTAGENS EXPIRAM?</AccordionTrigger>
                 <AccordionContent className="text-muted-foreground uppercase text-xs leading-relaxed">
-                  Most roles are monthly subscriptions, while badges and some tags are permanent. Check the product details for specific durations.
+                  A maioria dos cargos são assinaturas mensais, enquanto emblemas e algumas tags são permanentes. Verifique os detalhes do produto para durações específicas.
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -164,7 +164,7 @@ function Index() {
             </div>
           </div>
           <div className="text-center text-[10px] text-muted-foreground uppercase tracking-[0.3em] opacity-50">
-            &copy; 2026 CIPHER PROJECT // ENCRYPTED ACCESS ONLY
+            &copy; 2026 CIPHER PROJECT // APENAS ACESSO CRIPTOGRAFADO
           </div>
         </div>
       </footer>
@@ -187,7 +187,7 @@ function ProductCard({ name, price, description, icon }: { name: string; price: 
       </p>
       <div className="flex items-center justify-between pt-6 border-t border-primary/10">
         <span className="text-2xl font-black text-primary font-mono">{price}</span>
-        <Button size="sm" className="bg-primary hover:opacity-90 font-bold">BUY NOW</Button>
+        <Button size="sm" className="bg-primary hover:opacity-90 font-bold">COMPRAR AGORA</Button>
       </div>
     </Card>
   );
