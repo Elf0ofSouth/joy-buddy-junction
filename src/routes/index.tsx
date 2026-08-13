@@ -279,38 +279,7 @@ function Index() {
 
         {/* Product Catalog */}
 
-        <section id="store" className="container mx-auto px-4 py-24 border-t border-primary/10">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <h2 className="text-3xl font-bold mb-2 chrome-text">ARSENAL DIGITAL</h2>
-              <p className="text-primary uppercase tracking-[0.2em] text-sm">Vantagens Exclusivas do Servidor</p>
-            </div>
-            <div className="hidden sm:block text-xs font-mono text-muted-foreground opacity-50">
-              [ STATUS: ONLINE ]
-            </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <ProductCard 
-              name="CARGO VIP" 
-              price="R$ 15,00" 
-              icon={<Shield className="w-6 h-6" />}
-              description="Ganhe acesso ao lounge VIP exclusivo, cores personalizadas e suporte prioritário."
-            />
-            <ProductCard 
-              name="EMBLEMA BOOSTER" 
-              price="R$ 10,00" 
-              icon={<Zap className="w-6 h-6" />}
-              description="Um emblema brilhante exclusivo ao lado do seu nome em todos os canais."
-            />
-            <ProductCard 
-              name="TAG PERSONALIZADA" 
-              price="R$ 25,00" 
-              icon={<Tag className="w-6 h-6" />}
-              description="Seu próprio cargo personalizado com o nome e a cor de sua escolha."
-            />
-          </div>
-        </section>
 
         {/* How it Works */}
         <section id="how-it-works" className="container mx-auto px-4 py-24 bg-primary/5 relative">
