@@ -401,10 +401,10 @@ function ExtensionPage() {
                 </div>
               </div>
             </div>
-          </section>
+          </motion.section>
 
           {/* SECTION 2: TUDO CHEGA NA HORA */}
-          <section className="mt-32 pt-24">
+          <motion.section {...fadeInUp} className="mt-32 pt-24">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter mb-4">
                 Tudo chega <span className="text-primary italic font-light italic-text-shadow">na hora</span>
