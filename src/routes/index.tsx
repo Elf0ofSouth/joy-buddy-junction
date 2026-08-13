@@ -209,7 +209,7 @@ function Index() {
           </div>
 
           {/* Podium (Top 3) */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end max-w-5xl mx-auto mb-16">
+          <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end max-w-5xl mx-auto mb-16">
             {/* Rank 2 */}
             {topCiphers[1] && (
               <motion.div variants={staggerItem} className="order-2 md:order-1 flex flex-col items-center">
@@ -227,12 +227,12 @@ function Index() {
                   <h3 className="font-bold text-lg chrome-text">{topCiphers[1].username}</h3>
                   <p className="text-primary font-mono text-sm">R$ {topCiphers[1].total_spent.toFixed(2)}</p>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Rank 1 */}
             {topCiphers[0] && (
-              <div className="order-1 md:order-2 flex flex-col items-center">
+              <motion.div variants={staggerItem} className="order-1 md:order-2 flex flex-col items-center">
                 <div className="relative mb-8 group">
                   <div className="absolute -inset-2 bg-gradient-to-b from-yellow-500 to-transparent rounded-full blur-md group-hover:blur-lg transition-all" />
                   <Avatar className="w-32 h-32 border-4 border-yellow-500/50 relative z-10 scale-110">
@@ -250,12 +250,12 @@ function Index() {
                   <h2 className="font-black text-2xl chrome-text uppercase tracking-tighter">{topCiphers[0].username}</h2>
                   <p className="text-primary font-mono text-lg font-bold">R$ {topCiphers[0].total_spent.toFixed(2)}</p>
                 </div>
-              </div>
+              </motion.div>
             )}
 
             {/* Rank 3 */}
             {topCiphers[2] && (
-              <div className="order-3 md:order-3 flex flex-col items-center">
+              <motion.div variants={staggerItem} className="order-3 md:order-3 flex flex-col items-center">
                 <div className="relative mb-6 group">
                   <div className="absolute -inset-1 bg-gradient-to-b from-amber-700 to-transparent rounded-full blur group-hover:blur-md transition-all" />
                   <Avatar className="w-24 h-24 border-2 border-amber-700/50 relative z-10">
@@ -270,17 +270,35 @@ function Index() {
                   <h3 className="font-bold text-lg chrome-text">{topCiphers[2].username}</h3>
                   <p className="text-primary font-mono text-sm">R$ {topCiphers[2].total_spent.toFixed(2)}</p>
                 </div>
-              </div>
+              </motion.div>
             )}
-          </div>
+          </motion.div>
 
           {/* List (Rank 4-10) */}
-          <div className="max-w-3xl mx-auto glass border-primary/10 overflow-hidden rounded-xl">
-            {topCiphers.slice(3, 10).map((user, index) => (
-              <div 
+          <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="max-w-3xl mx-auto glass border-primary/10 overflow-hidden rounded-xl">
+            {topCiphers.slice(3, 10).map((user) => (
+              <motion.div 
+                variants={staggerItem}
                 key={user.id} 
                 className="flex items-center justify-between p-4 border-b border-primary/5 hover:bg-primary/5 transition-colors group"
               >
+                <div className="flex items-center gap-4">
+                  <div className="w-8 font-mono text-muted-foreground group-hover:text-primary transition-colors">
+                    #{topCiphers.indexOf(user) + 1}
+                  </div>
+                  <Avatar className="w-10 h-10 border border-primary/20">
+                    <AvatarImage src={user.avatar_url} />
+                    <AvatarFallback className="bg-black text-xs">U</AvatarFallback>
+                  </Avatar>
+                  <span className="font-bold chrome-text uppercase text-sm tracking-widest">{user.username}</span>
+                </div>
+                <div className="font-mono text-primary font-bold">
+                  R$ {user.total_spent.toFixed(2)}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.section>
                 <div className="flex items-center gap-4">
                   <div className="w-8 font-mono text-muted-foreground group-hover:text-primary transition-colors">
                     #{index + 4}
