@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal, Gift, Lock, Star, Dices, Headset } from "lucide-react";
+import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal, Gift, Lock, Star, Dices, Headset, Puzzle, Infinity, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -10,6 +10,8 @@ import { Badge } from "@/components/ui/badge";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import characterAsset from "@/assets/cipher-character-new.png.asset.json";
+import extensionIconAsset from "@/assets/extension-icon.png.asset.json";
+
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -179,7 +181,105 @@ function Index() {
           </Carousel>
         </section>
 
+        {/* Featured Embed Section */}
+        <section className="container mx-auto px-4 py-24 border-t border-primary/10">
+          <div className="mb-6 flex items-center gap-2">
+            <span className="text-[10px] tracking-[0.3em] font-medium text-muted-foreground/60 uppercase">LOJA //</span>
+            <span className="text-[10px] tracking-[0.3em] font-bold text-white uppercase">EXTENSÕES E FERRAMENTAS</span>
+          </div>
+
+          <div className="relative group">
+            {/* Main Card */}
+            <div className="relative overflow-hidden rounded-[2rem] border border-primary/20 bg-gradient-to-br from-black via-[#0a0514] to-black p-8 lg:p-12 shadow-[0_0_50px_-12px_rgba(139,47,232,0.2)]">
+              {/* Grid Pattern Overlay */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #8B2FE8 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+              
+              <div className="relative z-10 flex flex-col lg:flex-row gap-12 items-center">
+                
+                {/* Left Column (30%) */}
+                <div className="w-full lg:w-[35%] flex flex-col items-center">
+                  <div className="w-full aspect-square max-w-[280px] rounded-3xl bg-[#120822]/50 border border-primary/10 flex items-center justify-center relative group-hover:neon-border transition-all duration-500 shadow-inner">
+                    <div className="absolute inset-0 bg-primary/5 blur-3xl rounded-full" />
+                    <img 
+                      src={extensionIconAsset.url} 
+                      alt="Extension Icon" 
+                      className="w-32 h-32 relative z-10 drop-shadow-[0_0_15px_rgba(139,47,232,0.4)]"
+                    />
+                  </div>
+                  
+                  <div className="mt-8 text-center">
+                    <h3 className="text-2xl font-black text-white italic tracking-tighter uppercase leading-none">
+                      EXTENSÃO <span className="text-primary italic">EXCLUSIVA</span> CIPHER
+                    </h3>
+                    
+                    <div className="mt-4 flex items-center justify-center gap-3">
+                      <div className="h-[1px] w-8 bg-muted-foreground/20" />
+                      <span className="text-[10px] font-mono tracking-[0.4em] text-muted-foreground uppercase">PARA LOVABLE</span>
+                      <div className="h-[1px] w-8 bg-muted-foreground/20" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column (70%) */}
+                <div className="w-full lg:w-[65%] flex flex-col">
+                  {/* Badges */}
+                  <div className="flex flex-wrap gap-3 mb-8">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+                      <Puzzle className="w-3.5 h-3.5 text-primary" />
+                      <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20">
+                      <Zap className="w-3.5 h-3.5 text-green-500" />
+                      <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">Entrega automática</span>
+                    </div>
+                  </div>
+
+                  {/* Main Content */}
+                  <h2 className="text-4xl md:text-5xl font-black text-white mb-6 tracking-tighter leading-[0.9] uppercase italic">
+                    HORA DE QUEBRAR AS <br /> LIMITAÇÕES
+                  </h2>
+                  
+                  <p className="text-muted-foreground text-sm uppercase tracking-widest leading-relaxed mb-10 max-w-xl">
+                    Extensão de navegador exclusiva do Cipher Project, crie projetos no Lovable de forma ilimitada, não deixe seus projetos para depois. Escolha um de nossos planos e comece hoje mesmo!
+                  </p>
+
+                  {/* Features List */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 mb-12">
+                    <div className="flex items-center gap-3 text-muted-foreground group/item">
+                      <Infinity className="w-4 h-4 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-xs font-bold uppercase tracking-widest">Prompts ilimitados</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-muted-foreground group/item">
+                      <Zap className="w-4 h-4 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-xs font-bold uppercase tracking-widest">Planos exclusivos</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-muted-foreground group/item">
+                      <Star className="w-4 h-4 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-xs font-bold uppercase tracking-widest">Funcionalidades exclusivas</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-muted-foreground group/item">
+                      <RefreshCw className="w-4 h-4 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-xs font-bold uppercase tracking-widest">Atualizações constantes</span>
+                    </div>
+                  </div>
+
+                  {/* CTA */}
+                  <a 
+                    href="#" 
+                    className="flex items-center gap-2 text-primary font-bold uppercase tracking-[0.2em] text-sm group/link hover:brightness-125 transition-all"
+                  >
+                    Ver planos e preços 
+                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Leaderboard Section */}
+
         <section id="leaderboard" className="container mx-auto px-4 py-24 border-t border-primary/10 relative">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="text-center mb-16">
