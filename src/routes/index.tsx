@@ -299,23 +299,7 @@ function Index() {
             ))}
           </motion.div>
         </motion.section>
-                <div className="flex items-center gap-4">
-                  <div className="w-8 font-mono text-muted-foreground group-hover:text-primary transition-colors">
-                    #{index + 4}
-                  </div>
-                  <Avatar className="w-10 h-10 border border-primary/20">
-                    <AvatarImage src={user.avatar_url} />
-                    <AvatarFallback className="bg-black text-xs">U</AvatarFallback>
-                  </Avatar>
-                  <span className="font-bold chrome-text uppercase text-sm tracking-widest">{user.username}</span>
-                </div>
-                <div className="font-mono text-primary font-bold">
-                  R$ {user.total_spent.toFixed(2)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+
 
         {/* Product Catalog */}
 
