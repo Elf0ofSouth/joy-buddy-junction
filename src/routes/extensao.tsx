@@ -496,10 +496,10 @@ function ExtensionPage() {
           <PricingSection />
 
           {/* SECTION 4: TUDO QUE ESTÁ INCLUÍDO + REQUISITOS */}
-          <section className="mt-32 pt-24 mb-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <motion.section {...fadeInUp} className="mt-32 pt-24 mb-12">
+            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               {/* Left Card: Incluído */}
-              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+              <motion.div variants={staggerItem} className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
                 <div className="flex items-center gap-4">
                   <div className="p-2 rounded-lg bg-primary/10 text-primary">
                     <Sparkles className="w-5 h-5" />
