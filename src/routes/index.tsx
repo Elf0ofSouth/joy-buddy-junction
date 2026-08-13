@@ -181,99 +181,6 @@ function Index() {
           </Carousel>
         </section>
 
-        {/* Featured Embed Section */}
-        <section className="container mx-auto px-4 py-24 border-t border-primary/10">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-white italic tracking-tighter uppercase leading-none mb-4">
-              EXTENSÃO <span className="text-primary italic">EXCLUSIVA</span> CIPHER
-            </h2>
-            <div className="flex items-center justify-center gap-3">
-              <div className="h-[1px] w-8 bg-muted-foreground/20" />
-              <span className="text-[10px] font-mono tracking-[0.4em] text-muted-foreground uppercase">PARA LOVABLE</span>
-              <div className="h-[1px] w-8 bg-muted-foreground/20" />
-            </div>
-          </div>
-
-          <div className="relative group max-w-5xl mx-auto">
-            {/* Main Card */}
-            <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-black via-[#0a0514] to-black p-6 lg:p-8 shadow-[0_0_50px_-12px_rgba(139,47,232,0.15)]">
-              {/* Grid Pattern Overlay */}
-              <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #8B2FE8 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
-              
-              <div className="relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-                
-                {/* Left Column (Character Image) */}
-                <div className="w-full lg:w-[35%] flex justify-center relative">
-                  <div className="relative w-full max-w-[240px] aspect-square flex items-center justify-center">
-                    {/* Subtle Purple Radial Glow */}
-                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-[60px] opacity-40 mix-blend-screen" />
-                    
-                    <img 
-                      src={extensionIconAsset.url} 
-                      alt="Extension Character" 
-                      className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_15px_rgba(139,47,232,0.4)] transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                </div>
-
-                {/* Right Column */}
-                <div className="w-full lg:w-[65%] flex flex-col">
-                  {/* Badges */}
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
-                      <Puzzle className="w-3 h-3 text-primary" />
-                      <span className="text-[9px] font-bold tracking-widest text-primary uppercase">EXTENSÃO</span>
-                    </div>
-                    <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-                      <Zap className="w-3 h-3 text-green-500" />
-                      <span className="text-[9px] font-bold tracking-widest text-green-500 uppercase">Entrega automática</span>
-                    </div>
-                  </div>
-
-                  {/* Main Content */}
-                  <h3 className="text-3xl md:text-4xl font-black text-white mb-4 tracking-tighter leading-tight uppercase italic">
-                    HORA DE QUEBRAR AS LIMITAÇÕES
-                  </h3>
-                  
-                  <p className="text-muted-foreground text-[11px] lg:text-xs uppercase tracking-widest leading-relaxed mb-6 max-w-xl">
-                    Extensão de navegador exclusiva do Cipher Project, crie projetos no Lovable de forma ilimitada, não deixe seus projetos para depois. Escolha um de nossos planos e comece hoje mesmo!
-                  </p>
-
-                  {/* Features List */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 mb-8">
-                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
-                      <Infinity className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Prompts ilimitados</span>
-                    </div>
-                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
-                      <Zap className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Planos exclusivos</span>
-                    </div>
-                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
-                      <Star className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Funcionalidades exclusivas</span>
-                    </div>
-                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
-                      <RefreshCw className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
-                      <span className="text-[10px] font-bold uppercase tracking-widest">Atualizações constantes</span>
-                    </div>
-                  </div>
-
-
-                  {/* CTA */}
-                  <a 
-                    href="#" 
-                    className="flex items-center gap-2 text-primary font-bold uppercase tracking-[0.2em] text-sm group/link hover:brightness-125 transition-all"
-                  >
-                    Ver planos e preços 
-                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
-                  </a>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Leaderboard Section */}
 
@@ -438,6 +345,100 @@ function Index() {
                   alt="Cipher Character" 
                   className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_20px_rgba(139,47,232,0.3)]"
                 />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Embed Section */}
+        <section className="container mx-auto px-4 py-24 border-t border-primary/10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-white italic tracking-tighter uppercase leading-none mb-4">
+              EXTENSÃO <span className="text-primary italic">EXCLUSIVA</span> CIPHER
+            </h2>
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-[1px] w-8 bg-muted-foreground/20" />
+              <span className="text-[10px] font-mono tracking-[0.4em] text-muted-foreground uppercase">PARA LOVABLE</span>
+              <div className="h-[1px] w-8 bg-muted-foreground/20" />
+            </div>
+          </div>
+
+          <div className="relative group max-w-5xl mx-auto">
+            {/* Main Card */}
+            <div className="relative overflow-hidden rounded-3xl border border-primary/20 bg-gradient-to-br from-black via-[#0a0514] to-black p-6 lg:p-8 shadow-[0_0_50px_-12px_rgba(139,47,232,0.15)]">
+              {/* Grid Pattern Overlay */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #8B2FE8 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+              
+              <div className="relative z-10 flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+                
+                {/* Left Column (Character Image) */}
+                <div className="w-full lg:w-[35%] flex justify-center relative">
+                  <div className="relative w-full max-w-[240px] aspect-square flex items-center justify-center">
+                    {/* Subtle Purple Radial Glow */}
+                    <div className="absolute inset-0 bg-primary/20 rounded-full blur-[60px] opacity-40 mix-blend-screen" />
+                    
+                    <img 
+                      src={extensionIconAsset.url} 
+                      alt="Extension Character" 
+                      className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_15px_rgba(139,47,232,0.4)] transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="w-full lg:w-[65%] flex flex-col">
+                  {/* Badges */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20">
+                      <Puzzle className="w-3 h-3 text-primary" />
+                      <span className="text-[9px] font-bold tracking-widest text-primary uppercase">EXTENSÃO</span>
+                    </div>
+                    <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/20">
+                      <Zap className="w-3 h-3 text-green-500" />
+                      <span className="text-[9px] font-bold tracking-widest text-green-500 uppercase">Entrega automática</span>
+                    </div>
+                  </div>
+
+                  {/* Main Content */}
+                  <h3 className="text-3xl md:text-4xl font-black text-white mb-4 tracking-tighter leading-tight uppercase italic">
+                    HORA DE QUEBRAR AS LIMITAÇÕES
+                  </h3>
+                  
+                  <p className="text-muted-foreground text-[11px] lg:text-xs uppercase tracking-widest leading-relaxed mb-6 max-w-xl">
+                    Extensão de navegador exclusiva do Cipher Project, crie projetos no Lovable de forma ilimitada, não deixe seus projetos para depois. Escolha um de nossos planos e comece hoje mesmo!
+                  </p>
+
+                  {/* Features List */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 mb-8">
+                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
+                      <Infinity className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Prompts ilimitados</span>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
+                      <Zap className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Planos exclusivos</span>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
+                      <Star className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Funcionalidades exclusivas</span>
+                    </div>
+                    <div className="flex items-center gap-2.5 text-muted-foreground group/item">
+                      <RefreshCw className="w-3.5 h-3.5 text-primary group-hover/item:scale-110 transition-transform" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">Atualizações constantes</span>
+                    </div>
+                  </div>
+
+
+                  {/* CTA */}
+                  <a 
+                    href="#" 
+                    className="flex items-center gap-2 text-primary font-bold uppercase tracking-[0.2em] text-sm group/link hover:brightness-125 transition-all"
+                  >
+                    Ver planos e preços 
+                    <ArrowRight className="w-4 h-4 group-hover/link:translate-x-1 transition-transform" />
+                  </a>
+                </div>
+
               </div>
             </div>
           </div>
