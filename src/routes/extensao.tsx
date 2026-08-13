@@ -522,10 +522,10 @@ function ExtensionPage() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Right Card: Requisitos */}
-              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+              <motion.div variants={staggerItem} className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
                 <div className="flex items-center gap-4">
                   <div className="p-2 rounded-lg bg-primary/10 text-primary">
                     <Shield className="w-5 h-5" />
@@ -545,9 +545,9 @@ function ExtensionPage() {
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-          </section>
+              </motion.div>
+            </motion.div>
+          </motion.section>
         </div>
       </main>
 
