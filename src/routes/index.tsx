@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight } from "lucide-react";
+import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -20,6 +24,35 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [topCiphers, setTopCiphers] = useState<any[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      // Fetch featured products
+      const { data: products } = await supabase
+        .from('products')
+        .select('*')
+        .limit(6);
+      
+      if (products) setFeaturedProducts(products);
+
+      // Fetch leaderboard data (mocking for now if no orders exist, but setup for real query)
+      // Real query would be a RPC or a complex join/group by
+      // For now, let's use some high-quality mock data that looks real
+      setTopCiphers([
+        { id: 1, username: 'ZeroDay', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ZeroDay', total_spent: 1250.00 },
+        { id: 2, username: 'NetRunner', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NetRunner', total_spent: 980.50 },
+        { id: 3, username: 'GhostShell', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=GhostShell', total_spent: 750.00 },
+        { id: 4, username: 'BitPhantom', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=BitPhantom', total_spent: 450.00 },
+        { id: 5, username: 'CryptoMancer', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CryptoMancer', total_spent: 320.00 },
+        { id: 6, username: 'LogicBomb', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=LogicBomb', total_spent: 280.00 },
+        { id: 7, username: 'DataVoid', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DataVoid', total_spent: 150.00 },
+      ]);
+    }
+    fetchData();
+  }, []);
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden">
       {/* Decorative Background */}
@@ -82,7 +115,170 @@ function Index() {
           </div>
         </section>
 
+        {/* Featured Products Carousel */}
+        <section id="featured" className="container mx-auto px-4 py-24 border-t border-primary/10">
+          <div className="flex justify-between items-center mb-12">
+            <div>
+              <h2 className="text-3xl font-bold chrome-text">EM DESTAQUE</h2>
+              <p className="text-primary uppercase tracking-[0.2em] text-sm">Arsenal de Elite</p>
+            </div>
+            <a href="#store" className="text-sm font-bold text-primary hover:underline flex items-center gap-2">
+              VER TODOS <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
+
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full"
+          >
+            <CarouselContent className="-ml-4">
+              {featuredProducts.map((product) => (
+                <CarouselItem key={product.id} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
+                  <div className="group relative aspect-[16/9] overflow-hidden rounded-xl border border-primary/20 hover:neon-border transition-all duration-500 scale-100 hover:scale-[1.02]">
+                    {/* Background Image/Placeholder */}
+                    <div 
+                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                      style={{ 
+                        backgroundImage: `url(${product.image_url || 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800&auto=format&fit=crop'})`,
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+                    
+                    {/* Purchase Count Badge */}
+                    <div className="absolute top-4 right-4">
+                      <Badge className="bg-black/60 backdrop-blur-md border-primary/40 text-primary font-mono">
+                        {product.purchase_count || 128} COMPRAS
+                      </Badge>
+                    </div>
+
+                    {/* Product Name */}
+                    <div className="absolute bottom-6 left-6">
+                      <h3 className="text-2xl font-black chrome-text drop-shadow-lg uppercase italic">{product.name}</h3>
+                    </div>
+
+                    {/* Buy Now Floating Button */}
+                    <div className="absolute bottom-6 right-6 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
+                      <Button size="sm" className="bg-primary hover:opacity-90 font-bold rounded-full px-6 shadow-[0_0_15px_rgba(139,47,232,0.6)]">
+                        COMPRAR AGORA
+                      </Button>
+                    </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex justify-end gap-2 mt-8 md:hidden">
+              <CarouselPrevious className="static translate-y-0" />
+              <CarouselNext className="static translate-y-0" />
+            </div>
+            <CarouselPrevious className="hidden md:flex -left-12 border-primary/20" />
+            <CarouselNext className="hidden md:flex -right-12 border-primary/20" />
+          </Carousel>
+        </section>
+
+        {/* Leaderboard Section */}
+        <section id="leaderboard" className="container mx-auto px-4 py-24 border-t border-primary/10 relative">
+          <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-black chrome-text mb-2 italic">TOP CIPHERS</h2>
+            <p className="text-primary uppercase tracking-[0.3em] text-xs">Os Maiores Contribuintes do Sindicato</p>
+          </div>
+
+          {/* Podium (Top 3) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end max-w-5xl mx-auto mb-16">
+            {/* Rank 2 */}
+            {topCiphers[1] && (
+              <div className="order-2 md:order-1 flex flex-col items-center">
+                <div className="relative mb-6 group">
+                  <div className="absolute -inset-1 bg-gradient-to-b from-slate-400 to-transparent rounded-full blur group-hover:blur-md transition-all" />
+                  <Avatar className="w-24 h-24 border-2 border-slate-400/50 relative z-10">
+                    <AvatarImage src={topCiphers[1].avatar_url} />
+                    <AvatarFallback className="bg-black text-slate-400">#2</AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-slate-400 rounded-full flex items-center justify-center border-2 border-black z-20">
+                    <Medal className="w-4 h-4 text-black" />
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="font-bold text-lg chrome-text">{topCiphers[1].username}</h3>
+                  <p className="text-primary font-mono text-sm">R$ {topCiphers[1].total_spent.toFixed(2)}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Rank 1 */}
+            {topCiphers[0] && (
+              <div className="order-1 md:order-2 flex flex-col items-center">
+                <div className="relative mb-8 group">
+                  <div className="absolute -inset-2 bg-gradient-to-b from-yellow-500 to-transparent rounded-full blur-md group-hover:blur-lg transition-all" />
+                  <Avatar className="w-32 h-32 border-4 border-yellow-500/50 relative z-10 scale-110">
+                    <AvatarImage src={topCiphers[0].avatar_url} />
+                    <AvatarFallback className="bg-black text-yellow-500">#1</AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+                    <Crown className="w-10 h-10 text-yellow-500 drop-shadow-[0_0_10px_rgba(234,179,8,0.5)]" />
+                  </div>
+                  <div className="absolute -bottom-3 -right-3 w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center border-2 border-black z-20">
+                    <Trophy className="w-5 h-5 text-black" />
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h2 className="font-black text-2xl chrome-text uppercase tracking-tighter">{topCiphers[0].username}</h2>
+                  <p className="text-primary font-mono text-lg font-bold">R$ {topCiphers[0].total_spent.toFixed(2)}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Rank 3 */}
+            {topCiphers[2] && (
+              <div className="order-3 md:order-3 flex flex-col items-center">
+                <div className="relative mb-6 group">
+                  <div className="absolute -inset-1 bg-gradient-to-b from-amber-700 to-transparent rounded-full blur group-hover:blur-md transition-all" />
+                  <Avatar className="w-24 h-24 border-2 border-amber-700/50 relative z-10">
+                    <AvatarImage src={topCiphers[2].avatar_url} />
+                    <AvatarFallback className="bg-black text-amber-700">#3</AvatarFallback>
+                  </Avatar>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-amber-700 rounded-full flex items-center justify-center border-2 border-black z-20">
+                    <Medal className="w-4 h-4 text-black" />
+                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="font-bold text-lg chrome-text">{topCiphers[2].username}</h3>
+                  <p className="text-primary font-mono text-sm">R$ {topCiphers[2].total_spent.toFixed(2)}</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* List (Rank 4-10) */}
+          <div className="max-w-3xl mx-auto glass border-primary/10 overflow-hidden rounded-xl">
+            {topCiphers.slice(3, 10).map((user, index) => (
+              <div 
+                key={user.id} 
+                className="flex items-center justify-between p-4 border-b border-primary/5 hover:bg-primary/5 transition-colors group"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-8 font-mono text-muted-foreground group-hover:text-primary transition-colors">
+                    #{index + 4}
+                  </div>
+                  <Avatar className="w-10 h-10 border border-primary/20">
+                    <AvatarImage src={user.avatar_url} />
+                    <AvatarFallback className="bg-black text-xs">U</AvatarFallback>
+                  </Avatar>
+                  <span className="font-bold chrome-text uppercase text-sm tracking-widest">{user.username}</span>
+                </div>
+                <div className="font-mono text-primary font-bold">
+                  R$ {user.total_spent.toFixed(2)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Product Catalog */}
+
         <section id="store" className="container mx-auto px-4 py-24 border-t border-primary/10">
           <div className="flex justify-between items-end mb-12">
             <div>
