@@ -524,7 +524,7 @@ function Step({ number, title, description }: { number: string; title: string; d
 
 function BenefitItem({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
-    <div className="flex gap-4 group">
+    <motion.div variants={staggerItem} className="flex gap-4 group">
       <div className="flex-shrink-0 w-10 h-10 glass border-primary/30 flex items-center justify-center text-primary group-hover:neon-border transition-all duration-300">
         {icon}
       </div>
@@ -532,6 +532,6 @@ function BenefitItem({ icon, title, description }: { icon: React.ReactNode; titl
         <h4 className="font-bold text-foreground mb-0.5 tracking-wider uppercase text-sm">{title}</h4>
         <p className="text-muted-foreground uppercase text-[9px] tracking-widest leading-tight max-w-xs">{description}</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
