@@ -370,7 +370,7 @@ function Index() {
         </motion.section>
 
         {/* Featured Embed Section */}
-        <section className="container mx-auto px-4 py-24 border-t border-primary/10">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 py-32 border-t border-primary/10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-white italic tracking-tighter uppercase leading-none mb-4">
               EXTENSÃO <span className="text-primary italic">EXCLUSIVA</span> CIPHER
@@ -461,7 +461,7 @@ function Index() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
       </main>
 
