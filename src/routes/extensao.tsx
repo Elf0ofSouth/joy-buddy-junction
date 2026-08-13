@@ -329,10 +329,10 @@ function ExtensionPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
 
           {/* SECTION 1: COMPARISON */}
-          <section className="mt-32 pt-24 border-t border-primary/10">
+          <motion.section {...fadeInUp} className="mt-32 pt-24 border-t border-primary/10">
             <div className="text-center mb-16">
               <div className="flex items-center justify-center gap-4 mb-4">
                 <div className="h-[1px] w-8 bg-primary/30" />
