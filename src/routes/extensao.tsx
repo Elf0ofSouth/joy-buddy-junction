@@ -103,7 +103,7 @@ function ExtensionPage() {
 
       <main className="relative z-10 pt-12 pb-24">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-16 lg:items-center">
+          <motion.div {...fadeInUp} className="flex flex-col lg:flex-row gap-16 lg:items-center py-20">
             
             {/* Left Column */}
             <div className="flex-1 space-y-8">
