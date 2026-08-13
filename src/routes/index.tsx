@@ -7,10 +7,24 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import characterAsset from "@/assets/cipher-character-new.png.asset.json";
 import extensionIconAsset from "@/assets/extension-icon.png.asset.json";
+
+const fadeInUp = {
+  initial: { opacity: 0, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.8, ease: "easeOut" }
+};
+
+const staggerContainer = {
+  initial: {},
+  whileInView: { transition: { staggerChildren: 0.1 } },
+  viewport: { once: true, amount: 0.2 }
+};
 
 
 export const Route = createFileRoute("/")({
