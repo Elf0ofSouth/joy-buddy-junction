@@ -13,9 +13,19 @@ import {
   Send,
   Loader2,
   Infinity as InfinityIcon,
-  ChevronLeft
+  ChevronLeft,
+  X,
+  Clock,
+  ShieldCheck,
+  Download,
+  FileCode,
+  Sparkles,
+  Shield,
+  Dices,
+  Circle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
 
 export const Route = createFileRoute("/extensao")({
