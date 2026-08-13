@@ -72,7 +72,6 @@ function Index() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest text-muted-foreground">
             <a href="#store" className="hover:text-primary transition-colors">Loja</a>
             <a href="#how-it-works" className="hover:text-primary transition-colors">Processo</a>
-            <a href="#faq" className="hover:text-primary transition-colors">Suporte</a>
           </div>
 
           <div className="flex items-center gap-4">
@@ -444,26 +443,6 @@ function Index() {
           </div>
         </section>
 
-        {/* FAQ */}
-        <section id="faq" className="container mx-auto px-4 py-24">
-          <h2 className="text-center text-3xl font-bold mb-16 chrome-text">PERGUNTAS FREQUENTES</h2>
-          <div className="max-w-3xl mx-auto glass p-8">
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="item-1" className="border-primary/20">
-                <AccordionTrigger className="hover:text-primary transition-colors text-left uppercase tracking-wider">COMO RECEBO MEU ITEM?</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground uppercase text-xs leading-relaxed">
-                  Após a confirmação do seu pagamento via PIX, nosso bot do Discord atribuirá automaticamente seus cargos e vantagens com base no seu ID do Discord.
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2" className="border-primary/20">
-                <AccordionTrigger className="hover:text-primary transition-colors text-left uppercase tracking-wider">AS VANTAGENS EXPIRAM?</AccordionTrigger>
-                <AccordionContent className="text-muted-foreground uppercase text-xs leading-relaxed">
-                  A maioria dos cargos são assinaturas mensais, enquanto emblemas e algumas tags são permanentes. Verifique os detalhes do produto para durações específicas.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </section>
       </main>
 
       {/* Footer */}
