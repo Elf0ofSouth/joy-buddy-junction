@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
+import characterAsset from "@/assets/cipher-character.png.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -334,34 +335,18 @@ function Index() {
               </div>
             </div>
 
-            {/* Right Side Illustration */}
+            {/* Right Side Character Illustration */}
             <div className="w-full lg:w-[45%] flex justify-center relative">
               <div className="relative w-full max-w-[500px] aspect-square flex items-center justify-center">
-                {/* Background Glows */}
-                <div className="absolute inset-0 bg-primary/20 rounded-full blur-[100px] animate-pulse" />
-                <div className="absolute inset-0 bg-primary/10 rounded-full blur-[60px]" />
+                {/* Subtle Purple Radial Glow */}
+                <div className="absolute inset-0 bg-primary/20 rounded-full blur-[80px] opacity-40 mix-blend-screen" />
                 
-                {/* Character Image Placeholder (AI style character) */}
+                {/* Character Illustration */}
                 <img 
-                  src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=1000&auto=format&fit=crop" 
-                  alt="Cipher Agent" 
-                  className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_30px_rgba(139,47,232,0.4)]"
-                  style={{
-                    maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
-                    WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
-                  }}
+                  src={characterAsset.url} 
+                  alt="Cipher Character" 
+                  className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_20px_rgba(139,47,232,0.3)]"
                 />
-
-                {/* Floating Badges */}
-                <div className="absolute top-10 right-0 glass border-primary/40 p-3 rounded-xl animate-bounce duration-[3000ms] z-20">
-                  <Badge variant="outline" className="border-primary/50 text-primary font-mono bg-black/80">RANK: S</Badge>
-                </div>
-                <div className="absolute bottom-20 left-0 glass border-primary/40 p-3 rounded-xl animate-bounce duration-[4000ms] z-20">
-                  <Zap className="w-6 h-6 text-primary drop-shadow-[0_0_10px_rgba(139,47,232,0.8)]" />
-                </div>
-                <div className="absolute top-1/2 -right-4 glass border-primary/40 p-2 rounded-full z-20">
-                  <Lock className="w-5 h-5 text-primary" />
-                </div>
               </div>
             </div>
           </div>
