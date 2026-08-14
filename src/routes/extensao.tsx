@@ -126,64 +126,67 @@ function ExtensionPage() {
           <motion.div {...fadeInUp} className="flex flex-col lg:flex-row gap-16 lg:items-center py-20">
             
             {/* Left Column */}
-            <div className="flex-1 space-y-8">
-              {/* Badges */}
-              <div className="flex flex-wrap gap-3">
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                  <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO DE NAVEGADOR</span>
-                </div>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30">
-                  <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">ATÉ 70% OFF</span>
+            <div className="flex-1 space-y-10">
+              {/* Badges & Label */}
+              <div className="space-y-6">
+                <span className="text-primary font-mono text-[10px] tracking-[0.4em] uppercase block">— PARA LOVABLE —</span>
+                
+                <div className="flex flex-wrap gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                    <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO EXCLUSIVA</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30">
+                    <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">ATÉ 70% OFF</span>
+                  </div>
                 </div>
               </div>
 
               {/* Heading */}
-              <div className="space-y-2">
-                <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter uppercase">
-                  PROMPTS <br />
-                  <span className="text-primary italic font-light italic-text-shadow">ilimitados</span> <br />
-                  NO LOVABLE
+              <div className="space-y-4">
+                <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter uppercase">
+                  CRIE SEM <br />
+                  <span className="text-primary italic font-light italic-text-shadow">FRONTEIRAS</span>
                 </h1>
-                <p className="text-muted-foreground text-lg md:text-xl font-medium tracking-wide uppercase opacity-80 pt-4">
-                  Prompts ilimitados no Lovable, sem travar no limite do plano.
+                <p className="text-muted-foreground text-lg md:text-xl font-medium tracking-wide uppercase opacity-80 max-w-xl">
+                  A extensão que remove o limite de prompts do Lovable. Construa, refaça e evolua seus projetos sem esperar o próximo ciclo.
                 </p>
               </div>
 
               {/* CTA Section */}
-              <div className="space-y-6 pt-4">
-                <div className="flex flex-col sm:flex-row items-center gap-6">
-                  <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-8 text-xl font-black h-auto w-full sm:w-auto shadow-[0_0_30px_rgba(139,47,232,0.4)] group">
-                    COMEÇAR POR R$ 5,00 
+              <div className="space-y-8 pt-4">
+                <div className="flex flex-col items-start gap-6">
+                  {/* Info Pills above CTA */}
+                  <div className="flex flex-wrap gap-3">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
+                      <Zap className="w-3 h-3 text-primary" />
+                      Liberado em segundos
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
+                      <Lock className="w-3 h-3 text-primary" />
+                      Pagamento via PIX
+                    </div>
+                  </div>
+
+                  <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-8 text-xl font-black h-auto w-full sm:w-auto shadow-[0_0_30px_rgba(139,47,232,0.4)] group uppercase">
+                    DESBLOQUEAR AGORA
                     <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
                   </Button>
-                  
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2 text-muted-foreground text-xs font-bold uppercase tracking-wider">
-                      <Zap className="w-4 h-4 text-primary" />
-                      ⚡ Entrega automática em segundos
-                    </div>
-                    <div className="flex items-center gap-2 text-muted-foreground text-xs font-bold uppercase tracking-wider">
-                      <Lock className="w-4 h-4 text-primary" />
-                      🔒 PIX ou saldo da carteira
-                    </div>
-                  </div>
                 </div>
 
-                <div className="h-[1px] w-full bg-primary/10" />
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3 text-muted-foreground text-[10px] font-bold uppercase tracking-[0.2em]">
-                    <Globe className="w-4 h-4 text-primary/60" />
+                {/* Compatibility Row as Pills */}
+                <div className="flex flex-wrap gap-3 pt-4">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
+                    <Globe className="w-3 h-3 text-primary/60" />
                     Chrome · Edge · Brave · Opera
                   </div>
-                  <div className="flex items-center gap-3 text-muted-foreground text-[10px] font-bold uppercase tracking-[0.2em]">
-                    <CheckCircle2 className="w-4 h-4 text-primary/60" />
-                    Licença exclusiva por compra
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
+                    <CheckCircle2 className="w-3 h-3 text-primary/60" />
+                    Chave de licença exclusiva
                   </div>
-                  <div className="flex items-center gap-3 text-muted-foreground text-[10px] font-bold uppercase tracking-[0.2em]">
-                    <FileText className="w-4 h-4 text-primary/60" />
-                    Tutorial de instalação incluído
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
+                    <FileText className="w-3 h-3 text-primary/60" />
+                    Tutorial completo incluído
                   </div>
                 </div>
               </div>
@@ -200,7 +203,28 @@ function ExtensionPage() {
                 className="absolute w-[400px] h-[400px] bg-primary/20 rounded-full blur-[100px] pointer-events-none"
               />
               
-              <div className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-2xl flex flex-col">
+              <div className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-2xl flex flex-col group/browser">
+                {/* Decorative Badge near window */}
+                <motion.div 
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 1, duration: 1 }}
+                  className="absolute -top-4 -right-4 z-30 pointer-events-none"
+                >
+                  <div className="bg-black/80 backdrop-blur-md border border-primary/40 p-3 rounded-xl shadow-[0_0_20px_rgba(139,47,232,0.3)] flex items-center gap-2">
+                    <img src={logoAsset.url} alt="" className="w-6 h-6 object-contain" />
+                    <div className="flex flex-col">
+                      <span className="text-[8px] font-black text-primary leading-none uppercase tracking-[0.2em]">CIPHER</span>
+                      <span className="text-[6px] font-bold text-white/40 leading-none uppercase tracking-widest">PROJECT</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* Decorative particles */}
+                <div className="absolute top-1/4 -left-4 w-2 h-2 bg-primary/40 rounded-full blur-[2px] animate-pulse" />
+                <div className="absolute bottom-1/4 -right-2 w-1.5 h-1.5 bg-primary/30 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: '1s' }} />
+
                 {/* Browser Top Bar */}
                 <div className="h-10 bg-black/40 border-b border-primary/10 flex items-center px-4 gap-2">
                   <div className="flex gap-1.5">
