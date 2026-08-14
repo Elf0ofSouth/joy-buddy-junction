@@ -254,7 +254,7 @@ function ExtensionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden font-sans">
+    <div className="min-h-screen bg-black text-foreground selection:bg-primary selection:text-primary-foreground snap-container font-sans">
       {/* Decorative Background */}
       <div className="fixed inset-0 circuit-bg pointer-events-none z-0 opacity-20" />
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
@@ -278,7 +278,7 @@ function ExtensionPage() {
 
       <main className="relative z-10 pt-12 pb-24">
         <div className="container mx-auto px-4">
-          <motion.div {...fadeInUp} className="flex flex-col gap-8 items-center text-center py-20 lg:py-32 relative max-w-4xl mx-auto">
+          <motion.div {...fadeInUp} className="snap-section items-center text-center relative max-w-4xl mx-auto">
             
             {/* Text Content */}
             <div className="space-y-6 flex flex-col items-center">
@@ -375,7 +375,7 @@ function ExtensionPage() {
           </motion.div>
 
           {/* SECTION 1: COMPARISON */}
-          <motion.section {...fadeInUp} className="mt-32 pt-24 border-t border-primary/10 relative">
+          <motion.section {...fadeInUp} className="snap-section mt-32 border-t border-primary/10 relative">
             {/* Ambient Background Element */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
             
