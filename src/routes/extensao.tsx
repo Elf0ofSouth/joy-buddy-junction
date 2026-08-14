@@ -656,39 +656,30 @@ function TypingPlaceholder({ isActive }: { isActive: boolean }) {
 }
 
 function PricingSection() {
-  const [selectedPlan, setSelectedPlan] = useState<number>(2); // 0-indexed, 3rd plan (30 DIAS) is default
+  const [selectedPlan, setSelectedPlan] = useState<number>(2); // Default to 30 DIAS (id: 2)
+  const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
 
   const plans = [
     {
-      id: 0,
-      badge: "TESTE",
-      duration: "1 DIA",
-      subtitle: "A partir da ativação",
-      price: "R$ 5,00",
-      highlight: false,
-      disabled: false
-    },
-    {
       id: 1,
-      badge: "ESGOTADO",
       duration: "7 DIAS",
       subtitle: "A partir da ativação",
-      price: "R$ 10,90",
+      price: "R$ 12,90",
       originalPrice: "R$ 24,90",
-      discount: "56% OFF",
-      perDay: "R$ 1,56 / dia",
+      discount: "48% OFF",
+      perDay: "R$ 1,84 / dia",
       highlight: false,
-      disabled: true
+      disabled: false
     },
     {
       id: 2,
       badge: "MAIS VENDIDO",
       duration: "30 DIAS",
       subtitle: "A partir da ativação",
-      price: "R$ 22,00",
-      originalPrice: "R$ 59,90",
-      discount: "63% OFF",
-      perDay: "R$ 0,73 / dia",
+      price: "R$ 29,90",
+      originalPrice: "R$ 69,90",
+      discount: "57% OFF",
+      perDay: "R$ 1,00 / dia",
       highlight: true,
       disabled: false
     },
@@ -696,38 +687,28 @@ function PricingSection() {
       id: 3,
       duration: "90 DIAS",
       subtitle: "A partir da ativação",
-      price: "R$ 45,00",
-      originalPrice: "R$ 149,90",
-      discount: "70% OFF",
-      perDay: "R$ 0,50 / dia",
+      price: "R$ 59,90",
+      originalPrice: "R$ 159,90",
+      discount: "62% OFF",
+      perDay: "R$ 0,67 / dia",
       highlight: false,
       disabled: false
     },
     {
       id: 4,
+      badge: "MELHOR CUSTO",
       duration: "1 ANO",
       subtitle: "A partir da ativação",
-      price: "R$ 100,00",
-      originalPrice: "R$ 259,90",
-      discount: "62% OFF",
-      perDay: "R$ 0,27 / dia",
-      highlight: false,
-      disabled: false
-    },
-    {
-      id: 5,
-      badge: "MELHOR CUSTO",
-      duration: "VITALÍCIO",
-      subtitle: "Sem data de expiração",
-      price: "R$ 149,00",
+      price: "R$ 129,90",
       originalPrice: "R$ 349,90",
-      discount: "57% OFF",
+      discount: "63% OFF",
+      perDay: "R$ 0,36 / dia",
       highlight: false,
       disabled: false
     }
   ];
 
-  const currentPlan = plans.find(p => p.id === selectedPlan) || plans[2];
+  const currentPlan = plans.find(p => p.id === selectedPlan) || plans[1];
 
   return (
     <section className="mt-32 pt-24 border-t border-primary/10">
@@ -737,20 +718,30 @@ function PricingSection() {
           Pague uma vez. <span className="text-primary italic font-light italic-text-shadow">Use à vontade.</span>
         </h2>
         <p className="text-muted-foreground text-sm font-bold uppercase tracking-wider max-w-2xl mx-auto opacity-80">
-          Quanto maior o período, menor o custo por dia. Comece com 1 dia para testar ou garanta o vitalício e nunca mais pense nisso.
+          Quanto maior o período, menor o custo por dia. Escolha o plano que melhor atende suas necessidades.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto px-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto px-4">
         {plans.map((plan) => (
-          <button
+          <motion.button
             key={plan.id}
             disabled={plan.disabled}
             onClick={() => setSelectedPlan(plan.id)}
-            className={`relative p-6 rounded-2xl border text-left transition-all duration-300 group
+            onMouseEnter={() => setHoveredPlan(plan.id)}
+            onMouseLeave={() => setHoveredPlan(null)}
+            animate={{
+              scale: hoveredPlan === plan.id ? 1.05 : 1,
+              y: hoveredPlan === plan.id ? -10 : 0,
+              opacity: hoveredPlan !== null && hoveredPlan !== plan.id ? 0.4 : 1,
+              filter: hoveredPlan !== null && hoveredPlan !== plan.id ? "blur(2px)" : "blur(0px)",
+            }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className={`relative p-6 rounded-2xl border text-left transition-all duration-300 group z-10
               ${plan.disabled ? 'opacity-40 grayscale cursor-not-allowed border-primary/5 bg-white/[0.02]' : 
                 selectedPlan === plan.id ? 'border-primary bg-primary/5 shadow-[0_0_30px_rgba(139,47,232,0.15)] ring-1 ring-primary' : 
-                'border-primary/10 bg-white/5 hover:border-primary/40 hover:bg-primary/[0.02]'}`}
+                'border-primary/10 bg-white/5 hover:border-primary/40 hover:bg-primary/[0.02]'}
+              ${hoveredPlan === plan.id ? 'shadow-[0_0_40px_rgba(139,47,232,0.25)] border-primary/60' : ''}`}
           >
             {/* Radio indicator */}
             <div className={`absolute top-6 right-6 w-5 h-5 rounded-full border flex items-center justify-center transition-colors
@@ -761,7 +752,7 @@ function PricingSection() {
             {/* Badge */}
             {plan.badge && (
               <div className={`mb-4 inline-block px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest
-                ${plan.badge === 'ESGOTADO' ? 'bg-muted text-muted-foreground' : 'bg-primary text-white shadow-[0_0_10px_rgba(139,47,232,0.4)]'}`}>
+                bg-primary text-white shadow-[0_0_10px_rgba(139,47,232,0.4)]`}>
                 {plan.badge}
               </div>
             )}
@@ -787,13 +778,13 @@ function PricingSection() {
                 <p className="text-primary text-[10px] font-bold uppercase tracking-widest">{plan.perDay}</p>
               )}
             </div>
-          </button>
+          </motion.button>
         ))}
       </div>
 
       <div className="mt-12 flex justify-center px-4">
         <Button size="lg" className="bg-primary hover:opacity-90 px-12 py-8 text-xl font-black h-auto w-full max-w-md shadow-[0_0_30px_rgba(139,47,232,0.4)] group">
-          COMPRAR AGORA — {currentPlan?.price || "R$ 22,00"}
+          COMPRAR AGORA — {currentPlan?.price || "R$ 29,90"}
           <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
         </Button>
       </div>
