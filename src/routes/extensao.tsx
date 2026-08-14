@@ -141,20 +141,20 @@ function ExtensionPage() {
             
             {/* Left Column - Animated Window */}
             <div 
-              className="flex-1 relative flex justify-center items-center lg:-mr-16 z-0"
+              className="flex-1 relative flex justify-center items-center lg:-mr-32 z-0"
             >
               {/* Strong soft purple glow blur behind the browser mockup */}
               <div 
-                className="absolute w-[120%] h-[120%] bg-primary/20 rounded-full blur-[100px] pointer-events-none translate-x-10"
+                className="absolute w-[140%] h-[140%] bg-primary/25 rounded-full blur-[120px] pointer-events-none translate-x-10"
               />
 
               {/* Layered Depth: Floating secondary panel peeking out */}
               <div 
-                className="absolute w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/10 bg-primary/5 -z-10 -translate-x-6 -translate-y-6 blur-[1px] opacity-40"
+                className="absolute w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-primary/10 -z-10 -translate-x-10 -translate-y-10 blur-[1px] opacity-60"
               />
               
               <div 
-                className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8),0_0_40px_rgba(139,47,232,0.2)] flex flex-col group/browser"
+                className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,1),0_0_60px_rgba(139,47,232,0.3)] flex flex-col group/browser"
               >
 
                 {/* Decorative particles */}
@@ -298,7 +298,7 @@ function ExtensionPage() {
             <div className="flex-1 space-y-10 lg:text-right lg:flex lg:flex-col lg:items-end z-10 lg:pl-8">
               {/* Badges & Label */}
               <div className="space-y-6 pt-8 sm:pt-0">
-                <span className="text-primary font-mono text-[10px] tracking-[0.4em] uppercase block">— PARA LOVABLE —</span>
+                
                 
                 <div className="flex flex-wrap lg:justify-end gap-3">
                   <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 shadow-[0_0_15px_rgba(139,47,232,0.15)]">
