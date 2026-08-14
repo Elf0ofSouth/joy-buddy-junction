@@ -79,6 +79,147 @@ function FeatureCard({ icon, title, description, offset = 0, isWide = false }: {
   );
 }
 
+function BrowserMockupContent({ animState }: { animState: AnimationState }) {
+  return (
+    <div className="flex flex-col h-full w-full aspect-[4/3]">
+      {/* Decorative particles */}
+      <div className="absolute top-1/4 -left-4 w-2 h-2 bg-primary/40 rounded-full blur-[2px] animate-pulse" />
+      <div className="absolute bottom-1/4 -right-2 w-1.5 h-1.5 bg-primary/30 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: '1s' }} />
+
+      {/* Browser Top Bar */}
+      <div className="h-10 bg-black/40 border-b border-primary/10 flex items-center px-4 gap-2">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+        </div>
+        <div className="flex-1 flex justify-center">
+          <div className="bg-black/40 border border-primary/10 rounded-md px-4 py-0.5 text-[9px] font-mono text-muted-foreground tracking-widest">
+            lovable.dev
+          </div>
+        </div>
+        <div className="w-12" />
+      </div>
+
+      {/* Window Content */}
+      <div className="flex-1 p-6 flex flex-col gap-6 relative">
+        <div className="flex justify-between items-end">
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">CRÉDITOS</span>
+          <motion.div className="font-mono text-sm font-bold flex items-center gap-1">
+            {animState === "limited" && <span className="text-[#ff5f56]">0 / 5</span>}
+            {animState === "activating" && <span className="text-primary">0 / 5</span>}
+            {animState === "unlocked" && (
+              <motion.span 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                className="text-primary flex items-center gap-1"
+              >
+                <InfinityIcon className="w-4 h-4" /> ilimitado
+              </motion.span>
+            )}
+          </motion.div>
+        </div>
+
+        {/* Progress Bar Container */}
+        <div className="h-3 w-full bg-black/40 rounded-full border border-primary/10 overflow-hidden relative">
+          <motion.div 
+            initial={{ width: "5%" }}
+            animate={{ 
+              width: animState === "limited" ? "5%" : "100%",
+              backgroundColor: animState === "limited" ? "#ff5f56" : "#8B2FE8",
+            }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="h-full relative"
+          >
+            {animState === "activating" && (
+              <motion.div 
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+              />
+            )}
+            {animState === "unlocked" && (
+              <div className="absolute inset-0 shadow-[0_0_20px_rgba(139,47,232,0.8)]" />
+            )}
+          </motion.div>
+        </div>
+
+        {/* Status Message */}
+        <div className="h-8 flex items-center">
+          <AnimatePresence mode="wait">
+            {animState === "limited" && (
+              <motion.p 
+                key="limited"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="text-[#ff5f56] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
+              >
+                ⚠ Limite diário atingido. Volte amanhã.
+              </motion.p>
+            )}
+            {animState === "activating" && (
+              <motion.p 
+                key="activating"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="text-primary text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
+              >
+                <Loader2 className="w-3 h-3 animate-spin" />
+                ✨ Ativando licença Cipher...
+              </motion.p>
+            )}
+            {animState === "unlocked" && (
+              <motion.p 
+                key="unlocked"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="text-green-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
+              >
+                ✓ Créditos infinitos liberados nesta conta.
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Mock Input */}
+        <div className="space-y-4">
+          <div className="bg-black/40 border border-primary/10 rounded-xl p-3 flex items-center justify-between group">
+            <div className="flex items-center gap-3">
+              <div className="w-1.5 h-4 bg-primary animate-pulse" />
+              <TypingPlaceholder isActive={animState === "unlocked"} />
+            </div>
+            <Send className="w-4 h-4 text-muted-foreground" />
+          </div>
+
+          {/* Chips */}
+          <motion.div 
+            animate={{ opacity: animState === "unlocked" ? 1 : 0.3 }}
+            className="flex gap-2"
+          >
+            {[1, 2, 3].map((i) => (
+              <motion.div 
+                key={i}
+                animate={animState === "unlocked" ? {
+                  boxShadow: ["0 0 0px rgba(139,47,232,0)", "0 0 10px rgba(139,47,232,0.2)", "0 0 0px rgba(139,47,232,0)"]
+                } : {}}
+                transition={{ repeat: Infinity, duration: 2, delay: i * 0.3 }}
+                className="flex-1 h-6 bg-black/20 border border-primary/5 rounded-md" 
+              />
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 function ExtensionPage() {
   const [animState, setAnimState] = useState<AnimationState>("limited");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -137,214 +278,47 @@ function ExtensionPage() {
 
       <main className="relative z-10 pt-12 pb-24">
         <div className="container mx-auto px-4">
-          <motion.div {...fadeInUp} className="flex flex-col-reverse lg:flex-row gap-8 lg:items-center py-20 lg:py-32 relative">
+          <motion.div {...fadeInUp} className="flex flex-col gap-8 items-center text-center py-20 lg:py-32 relative max-w-4xl mx-auto">
             
-            {/* Left Column - Animated Window */}
-            <div 
-              className="flex-1 relative flex justify-center items-center lg:-mr-32 z-0"
-            >
-              {/* Strong soft purple glow blur behind the browser mockup */}
-              <div 
-                className="absolute w-[140%] h-[140%] bg-primary/25 rounded-full blur-[120px] pointer-events-none translate-x-10"
-              />
+            {/* Text Content */}
+            <div className="space-y-6 flex flex-col items-center">
+              <div className="flex flex-wrap justify-center gap-3">
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 shadow-[0_0_15px_rgba(139,47,232,0.15)]">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                  <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO EXCLUSIVA</span>
+                </div>
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.1)]">
+                  <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">ATÉ 70% OFF</span>
+                </div>
+              </div>
 
-              {/* Layered Depth: Floating secondary panel peeking out */}
-              <div 
-                className="absolute w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-primary/10 -z-10 -translate-x-10 -translate-y-10 blur-[1px] opacity-60"
-              />
+              <h1 className="text-5xl md:text-8xl font-black text-white leading-[0.9] tracking-tight uppercase font-display">
+                CRIE SEM <br />
+                <span className="text-primary italic-text-shadow drop-shadow-[0_0_10px_rgba(139,47,232,0.5)]">FRONTEIRAS</span>
+              </h1>
               
-              <div 
-                className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-[0_60px_120px_-20px_rgba(0,0,0,1),0_0_60px_rgba(139,47,232,0.3)] flex flex-col group/browser"
-              >
+              <p className="text-muted-foreground text-base md:text-lg font-medium tracking-wide uppercase opacity-80 max-w-xl">
+                A extensão que remove o limite de prompts do Lovable. Construa, refaça e evolua seus projetos sem esperar o próximo ciclo.
+              </p>
 
-                {/* Decorative particles */}
-                <div className="absolute top-1/4 -left-4 w-2 h-2 bg-primary/40 rounded-full blur-[2px] animate-pulse" />
-                <div className="absolute bottom-1/4 -right-2 w-1.5 h-1.5 bg-primary/30 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: '1s' }} />
-
-                {/* Browser Top Bar */}
-                <div className="h-10 bg-black/40 border-b border-primary/10 flex items-center px-4 gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+              <div className="flex flex-col items-center gap-6 pt-4 w-full">
+                <div className="flex flex-wrap justify-center gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
+                    <Zap className="w-3 h-3 text-primary" />
+                    Liberado em segundos
                   </div>
-                  <div className="flex-1 flex justify-center">
-                    <div className="bg-black/40 border border-primary/10 rounded-md px-4 py-0.5 text-[9px] font-mono text-muted-foreground tracking-widest">
-                      lovable.dev
-                    </div>
-                  </div>
-                  <div className="w-12" />
-                </div>
-
-                {/* Window Content */}
-                <div className="flex-1 p-6 flex flex-col gap-6 relative">
-
-                  <div className="flex justify-between items-end">
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">CRÉDITOS</span>
-                    <motion.div className="font-mono text-sm font-bold flex items-center gap-1">
-                      {animState === "limited" && <span className="text-[#ff5f56]">0 / 5</span>}
-                      {animState === "activating" && <span className="text-primary">0 / 5</span>}
-                      {animState === "unlocked" && (
-                        <motion.span 
-                          initial={{ opacity: 0 }} 
-                          animate={{ opacity: 1 }} 
-                          className="text-primary flex items-center gap-1"
-                        >
-                          <InfinityIcon className="w-4 h-4" /> ilimitado
-                        </motion.span>
-                      )}
-                    </motion.div>
-                  </div>
-
-                  {/* Progress Bar Container */}
-                  <div className="h-3 w-full bg-black/40 rounded-full border border-primary/10 overflow-hidden relative">
-                    <motion.div 
-                      initial={{ width: "5%" }}
-                      animate={{ 
-                        width: animState === "limited" ? "5%" : "100%",
-                        backgroundColor: animState === "limited" ? "#ff5f56" : "#8B2FE8",
-                      }}
-                      transition={{ duration: 1.5, ease: "easeInOut" }}
-                      className="h-full relative"
-                    >
-                      {animState === "activating" && (
-                        <motion.div 
-                          animate={{ x: ["-100%", "200%"] }}
-                          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-                          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
-                        />
-                      )}
-                      {animState === "unlocked" && (
-                        <div className="absolute inset-0 shadow-[0_0_20px_rgba(139,47,232,0.8)]" />
-                      )}
-                    </motion.div>
-                  </div>
-
-                  {/* Status Message */}
-                  <div className="h-8 flex items-center">
-                    <AnimatePresence mode="wait">
-                      {animState === "limited" && (
-                        <motion.p 
-                          key="limited"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          className="text-[#ff5f56] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
-                        >
-                          ⚠ Limite diário atingido. Volte amanhã.
-                        </motion.p>
-                      )}
-                      {animState === "activating" && (
-                        <motion.p 
-                          key="activating"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          className="text-primary text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
-                        >
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                          ✨ Ativando licença Cipher...
-                        </motion.p>
-                      )}
-                      {animState === "unlocked" && (
-                        <motion.p 
-                          key="unlocked"
-                          initial={{ opacity: 0, y: 5 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: -5 }}
-                          className="text-green-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
-                        >
-                          ✓ Créditos infinitos liberados nesta conta.
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                  {/* Spacer */}
-                  <div className="flex-1" />
-
-                  {/* Mock Input */}
-                  <div className="space-y-4">
-                    <div className="bg-black/40 border border-primary/10 rounded-xl p-3 flex items-center justify-between group">
-                      <div className="flex items-center gap-3">
-                        <div className="w-1.5 h-4 bg-primary animate-pulse" />
-                        <TypingPlaceholder isActive={animState === "unlocked"} />
-                      </div>
-                      <Send className="w-4 h-4 text-muted-foreground" />
-                    </div>
-
-                    {/* Chips */}
-                    <motion.div 
-                      animate={{ opacity: animState === "unlocked" ? 1 : 0.3 }}
-                      className="flex gap-2"
-                    >
-                      {[1, 2, 3].map((i) => (
-                        <motion.div 
-                          key={i}
-                          animate={animState === "unlocked" ? {
-                            boxShadow: ["0 0 0px rgba(139,47,232,0)", "0 0 10px rgba(139,47,232,0.2)", "0 0 0px rgba(139,47,232,0)"]
-                          } : {}}
-                          transition={{ repeat: Infinity, duration: 2, delay: i * 0.3 }}
-                          className="flex-1 h-6 bg-black/20 border border-primary/5 rounded-md" 
-                        />
-                      ))}
-                    </motion.div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
+                    <Lock className="w-3 h-3 text-primary" />
+                    Pagamento via PIX
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Right Column - Text Content */}
-            <div className="flex-1 space-y-10 lg:text-right lg:flex lg:flex-col lg:items-end z-10 lg:pl-8">
-              {/* Badges & Label */}
-              <div className="space-y-6 pt-8 sm:pt-0">
-                
-                
-                <div className="flex flex-wrap lg:justify-end gap-3">
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 shadow-[0_0_15px_rgba(139,47,232,0.15)]">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                    <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO EXCLUSIVA</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.1)]">
-                    <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">ATÉ 70% OFF</span>
-                  </div>
-                </div>
-              </div>
+                <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-8 text-xl font-black h-auto w-full sm:w-auto shadow-[0_0_30px_rgba(139,47,232,0.4)] group uppercase">
+                  DESBLOQUEAR AGORA
+                  <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                </Button>
 
-              {/* Heading */}
-              <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.85] tracking-tight uppercase font-display">
-                  CRIE SEM <br />
-                  <span className="text-primary italic-text-shadow drop-shadow-[0_0_10px_rgba(139,47,232,0.5)]">FRONTEIRAS</span>
-                </h1>
-                <p className="text-muted-foreground text-base md:text-lg font-medium tracking-wide uppercase opacity-80 max-w-xl lg:ml-auto">
-                  A extensão que remove o limite de prompts do Lovable. Construa, refaça e evolua seus projetos sem esperar o próximo ciclo.
-                </p>
-              </div>
-
-              {/* CTA Section */}
-              <div className="space-y-8 pt-4 w-full">
-                <div className="flex flex-col lg:items-end items-start gap-6">
-                  {/* Info Pills above CTA */}
-                  <div className="flex flex-wrap lg:justify-end gap-3">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
-                      <Zap className="w-3 h-3 text-primary" />
-                      Liberado em segundos
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
-                      <Lock className="w-3 h-3 text-primary" />
-                      Pagamento via PIX
-                    </div>
-                  </div>
-
-                  <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-8 text-xl font-black h-auto w-full sm:w-auto shadow-[0_0_30px_rgba(139,47,232,0.4)] group uppercase">
-                    DESBLOQUEAR AGORA
-                    <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
-
-                {/* Compatibility Row as Pills */}
-                <div className="flex flex-wrap lg:justify-end gap-3 pt-4">
+                <div className="flex flex-wrap justify-center gap-3 pt-4">
                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
                     <Globe className="w-3 h-3 text-primary/60" />
                     Chrome · Edge · Brave · Opera
@@ -359,6 +333,44 @@ function ExtensionPage() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Browser Mockup Area - 3D Stack */}
+            <div className="relative w-full max-w-[500px] mt-16 group/stack perspective-1000">
+               {/* Back Layer */}
+               <motion.div 
+                 initial={{ opacity: 0, y: 50 }}
+                 whileInView={{ opacity: 0.3, y: 0 }}
+                 viewport={{ once: true }}
+                 animate={{ y: [0, -10, 0] }}
+                 transition={{ y: { repeat: Infinity, duration: 4, ease: "easeInOut" }, duration: 0.8 }}
+                 className="absolute inset-0 bg-[#0a0514] border border-primary/10 rounded-2xl blur-[4px] -translate-x-8 -translate-y-8 -z-20"
+               />
+
+               {/* Middle Layer */}
+               <motion.div 
+                 initial={{ opacity: 0, y: 50 }}
+                 whileInView={{ opacity: 0.6, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.2, duration: 0.8 }}
+                 animate={{ y: [0, -5, 0] }}
+                 className="absolute inset-0 bg-[#0a0514] border border-primary/20 rounded-2xl blur-[2px] -translate-x-4 -translate-y-4 -z-10 opacity-60"
+               >
+                 <div className="opacity-20 pointer-events-none">
+                    <BrowserMockupContent animState={animState} />
+                 </div>
+               </motion.div>
+
+               {/* Front Layer */}
+               <motion.div 
+                 initial={{ opacity: 0, y: 50 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.4, duration: 0.8 }}
+                 className="relative bg-[#0a0514] border border-primary/20 rounded-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,1),0_0_60px_rgba(139,47,232,0.3)] overflow-hidden"
+               >
+                 <BrowserMockupContent animState={animState} />
+               </motion.div>
             </div>
           </motion.div>
 
