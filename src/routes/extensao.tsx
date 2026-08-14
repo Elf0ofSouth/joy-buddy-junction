@@ -291,7 +291,7 @@ function ExtensionPage() {
                     </motion.div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             {/* Right Column - Text Content */}
