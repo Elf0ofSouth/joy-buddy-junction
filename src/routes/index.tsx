@@ -159,11 +159,11 @@ function Index() {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-black mb-6 chrome-text max-w-4xl mx-auto leading-tight">
-            A REDE DE ELITE PARA <span className="text-primary">CIPHERS</span>
+          <h1 className="text-5xl md:text-7xl font-black mb-6 chrome-text max-w-4xl mx-auto leading-tight uppercase">
+            TECNOLOGIA E EXCLUSIVIDADE <br /> EM <span className="text-primary">UM SÓ LUGAR</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed uppercase tracking-wider">
-            Vantagens premium no Discord, itens digitais exclusivos e entrega automatizada. Bem-vindo ao sindicato.
+            De vantagens no Discord a produtos digitais premium, com entrega automática e segurança em cada compra.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
