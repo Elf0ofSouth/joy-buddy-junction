@@ -77,12 +77,12 @@ function Index() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground snap-container">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden">
       {/* Decorative Background */}
       <div className="fixed inset-0 circuit-bg pointer-events-none z-0" />
       
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-primary/20">
+      <nav className="sticky top-0 z-50 glass border-b border-primary/20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 group cursor-pointer">
             <img src={logoAsset.url} alt="Cipher Project" className="w-8 h-8 object-contain" />
@@ -106,9 +106,9 @@ function Index() {
         </div>
       </nav>
 
-      <main className="relative z-10 w-full">
+      <main className="relative z-10">
         {/* Hero Section */}
-        <motion.section {...fadeInUp} className="snap-section px-4 text-center">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 pt-20 pb-32 text-center relative">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/10 rounded-full blur-[120px] -z-10 animate-pulse" />
           
           <div className="mb-8 flex justify-center">
@@ -138,7 +138,7 @@ function Index() {
         </motion.section>
 
         {/* Featured Products Carousel */}
-        <motion.section {...fadeInUp} id="featured" className="snap-section px-4 border-t border-primary/10">
+        <motion.section {...fadeInUp} id="featured" className="container mx-auto px-4 py-32 border-t border-primary/10">
           <div className="flex justify-between items-center mb-12">
             <div>
               <h2 className="text-3xl font-bold chrome-text">EM DESTAQUE</h2>
@@ -201,7 +201,7 @@ function Index() {
         </motion.section>
 
         {/* Leaderboard Section */}
-        <motion.section {...fadeInUp} id="leaderboard" className="snap-section px-4 border-t border-primary/10">
+        <motion.section {...fadeInUp} id="leaderboard" className="container mx-auto px-4 py-32 border-t border-primary/10 relative">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black chrome-text mb-2 italic">TOP CIPHERS</h2>
@@ -306,7 +306,7 @@ function Index() {
 
 
         {/* Why Choose Cipher Section */}
-        <motion.section {...fadeInUp} className="snap-section px-4 relative overflow-hidden">
+        <motion.section {...fadeInUp} className="container mx-auto px-4 py-32 relative overflow-hidden">
           <div className="absolute inset-0 circuit-bg pointer-events-none opacity-5" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10" />
           
@@ -466,8 +466,8 @@ function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="snap-section px-4 border-t border-primary/20 bg-black relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 py-12">
+      <footer className="border-t border-primary/20 bg-black py-12 relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-2">
               <img src={logoAsset.url} alt="Cipher Project" className="w-6 h-6 object-contain" />
