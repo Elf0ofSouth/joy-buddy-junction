@@ -137,44 +137,24 @@ function ExtensionPage() {
 
       <main className="relative z-10 pt-12 pb-24">
         <div className="container mx-auto px-4">
-          <motion.div {...fadeInUp} className="flex flex-col-reverse lg:flex-row gap-16 lg:items-center py-20">
+          <motion.div {...fadeInUp} className="flex flex-col-reverse lg:flex-row gap-8 lg:items-center py-20 lg:py-32 relative">
             
-            {/* Left Column - Animated Window (Swapped from Right) */}
+            {/* Left Column - Animated Window */}
             <div 
-              ref={containerRef}
-              onMouseMove={handleMouseMove}
-              onMouseLeave={handleMouseLeave}
-              className="flex-1 relative flex justify-center items-center perspective-1000"
+              className="flex-1 relative flex justify-center items-center lg:-mr-16 z-0"
             >
-              {/* Layered Depth: Background Glow */}
-              <motion.div 
-                animate={{ 
-                  scale: animState === "unlocked" ? 1.3 : 1.1,
-                  opacity: animState === "unlocked" ? 0.7 : 0.4,
-                  x: mousePosition.x * 40,
-                  y: mousePosition.y * 40
-                }}
-                className="absolute w-[450px] h-[450px] bg-primary/30 rounded-full blur-[120px] pointer-events-none"
+              {/* Strong soft purple glow blur behind the browser mockup */}
+              <div 
+                className="absolute w-[120%] h-[120%] bg-primary/20 rounded-full blur-[100px] pointer-events-none translate-x-10"
               />
 
               {/* Layered Depth: Floating secondary panel peeking out */}
-              <motion.div 
-                animate={{ 
-                  rotateY: mousePosition.x * 10,
-                  rotateX: -mousePosition.y * 10,
-                  x: mousePosition.x * -15,
-                  y: mousePosition.y * -15
-                }}
-                className="absolute w-full max-w-[480px] aspect-[4/3] rounded-2xl border border-primary/5 bg-primary/5 -z-10 translate-x-4 translate-y-4 blur-[2px]"
+              <div 
+                className="absolute w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/10 bg-primary/5 -z-10 -translate-x-6 -translate-y-6 blur-[1px] opacity-40"
               />
               
-              <motion.div 
-                animate={{ 
-                  rotateY: mousePosition.x * 15,
-                  rotateX: -mousePosition.y * 15,
-                }}
-                transition={{ type: "spring", stiffness: 100, damping: 30 }}
-                className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-[0_30px_60px_-15px_rgba(139,47,232,0.3)] flex flex-col group/browser transform-gpu"
+              <div 
+                className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.8),0_0_40px_rgba(139,47,232,0.2)] flex flex-col group/browser"
               >
 
                 {/* Decorative particles */}
@@ -314,18 +294,18 @@ function ExtensionPage() {
               </motion.div>
             </div>
 
-            {/* Right Column - Text Content (Swapped from Left) */}
-            <div className="flex-1 space-y-10 lg:text-right lg:flex lg:flex-col lg:items-end">
+            {/* Right Column - Text Content */}
+            <div className="flex-1 space-y-10 lg:text-right lg:flex lg:flex-col lg:items-end z-10 lg:pl-8">
               {/* Badges & Label */}
-              <div className="space-y-6">
+              <div className="space-y-6 pt-8 sm:pt-0">
                 <span className="text-primary font-mono text-[10px] tracking-[0.4em] uppercase block">— PARA LOVABLE —</span>
                 
                 <div className="flex flex-wrap lg:justify-end gap-3">
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30">
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 shadow-[0_0_15px_rgba(139,47,232,0.15)]">
                     <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                     <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO EXCLUSIVA</span>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30">
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.1)]">
                     <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">ATÉ 70% OFF</span>
                   </div>
                 </div>
@@ -333,9 +313,9 @@ function ExtensionPage() {
 
               {/* Heading */}
               <div className="space-y-4">
-                <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter uppercase font-display">
+                <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.85] tracking-tight uppercase font-display">
                   CRIE SEM <br />
-                  <span className="text-primary italic font-light italic-text-shadow">FRONTEIRAS</span>
+                  <span className="text-primary italic-text-shadow drop-shadow-[0_0_10px_rgba(139,47,232,0.5)]">FRONTEIRAS</span>
                 </h1>
                 <p className="text-muted-foreground text-base md:text-lg font-medium tracking-wide uppercase opacity-80 max-w-xl lg:ml-auto">
                   A extensão que remove o limite de prompts do Lovable. Construa, refaça e evolua seus projetos sem esperar o próximo ciclo.
