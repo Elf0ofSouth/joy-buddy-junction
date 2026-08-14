@@ -466,8 +466,8 @@ function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-primary/20 bg-black py-12 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10">
+      <footer className="snap-section px-4 border-t border-primary/20 bg-black relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10 py-12">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-2">
               <img src={logoAsset.url} alt="Cipher Project" className="w-6 h-6 object-contain" />

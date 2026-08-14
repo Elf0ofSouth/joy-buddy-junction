@@ -452,7 +452,7 @@ function ExtensionPage() {
           </motion.section>
 
           {/* SECTION 2: ENTREGA INSTANTÂNEA */}
-          <motion.section {...fadeInUp} className="mt-32 pt-24 relative overflow-hidden">
+          <motion.section {...fadeInUp} className="snap-section mt-32 border-t border-primary/10 relative overflow-hidden">
             {/* Ambient animated background */}
             <div className="absolute inset-0 -z-10 pointer-events-none">
               <div className="absolute top-1/4 left-1/4 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
@@ -561,7 +561,7 @@ function ExtensionPage() {
           <PricingSection />
 
           {/* SECTION 4: TUDO QUE ESTÁ INCLUÍDO + REQUISITOS */}
-          <motion.section {...fadeInUp} className="mt-32 pt-24 mb-12 relative">
+          <motion.section {...fadeInUp} className="snap-section mt-32 border-t border-primary/10 relative">
             {/* Ambient Background Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
             
@@ -648,8 +648,8 @@ function ExtensionPage() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-primary/20 bg-black py-12">
-        <div className="container mx-auto px-4 text-center">
+      <footer className="snap-section border-t border-primary/20 bg-black">
+        <div className="container mx-auto px-4 text-center py-12">
           <div className="flex justify-center items-center gap-2 mb-6">
             <img src={logoAsset.url} alt="Cipher Project" className="w-5 h-5 object-contain" />
             <span className="font-bold text-sm chrome-text uppercase tracking-widest">CIPHER PROJECT</span>
@@ -729,7 +729,7 @@ function PricingSection() {
   const currentPlan = plans.find(p => p.id === selectedPlan) || plans[1];
 
   return (
-    <section className="mt-32 pt-24 border-t border-primary/10">
+    <section className="snap-section mt-32 border-t border-primary/10">
       <div className="text-center mb-16">
         <span className="text-primary font-mono text-[10px] tracking-[0.3em] uppercase mb-4 block">— ESCOLHA A DURAÇÃO —</span>
         <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter mb-4">
