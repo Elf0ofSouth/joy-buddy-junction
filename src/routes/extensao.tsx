@@ -59,6 +59,26 @@ const staggerItem = {
   transition: { duration: 0.6, ease: "easeOut" as const }
 };
 
+function FeatureCard({ icon, title, description, offset = 0, isWide = false }: { icon: React.ReactNode, title: string, description: string, offset?: number, isWide?: boolean }) {
+  return (
+    <motion.div 
+      variants={staggerItem}
+      style={{ y: offset }}
+      whileHover={{ y: offset - 5, transition: { duration: 0.3 } }}
+      className={`p-6 rounded-2xl border border-primary/10 bg-white/[0.02] backdrop-blur-md relative overflow-hidden group hover:border-primary/30 transition-all duration-300 ${isWide ? 'flex items-center gap-6' : 'flex flex-col'}`}
+    >
+      <div className={`relative w-10 h-10 rounded-full bg-black/40 border border-primary/20 flex items-center justify-center text-primary mb-4 shrink-0 shadow-[0_0_15px_rgba(139,47,232,0.1)] group-hover:shadow-[0_0_20px_rgba(139,47,232,0.3)] transition-all duration-500`}>
+        <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse" style={{ animationDuration: '3s' }} />
+        {icon}
+      </div>
+      <div>
+        <h4 className="font-black text-white uppercase tracking-tighter text-sm mb-2 group-hover:text-primary transition-colors">{title}</h4>
+        <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest leading-relaxed opacity-70 group-hover:opacity-100 transition-opacity">{description}</p>
+      </div>
+    </motion.div>
+  );
+}
+
 function ExtensionPage() {
   const [animState, setAnimState] = useState<AnimationState>("limited");
 
@@ -408,92 +428,109 @@ function ExtensionPage() {
             </div>
           </motion.section>
 
-          {/* SECTION 2: TUDO CHEGA NA HORA */}
-          <motion.section {...fadeInUp} className="mt-32 pt-24">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter mb-4">
-                Tudo chega <span className="text-primary italic font-light italic-text-shadow">na hora</span>
+          {/* SECTION 2: ENTREGA INSTANTÂNEA */}
+          <motion.section {...fadeInUp} className="mt-32 pt-24 relative overflow-hidden">
+            {/* Ambient animated background */}
+            <div className="absolute inset-0 -z-10 pointer-events-none">
+              <div className="absolute top-1/4 left-1/4 w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+              <div className="absolute bottom-1/4 right-1/4 w-[40%] h-[40%] bg-primary/3 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+            </div>
+
+            <div className="text-center mb-16 px-4">
+              <h2 className="text-4xl md:text-6xl font-black text-white leading-tight uppercase tracking-tighter mb-4">
+                ENTREGA <span className="text-primary italic font-light italic-text-shadow">INSTANTÂNEA</span>
               </h2>
               <p className="text-muted-foreground text-sm font-bold uppercase tracking-wider max-w-2xl mx-auto opacity-80">
-                Sem espera e sem conversa no chat. Assim que o pagamento é confirmado, tudo aparece na página do seu pedido.
+                Sem fila, sem espera no chat. Assim que o pagamento é aprovado, sua licença já está disponível na sua conta.
               </p>
             </div>
 
-            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-12 gap-4 max-w-6xl mx-auto">
-              {/* Large Featured Card (Left) */}
-              <motion.div variants={staggerItem} className="md:col-span-5 p-8 rounded-2xl border border-primary/10 bg-white/5 glass relative overflow-hidden group">
-                <div className="absolute -bottom-8 -right-8 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity duration-700">
-                  <InfinityIcon className="w-64 h-64 text-primary" />
+            <motion.div 
+              variants={staggerContainer} 
+              initial="initial" 
+              whileInView="whileInView" 
+              viewport={{ once: true, amount: 0.2 }} 
+              className="grid grid-cols-1 md:grid-cols-12 gap-6 max-w-6xl mx-auto px-4"
+            >
+              {/* Large Featured Card (Prompts Sem Limite) */}
+              <motion.div 
+                variants={staggerItem} 
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                className="md:col-span-6 lg:col-span-5 p-10 rounded-3xl border border-primary/10 bg-white/[0.03] backdrop-blur-xl relative overflow-hidden group hover:border-primary/40 transition-colors duration-500"
+              >
+                {/* Infinity pulse background */}
+                <div className="absolute -bottom-12 -right-12 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-1000">
+                  <motion.div
+                    animate={{ 
+                      scale: [1, 1.1, 1],
+                      opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                  >
+                    <InfinityIcon className="w-80 h-80 text-primary" />
+                  </motion.div>
                 </div>
                 
-                <div className="relative z-10 flex flex-col h-full">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-8">
-                    <InfinityIcon className="w-6 h-6" />
+                <div className="relative z-10 flex flex-col h-full justify-between">
+                  <div>
+                    <div className="relative w-16 h-16 mb-8 group-hover:scale-110 transition-transform duration-500">
+                      <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse" />
+                      <div className="relative w-full h-full rounded-full bg-black/40 border border-primary/30 flex items-center justify-center text-primary shadow-[0_0_20px_rgba(139,47,232,0.2)]">
+                        <InfinityIcon className="w-8 h-8" />
+                      </div>
+                    </div>
+                    <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-6 group-hover:text-primary transition-colors">PROMPTS SEM LIMITE</h3>
+                    <p className="text-muted-foreground text-sm font-bold uppercase tracking-widest leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity">
+                      Esqueça o contador de créditos. Gere, ajuste e refaça quantas vezes for preciso até o projeto ficar exatamente como você imaginou.
+                    </p>
                   </div>
-                  <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-4">Prompts ilimitados</h3>
-                  <p className="text-muted-foreground text-sm font-bold uppercase tracking-widest leading-relaxed">
-                    O contador de créditos deixa de existir. Você gera, refaz e itera quantas vezes precisar até o projeto ficar do jeito certo.
-                  </p>
                 </div>
               </motion.div>
 
-              {/* Right Column Grid */}
-              <div className="md:col-span-7 flex flex-col gap-4">
-                {/* Top Full Width */}
-                <motion.div variants={staggerItem} className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
-                  <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-white uppercase tracking-wider text-sm">Funciona no seu navegador</h4>
-                    <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Chrome, Edge, Brave e Opera. O tutorial cobre a instalação em cada um.</p>
-                  </div>
-                </motion.div>
+              {/* Smaller Cards Grid */}
+              <div className="md:col-span-6 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {/* Card 1: Navegador */}
+                <FeatureCard 
+                  icon={<Globe className="w-5 h-5" />}
+                  title="COMPATÍVEL COM SEU NAVEGADOR"
+                  description="Funciona em Chrome, Edge, Brave e Opera, com tutorial de instalação para cada um."
+                  offset={0}
+                />
+                
+                {/* Card 2: Ativação */}
+                <FeatureCard 
+                  icon={<Zap className="w-5 h-5" />}
+                  title="ATIVAÇÃO EM MINUTOS"
+                  description="Do pagamento à liberação, tudo em poucos minutos."
+                  offset={20}
+                />
 
-                {/* Bottom Row Side-by-Side */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <motion.div variants={staggerItem} className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                      <Clock className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white uppercase tracking-wider text-sm flex items-baseline gap-1">
-                        &lt;5<span className="text-[10px]">min</span>
-                      </h4>
-                      <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Do PIX ao uso.</p>
-                    </div>
-                  </motion.div>
-                  <motion.div variants={staggerItem} className="p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                      <ShieldCheck className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white uppercase tracking-wider text-sm">Licença só sua</h4>
-                      <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Chave exclusiva, reservada na compra.</p>
-                    </div>
-                  </motion.div>
+                {/* Card 3: Licença */}
+                <FeatureCard 
+                  icon={<ShieldCheck className="w-5 h-5" />}
+                  title="LICENÇA EXCLUSIVA"
+                  description="Chave única, gerada só para você no momento da compra."
+                  offset={0}
+                />
+
+                {/* Card 4: Permanente */}
+                <FeatureCard 
+                  icon={<Download className="w-5 h-5" />}
+                  title="ACESSO PERMANENTE"
+                  description="O arquivo fica disponível na página do seu pedido para sempre, sem prazo de expiração."
+                  offset={20}
+                />
+
+                {/* Card 5: Guia (Full width in its row if grid is sm:grid-cols-2) */}
+                <div className="sm:col-span-2">
+                  <FeatureCard 
+                    icon={<FileCode className="w-5 h-5" />}
+                    title="GUIA COMPLETO DE INSTALAÇÃO"
+                    description="Passo a passo simples, sem necessidade de conhecimento técnico, com suporte no Discord se precisar."
+                    isWide
+                  />
                 </div>
               </div>
-
-              {/* Bottom Row Side-by-Side (Full Row below) */}
-              <motion.div variants={staggerItem} className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
-                <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                  <Download className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-white uppercase tracking-wider text-sm">Download liberado na hora</h4>
-                  <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">O arquivo da extensão fica salvo na página do pedido, com acesso permanente.</p>
-                </div>
-              </motion.div>
-              <motion.div variants={staggerItem} className="md:col-span-6 p-6 rounded-2xl border border-primary/10 bg-white/5 glass flex items-center gap-6">
-                <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shrink-0">
-                  <FileCode className="w-5 h-5" />
-                </div>
-                <div>
-                  <h4 className="font-bold text-white uppercase tracking-wider text-sm">Tutorial passo a passo</h4>
-                  <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Do zero até funcionando, sem precisar de conhecimento técnico. Com suporte no Discord se travar.</p>
-                </div>
-              </motion.div>
             </motion.div>
           </motion.section>
 
