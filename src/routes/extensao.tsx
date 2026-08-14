@@ -79,6 +79,147 @@ function FeatureCard({ icon, title, description, offset = 0, isWide = false }: {
   );
 }
 
+function BrowserMockupContent({ animState }: { animState: AnimationState }) {
+  return (
+    <div className="flex flex-col h-full w-full aspect-[4/3]">
+      {/* Decorative particles */}
+      <div className="absolute top-1/4 -left-4 w-2 h-2 bg-primary/40 rounded-full blur-[2px] animate-pulse" />
+      <div className="absolute bottom-1/4 -right-2 w-1.5 h-1.5 bg-primary/30 rounded-full blur-[1px] animate-pulse" style={{ animationDelay: '1s' }} />
+
+      {/* Browser Top Bar */}
+      <div className="h-10 bg-black/40 border-b border-primary/10 flex items-center px-4 gap-2">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
+          <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
+        </div>
+        <div className="flex-1 flex justify-center">
+          <div className="bg-black/40 border border-primary/10 rounded-md px-4 py-0.5 text-[9px] font-mono text-muted-foreground tracking-widest">
+            lovable.dev
+          </div>
+        </div>
+        <div className="w-12" />
+      </div>
+
+      {/* Window Content */}
+      <div className="flex-1 p-6 flex flex-col gap-6 relative">
+        <div className="flex justify-between items-end">
+          <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">CRÉDITOS</span>
+          <motion.div className="font-mono text-sm font-bold flex items-center gap-1">
+            {animState === "limited" && <span className="text-[#ff5f56]">0 / 5</span>}
+            {animState === "activating" && <span className="text-primary">0 / 5</span>}
+            {animState === "unlocked" && (
+              <motion.span 
+                initial={{ opacity: 0 }} 
+                animate={{ opacity: 1 }} 
+                className="text-primary flex items-center gap-1"
+              >
+                <InfinityIcon className="w-4 h-4" /> ilimitado
+              </motion.span>
+            )}
+          </motion.div>
+        </div>
+
+        {/* Progress Bar Container */}
+        <div className="h-3 w-full bg-black/40 rounded-full border border-primary/10 overflow-hidden relative">
+          <motion.div 
+            initial={{ width: "5%" }}
+            animate={{ 
+              width: animState === "limited" ? "5%" : "100%",
+              backgroundColor: animState === "limited" ? "#ff5f56" : "#8B2FE8",
+            }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="h-full relative"
+          >
+            {animState === "activating" && (
+              <motion.div 
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent"
+              />
+            )}
+            {animState === "unlocked" && (
+              <div className="absolute inset-0 shadow-[0_0_20px_rgba(139,47,232,0.8)]" />
+            )}
+          </motion.div>
+        </div>
+
+        {/* Status Message */}
+        <div className="h-8 flex items-center">
+          <AnimatePresence mode="wait">
+            {animState === "limited" && (
+              <motion.p 
+                key="limited"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="text-[#ff5f56] text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
+              >
+                ⚠ Limite diário atingido. Volte amanhã.
+              </motion.p>
+            )}
+            {animState === "activating" && (
+              <motion.p 
+                key="activating"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="text-primary text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
+              >
+                <Loader2 className="w-3 h-3 animate-spin" />
+                ✨ Ativando licença Cipher...
+              </motion.p>
+            )}
+            {animState === "unlocked" && (
+              <motion.p 
+                key="unlocked"
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                className="text-green-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2"
+              >
+                ✓ Créditos infinitos liberados nesta conta.
+              </motion.p>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Mock Input */}
+        <div className="space-y-4">
+          <div className="bg-black/40 border border-primary/10 rounded-xl p-3 flex items-center justify-between group">
+            <div className="flex items-center gap-3">
+              <div className="w-1.5 h-4 bg-primary animate-pulse" />
+              <TypingPlaceholder isActive={animState === "unlocked"} />
+            </div>
+            <Send className="w-4 h-4 text-muted-foreground" />
+          </div>
+
+          {/* Chips */}
+          <motion.div 
+            animate={{ opacity: animState === "unlocked" ? 1 : 0.3 }}
+            className="flex gap-2"
+          >
+            {[1, 2, 3].map((i) => (
+              <motion.div 
+                key={i}
+                animate={animState === "unlocked" ? {
+                  boxShadow: ["0 0 0px rgba(139,47,232,0)", "0 0 10px rgba(139,47,232,0.2)", "0 0 0px rgba(139,47,232,0)"]
+                } : {}}
+                transition={{ repeat: Infinity, duration: 2, delay: i * 0.3 }}
+                className="flex-1 h-6 bg-black/20 border border-primary/5 rounded-md" 
+              />
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 function ExtensionPage() {
   const [animState, setAnimState] = useState<AnimationState>("limited");
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
