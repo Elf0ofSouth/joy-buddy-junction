@@ -538,18 +538,32 @@ function ExtensionPage() {
           <PricingSection />
 
           {/* SECTION 4: TUDO QUE ESTÁ INCLUÍDO + REQUISITOS */}
-          <motion.section {...fadeInUp} className="mt-32 pt-24 mb-12">
-            <motion.div variants={staggerContainer} initial="initial" whileInView="whileInView" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <motion.section {...fadeInUp} className="mt-32 pt-24 mb-12 relative">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+            
+            <motion.div 
+              variants={staggerContainer} 
+              initial="initial" 
+              whileInView="whileInView" 
+              viewport={{ once: true, amount: 0.2 }} 
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto px-4"
+            >
               {/* Left Card: Incluído */}
-              <motion.div variants={staggerItem} className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+              <motion.div 
+                variants={staggerItem}
+                whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.3 } }}
+                className="p-8 rounded-3xl border border-primary/10 bg-white/[0.03] backdrop-blur-xl flex flex-col gap-10 hover:border-primary/30 transition-all duration-500 group"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                    <Sparkles className="w-5 h-5" />
+                  <div className="relative w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary overflow-hidden">
+                    <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse" style={{ animationDuration: '4s' }} />
+                    <Sparkles className="w-6 h-6 drop-shadow-[0_0_8px_rgba(139,47,232,0.4)]" />
                   </div>
-                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">Tudo que está incluído</h3>
+                  <h3 className="text-xl font-black text-white uppercase tracking-tighter group-hover:text-primary transition-colors">Tudo que está incluído</h3>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4">
+                <motion.div variants={staggerContainer} className="flex flex-col gap-6">
                   {[
                     "Créditos ilimitados para gerar projetos",
                     "Instalação simples via navegador",
@@ -558,35 +572,52 @@ function ExtensionPage() {
                     "Funciona em Chrome, Edge, Brave e Opera",
                     "Suporte no Discord durante toda a vigência do plano"
                   ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{item}</span>
-                    </div>
+                    <motion.div 
+                      key={i} 
+                      variants={staggerItem}
+                      className="flex items-start gap-4 group/item"
+                    >
+                      <div className="relative mt-0.5 shrink-0">
+                        <CheckCircle2 className="w-5 h-5 text-primary shadow-[0_0_10px_rgba(139,47,232,0.3)] group-hover/item:scale-110 transition-transform" />
+                      </div>
+                      <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed group-hover/item:text-white transition-colors">{item}</span>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </motion.div>
 
               {/* Right Card: Requisitos */}
-              <motion.div variants={staggerItem} className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
+              <motion.div 
+                variants={staggerItem}
+                whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.3 } }}
+                className="p-8 rounded-3xl border border-primary/10 bg-white/[0.03] backdrop-blur-xl flex flex-col gap-10 hover:border-primary/30 transition-all duration-500 group"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                    <Shield className="w-5 h-5" />
+                  <div className="relative w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary overflow-hidden">
+                    <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse" style={{ animationDuration: '4s', animationDelay: '2s' }} />
+                    <Shield className="w-6 h-6 drop-shadow-[0_0_8px_rgba(139,47,232,0.4)]" />
                   </div>
-                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">Requisitos</h3>
+                  <h3 className="text-xl font-black text-white uppercase tracking-tighter group-hover:text-primary transition-colors">Requisitos</h3>
                 </div>
 
-                <div className="space-y-4">
+                <motion.div variants={staggerContainer} className="flex flex-col gap-6">
                   {[
                     "Navegador baseado em Chromium (Chrome, Edge, Brave ou Opera)",
                     "Computador com Windows, macOS ou Linux",
                     "Conta ativa na plataforma Lovable"
                   ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 shrink-0" />
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{item}</span>
-                    </div>
+                    <motion.div 
+                      key={i} 
+                      variants={staggerItem}
+                      className="flex items-start gap-4 group/item"
+                    >
+                      <div className="relative mt-0.5 shrink-0">
+                        <CheckCircle2 className="w-5 h-5 text-primary shadow-[0_0_10px_rgba(139,47,232,0.3)] group-hover/item:scale-110 transition-transform" />
+                      </div>
+                      <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest leading-relaxed group-hover/item:text-white transition-colors">{item}</span>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </motion.section>
