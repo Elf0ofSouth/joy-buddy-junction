@@ -137,68 +137,6 @@ function Index() {
           </div>
         </motion.section>
 
-        {/* Featured Products Carousel */}
-        <motion.section {...fadeInUp} id="featured" className="container mx-auto px-4 py-32 border-t border-primary/10">
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <h2 className="text-3xl font-bold chrome-text">EM DESTAQUE</h2>
-              <p className="text-primary uppercase tracking-[0.2em] text-sm">Arsenal de Elite</p>
-            </div>
-            <a href="#store" className="text-sm font-bold text-primary hover:underline flex items-center gap-2">
-              VER TODOS <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-
-          <Carousel
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            className="w-full"
-          >
-            <CarouselContent className="-ml-4">
-              {featuredProducts.map((product) => (
-                <CarouselItem key={product.id} className="pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                  <div className="group relative aspect-[16/9] overflow-hidden rounded-xl border border-primary/20 hover:neon-border transition-all duration-500 scale-100 hover:scale-[1.02]">
-                    {/* Background Image/Placeholder */}
-                    <div 
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                      style={{ 
-                        backgroundImage: `url(${product.image_url || 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?q=80&w=800&auto=format&fit=crop'})`,
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-                    
-                    {/* Purchase Count Badge */}
-                    <div className="absolute top-4 right-4">
-                      <Badge className="bg-black/60 backdrop-blur-md border-primary/40 text-primary font-mono">
-                        {product.purchase_count || 128} COMPRAS
-                      </Badge>
-                    </div>
-
-                    {/* Product Name */}
-                    <div className="absolute bottom-6 left-6">
-                      <h3 className="text-2xl font-black chrome-text drop-shadow-lg uppercase italic">{product.name}</h3>
-                    </div>
-
-                    {/* Buy Now Floating Button */}
-                    <div className="absolute bottom-6 right-6 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                      <Button size="sm" className="bg-primary hover:opacity-90 font-bold rounded-full px-6 shadow-[0_0_15px_rgba(139,47,232,0.6)]">
-                        COMPRAR AGORA
-                      </Button>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="flex justify-end gap-2 mt-8 md:hidden">
-              <CarouselPrevious className="static translate-y-0" />
-              <CarouselNext className="static translate-y-0" />
-            </div>
-            <CarouselPrevious className="hidden md:flex -left-12 border-primary/20" />
-            <CarouselNext className="hidden md:flex -right-12 border-primary/20" />
-          </Carousel>
-        </motion.section>
 
         {/* Leaderboard Section */}
         <motion.section {...fadeInUp} id="leaderboard" className="container mx-auto px-4 py-32 border-t border-primary/10 relative">
