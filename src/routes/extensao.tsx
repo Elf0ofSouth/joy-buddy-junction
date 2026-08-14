@@ -311,7 +311,6 @@ function ExtensionPage() {
                     </motion.div>
                   </div>
                 </div>
-              </div>
               </motion.div>
             </div>
 
