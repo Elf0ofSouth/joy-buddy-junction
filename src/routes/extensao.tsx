@@ -226,22 +226,6 @@ function ExtensionPage() {
 
                 {/* Window Content */}
                 <div className="flex-1 p-6 flex flex-col gap-6 relative">
-                  {/* Cipher Badge */}
-                  <AnimatePresence>
-                    {(animState === "activating" || animState === "unlocked") && (
-                      <motion.div 
-                        initial={{ opacity: 0, scale: 0.8, x: 20 }}
-                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.8, x: 20 }}
-                        className="absolute top-4 right-4 z-20"
-                      >
-                        <div className="bg-primary text-white font-black text-[10px] px-2 py-0.5 rounded shadow-[0_0_15px_rgba(139,47,232,0.8)] flex items-center gap-1">
-                          <Zap className="w-3 h-3 fill-white" />
-                          CP
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
 
                   <div className="flex justify-between items-end">
                     <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">CRÉDITOS</span>
