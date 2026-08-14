@@ -204,22 +204,6 @@ function ExtensionPage() {
               />
               
               <div className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-2xl flex flex-col group/browser">
-                {/* Decorative Badge near window */}
-                <motion.div 
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 1, duration: 1 }}
-                  className="absolute -top-4 -right-4 z-30 pointer-events-none"
-                >
-                  <div className="bg-black/80 backdrop-blur-md border border-primary/40 p-3 rounded-xl shadow-[0_0_20px_rgba(139,47,232,0.3)] flex items-center gap-2">
-                    <img src={logoAsset.url} alt="" className="w-6 h-6 object-contain" />
-                    <div className="flex flex-col">
-                      <span className="text-[8px] font-black text-primary leading-none uppercase tracking-[0.2em]">CIPHER</span>
-                      <span className="text-[6px] font-bold text-white/40 leading-none uppercase tracking-widest">PROJECT</span>
-                    </div>
-                  </div>
-                </motion.div>
 
                 {/* Decorative particles */}
                 <div className="absolute top-1/4 -left-4 w-2 h-2 bg-primary/40 rounded-full blur-[2px] animate-pulse" />
