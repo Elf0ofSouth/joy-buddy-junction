@@ -332,70 +332,75 @@ function ExtensionPage() {
           </motion.div>
 
           {/* SECTION 1: COMPARISON */}
-          <motion.section {...fadeInUp} className="mt-32 pt-24 border-t border-primary/10">
-            <div className="text-center mb-16">
+          <motion.section {...fadeInUp} className="mt-32 pt-24 border-t border-primary/10 relative">
+            {/* Ambient Background Element */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
+            
+            <div className="text-center mb-24">
               <div className="flex items-center justify-center gap-4 mb-4">
-                <div className="h-[1px] w-8 bg-primary/30" />
-                <span className="text-primary font-mono text-[10px] tracking-[0.3em] uppercase">— A DIFERENÇA —</span>
-                <div className="h-[1px] w-8 bg-primary/30" />
+                <span className="text-primary font-mono text-[10px] tracking-[0.3em] uppercase">— O ANTES E DEPOIS —</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-black text-white leading-tight uppercase tracking-tighter">
-                O mesmo Lovable. <span className="text-primary italic font-light italic-text-shadow">Sem o freio.</span>
+              <h2 className="text-4xl md:text-6xl font-black text-white leading-tight uppercase tracking-tighter">
+                O MESMO LOVABLE. <span className="text-primary italic font-light italic-text-shadow block sm:inline">SEM LIMITES.</span>
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              {/* Left Card - Sem a extensão */}
-              <div className="p-8 rounded-2xl border border-primary/10 bg-white/5 glass flex flex-col gap-8">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-red-500/10 text-red-500">
-                    <X className="w-6 h-6" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-32 max-w-6xl mx-auto px-4">
+              {/* Left Column - Sem a extensão */}
+              <div className="flex flex-col gap-10">
+                <div className="flex items-start gap-6">
+                  <div className="text-red-500/60 drop-shadow-[0_0_10px_rgba(239,68,68,0.3)]">
+                    <X className="w-10 h-10" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-white uppercase tracking-wider">Sem a extensão</h3>
-                    <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Como é hoje</p>
+                  <div className="space-y-1">
+                    <h3 className="text-2xl font-black text-white/90 uppercase tracking-tighter">Sem a extensão</h3>
+                    <p className="text-muted-foreground text-xs font-bold uppercase tracking-[0.2em] opacity-60">Do jeito que você já conhece</p>
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-0">
                   {[
-                    "Trava no limite de prompts do plano gratuito",
-                    "Espera o ciclo renovar para continuar",
-                    "Mensalidade em dólar para liberar mais créditos",
-                    "Projeto parado no meio do desenvolvimento"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <X className="w-4 h-4 text-red-500/50 mt-0.5" />
-                      <span className="text-xs font-bold text-muted-foreground uppercase tracking-wide">{item}</span>
+                    "Prompts limitados travam seu fluxo de criação",
+                    "Depende da renovação mensal para continuar",
+                    "Custo em dólar aumenta conforme o uso",
+                    "Ideias interrompidas por falta de créditos"
+                  ].map((item, i, arr) => (
+                    <div key={i}>
+                      <div className="flex items-center gap-4 py-6 group">
+                        <X className="w-4 h-4 text-red-500/40 shrink-0" />
+                        <span className="text-sm font-bold text-muted-foreground uppercase tracking-wider group-hover:text-muted-foreground/80 transition-colors">{item}</span>
+                      </div>
+                      {i < arr.length - 1 && <div className="h-[1px] w-full bg-primary/5" />}
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Right Card - Com a extensão */}
-              <div className="p-8 rounded-2xl border border-primary/40 bg-primary/5 glass shadow-[0_0_40px_rgba(139,47,232,0.1)] flex flex-col gap-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl -z-10" />
-                
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-primary/20 text-primary shadow-[0_0_20px_rgba(139,47,232,0.4)]">
-                    <InfinityIcon className="w-6 h-6" />
+              {/* Right Column - Com a extensão */}
+              <div className="flex flex-col gap-10">
+                <div className="flex items-start gap-6">
+                  <div className="text-primary drop-shadow-[0_0_15px_rgba(139,47,232,0.5)]">
+                    <InfinityIcon className="w-10 h-10" />
                   </div>
-                  <div>
-                    <h3 className="font-bold text-white uppercase tracking-wider">Com a extensão</h3>
-                    <p className="text-primary text-[10px] font-bold uppercase tracking-widest">A partir de hoje</p>
+                  <div className="space-y-1">
+                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter">Com a extensão Cipher</h3>
+                    <p className="text-primary text-xs font-bold uppercase tracking-[0.2em]">A partir de agora</p>
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-0">
                   {[
-                    "Prompts ilimitados, sem contador para acompanhar",
-                    "Continua construindo na hora, sem esperar nada",
-                    "Pagamento único em real, via PIX",
-                    "Projeto entregue no seu ritmo, do início ao fim"
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-4 h-4 text-primary mt-0.5" />
-                      <span className="text-xs font-bold text-white uppercase tracking-wide">{item}</span>
+                    "Prompts sem limite, sem contador, sem pressa",
+                    "Ative uma vez e use quando quiser",
+                    "Pagamento único via PIX, sem mensalidade",
+                    "Do início ao fim, sem interrupções no meio do caminho"
+                  ].map((item, i, arr) => (
+                    <div key={i}>
+                      <div className="flex items-center gap-4 py-6 group">
+                        <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                        <span className="text-sm font-black text-white uppercase tracking-wider group-hover:text-primary transition-colors drop-shadow-[0_0_8px_rgba(139,47,232,0.2)]">{item}</span>
+                      </div>
+                      {i < arr.length - 1 && <div className="h-[1px] w-full bg-primary/10" />}
                     </div>
                   ))}
                 </div>
