@@ -60,10 +60,8 @@ function Index() {
       
       if (products) setFeaturedProducts(products);
 
-      // Fetch leaderboard data (mocking for now if no orders exist, but setup for real query)
-      // Real query would be a RPC or a complex join/group by
-      // For now, let's use some high-quality mock data that looks real
-      setTopCiphers([
+      // Fetch leaderboard data (mock data used as fallback if db is empty)
+      const mockCiphers = [
         { id: 1, username: 'ZeroDay', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=ZeroDay', total_spent: 1250.00 },
         { id: 2, username: 'NetRunner', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=NetRunner', total_spent: 980.50 },
         { id: 3, username: 'GhostShell', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=GhostShell', total_spent: 750.00 },
@@ -71,7 +69,48 @@ function Index() {
         { id: 5, username: 'CryptoMancer', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=CryptoMancer', total_spent: 320.00 },
         { id: 6, username: 'LogicBomb', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=LogicBomb', total_spent: 280.00 },
         { id: 7, username: 'DataVoid', avatar_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=DataVoid', total_spent: 150.00 },
-      ]);
+      ];
+
+      try {
+        // Attempt to fetch real orders if they exist
+        const { data: realOrders } = await supabase
+          .from('orders')
+          .select(`
+            total_price,
+            user_id,
+            user_profiles (
+              username,
+              avatar_url
+            )
+          `);
+        
+        if (realOrders && realOrders.length > 0) {
+          // Aggregate spent amount per user
+          const aggregated = realOrders.reduce((acc: any, order: any) => {
+            const userId = order.user_id;
+            if (!userId || !order.user_profiles) return acc;
+            
+            if (!acc[userId]) {
+              acc[userId] = {
+                id: userId,
+                username: order.user_profiles.username,
+                avatar_url: order.user_profiles.avatar_url,
+                total_spent: 0
+              };
+            }
+            acc[userId].total_spent += order.total_price;
+            return acc;
+          }, {});
+
+          const sorted = Object.values(aggregated).sort((a: any, b: any) => b.total_spent - a.total_spent);
+          setTopCiphers(sorted.length > 0 ? sorted : mockCiphers);
+        } else {
+          setTopCiphers(mockCiphers);
+        }
+      } catch (e) {
+        console.error("Error fetching leaderboard:", e);
+        setTopCiphers(mockCiphers);
+      }
     }
     fetchData();
   }, []);
