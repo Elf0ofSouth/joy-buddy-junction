@@ -81,6 +81,8 @@ function FeatureCard({ icon, title, description, offset = 0, isWide = false }: {
 
 function ExtensionPage() {
   const [animState, setAnimState] = useState<AnimationState>("limited");
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const sequence = async () => {
@@ -97,6 +99,18 @@ function ExtensionPage() {
     };
     sequence();
   }, []);
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMousePosition({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePosition({ x: 0, y: 0 });
+  };
 
   return (
     <div className="min-h-screen bg-black text-foreground selection:bg-primary selection:text-primary-foreground overflow-x-hidden font-sans">
@@ -123,87 +137,45 @@ function ExtensionPage() {
 
       <main className="relative z-10 pt-12 pb-24">
         <div className="container mx-auto px-4">
-          <motion.div {...fadeInUp} className="flex flex-col lg:flex-row gap-16 lg:items-center py-20">
+          <motion.div {...fadeInUp} className="flex flex-col-reverse lg:flex-row gap-16 lg:items-center py-20">
             
-            {/* Left Column */}
-            <div className="flex-1 space-y-10">
-              {/* Badges & Label */}
-              <div className="space-y-6">
-                <span className="text-primary font-mono text-[10px] tracking-[0.4em] uppercase block">— PARA LOVABLE —</span>
-                
-                <div className="flex flex-wrap gap-3">
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                    <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO EXCLUSIVA</span>
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30">
-                    <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">ATÉ 70% OFF</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Heading */}
-              <div className="space-y-4">
-                <h1 className="text-6xl md:text-8xl font-black text-white leading-[0.85] tracking-tighter uppercase">
-                  CRIE SEM <br />
-                  <span className="text-primary italic font-light italic-text-shadow">FRONTEIRAS</span>
-                </h1>
-                <p className="text-muted-foreground text-lg md:text-xl font-medium tracking-wide uppercase opacity-80 max-w-xl">
-                  A extensão que remove o limite de prompts do Lovable. Construa, refaça e evolua seus projetos sem esperar o próximo ciclo.
-                </p>
-              </div>
-
-              {/* CTA Section */}
-              <div className="space-y-8 pt-4">
-                <div className="flex flex-col items-start gap-6">
-                  {/* Info Pills above CTA */}
-                  <div className="flex flex-wrap gap-3">
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
-                      <Zap className="w-3 h-3 text-primary" />
-                      Liberado em segundos
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
-                      <Lock className="w-3 h-3 text-primary" />
-                      Pagamento via PIX
-                    </div>
-                  </div>
-
-                  <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-8 text-xl font-black h-auto w-full sm:w-auto shadow-[0_0_30px_rgba(139,47,232,0.4)] group uppercase">
-                    DESBLOQUEAR AGORA
-                    <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
-
-                {/* Compatibility Row as Pills */}
-                <div className="flex flex-wrap gap-3 pt-4">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
-                    <Globe className="w-3 h-3 text-primary/60" />
-                    Chrome · Edge · Brave · Opera
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
-                    <CheckCircle2 className="w-3 h-3 text-primary/60" />
-                    Chave de licença exclusiva
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
-                    <FileText className="w-3 h-3 text-primary/60" />
-                    Tutorial completo incluído
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column - Animated Window */}
-            <div className="flex-1 relative flex justify-center items-center">
-              {/* Ambient Glow */}
+            {/* Left Column - Animated Window (Swapped from Right) */}
+            <div 
+              ref={containerRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="flex-1 relative flex justify-center items-center perspective-1000"
+            >
+              {/* Layered Depth: Background Glow */}
               <motion.div 
                 animate={{ 
-                  scale: animState === "unlocked" ? 1.2 : 1,
-                  opacity: animState === "unlocked" ? 0.6 : 0.3
+                  scale: animState === "unlocked" ? 1.3 : 1.1,
+                  opacity: animState === "unlocked" ? 0.7 : 0.4,
+                  x: mousePosition.x * 40,
+                  y: mousePosition.y * 40
                 }}
-                className="absolute w-[400px] h-[400px] bg-primary/20 rounded-full blur-[100px] pointer-events-none"
+                className="absolute w-[450px] h-[450px] bg-primary/30 rounded-full blur-[120px] pointer-events-none"
+              />
+
+              {/* Layered Depth: Floating secondary panel peeking out */}
+              <motion.div 
+                animate={{ 
+                  rotateY: mousePosition.x * 10,
+                  rotateX: -mousePosition.y * 10,
+                  x: mousePosition.x * -15,
+                  y: mousePosition.y * -15
+                }}
+                className="absolute w-full max-w-[480px] aspect-[4/3] rounded-2xl border border-primary/5 bg-primary/5 -z-10 translate-x-4 translate-y-4 blur-[2px]"
               />
               
-              <div className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-2xl flex flex-col group/browser">
+              <motion.div 
+                animate={{ 
+                  rotateY: mousePosition.x * 15,
+                  rotateX: -mousePosition.y * 15,
+                }}
+                transition={{ type: "spring", stiffness: 100, damping: 30 }}
+                className="relative w-full max-w-[500px] aspect-[4/3] rounded-2xl border border-primary/20 bg-[#0a0514] overflow-hidden shadow-[0_30px_60px_-15px_rgba(139,47,232,0.3)] flex flex-col group/browser transform-gpu"
+              >
 
                 {/* Decorative particles */}
                 <div className="absolute top-1/4 -left-4 w-2 h-2 bg-primary/40 rounded-full blur-[2px] animate-pulse" />
@@ -337,6 +309,73 @@ function ExtensionPage() {
                         />
                       ))}
                     </motion.div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Right Column - Text Content (Swapped from Left) */}
+            <div className="flex-1 space-y-10 lg:text-right lg:flex lg:flex-col lg:items-end">
+              {/* Badges & Label */}
+              <div className="space-y-6">
+                <span className="text-primary font-mono text-[10px] tracking-[0.4em] uppercase block">— PARA LOVABLE —</span>
+                
+                <div className="flex flex-wrap lg:justify-end gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30">
+                    <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+                    <span className="text-[10px] font-bold tracking-widest text-primary uppercase">EXTENSÃO EXCLUSIVA</span>
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30">
+                    <span className="text-[10px] font-bold tracking-widest text-green-500 uppercase">ATÉ 70% OFF</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Heading */}
+              <div className="space-y-4">
+                <h1 className="text-5xl md:text-7xl font-black text-white leading-[0.9] tracking-tighter uppercase font-display">
+                  CRIE SEM <br />
+                  <span className="text-primary italic font-light italic-text-shadow">FRONTEIRAS</span>
+                </h1>
+                <p className="text-muted-foreground text-base md:text-lg font-medium tracking-wide uppercase opacity-80 max-w-xl lg:ml-auto">
+                  A extensão que remove o limite de prompts do Lovable. Construa, refaça e evolua seus projetos sem esperar o próximo ciclo.
+                </p>
+              </div>
+
+              {/* CTA Section */}
+              <div className="space-y-8 pt-4 w-full">
+                <div className="flex flex-col lg:items-end items-start gap-6">
+                  {/* Info Pills above CTA */}
+                  <div className="flex flex-wrap lg:justify-end gap-3">
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
+                      <Zap className="w-3 h-3 text-primary" />
+                      Liberado em segundos
+                    </div>
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/[0.03] border border-white/10 text-muted-foreground text-[10px] font-bold uppercase tracking-wider">
+                      <Lock className="w-3 h-3 text-primary" />
+                      Pagamento via PIX
+                    </div>
+                  </div>
+
+                  <Button size="lg" className="bg-primary hover:opacity-90 px-10 py-8 text-xl font-black h-auto w-full sm:w-auto shadow-[0_0_30px_rgba(139,47,232,0.4)] group uppercase">
+                    DESBLOQUEAR AGORA
+                    <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
+
+                {/* Compatibility Row as Pills */}
+                <div className="flex flex-wrap lg:justify-end gap-3 pt-4">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
+                    <Globe className="w-3 h-3 text-primary/60" />
+                    Chrome · Edge · Brave · Opera
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
+                    <CheckCircle2 className="w-3 h-3 text-primary/60" />
+                    Chave de licença exclusiva
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-muted-foreground text-[9px] font-bold uppercase tracking-[0.15em]">
+                    <FileText className="w-3 h-3 text-primary/60" />
+                    Tutorial completo incluído
                   </div>
                 </div>
               </div>
@@ -642,42 +681,6 @@ function ExtensionPage() {
   );
 }
 
-function TypingPlaceholder({ isActive }: { isActive: boolean }) {
-  const [text, setText] = useState("");
-  const fullText = "crie um dashboard de vendas com gráficos";
-  
-  useEffect(() => {
-    if (!isActive) {
-      setText("");
-      return;
-    }
-
-    let i = 0;
-    const interval = setInterval(() => {
-      setText(fullText.slice(0, i));
-      i++;
-      if (i > fullText.length) {
-        clearInterval(interval);
-      }
-    }, 50);
-
-    return () => clearInterval(interval);
-  }, [isActive]);
-
-  return (
-    <span className="text-xs font-medium text-muted-foreground">
-      {isActive ? (
-        text || "Peça qualquer coisa..."
-      ) : (
-        "Peça qualquer coisa..."
-      )}
-      {isActive && text.length < fullText.length && (
-        <span className="animate-pulse">|</span>
-      )}
-    </span>
-  );
-}
-
 function PricingSection() {
   const [selectedPlan, setSelectedPlan] = useState<number>(2); // Default to 30 DIAS (id: 2)
   const [hoveredPlan, setHoveredPlan] = useState<number | null>(null);
@@ -812,6 +815,42 @@ function PricingSection() {
         </Button>
       </div>
     </section>
+  );
+}
+
+function TypingPlaceholder({ isActive }: { isActive: boolean }) {
+  const [text, setText] = useState("");
+  const fullText = "crie um dashboard de vendas com gráficos";
+  
+  useEffect(() => {
+    if (!isActive) {
+      setText("");
+      return;
+    }
+
+    let i = 0;
+    const interval = setInterval(() => {
+      setText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) {
+        clearInterval(interval);
+      }
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [isActive]);
+
+  return (
+    <span className="text-xs font-medium text-muted-foreground">
+      {isActive ? (
+        text || "Peça qualquer coisa..."
+      ) : (
+        "Peça qualquer coisa..."
+      )}
+      {isActive && text.length < fullText.length && (
+        <span className="animate-pulse">|</span>
+      )}
+    </span>
   );
 }
 
