@@ -82,7 +82,7 @@ function Index() {
       <div className="fixed inset-0 circuit-bg pointer-events-none z-0" />
       
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 glass border-b border-primary/20">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-primary/20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 group cursor-pointer">
             <img src={logoAsset.url} alt="Cipher Project" className="w-8 h-8 object-contain" />

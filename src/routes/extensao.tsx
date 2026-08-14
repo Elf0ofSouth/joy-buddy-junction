@@ -260,7 +260,7 @@ function ExtensionPage() {
       <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none" />
       
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 glass border-b border-primary/20">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-primary/20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group cursor-pointer">
             <ChevronLeft className="w-5 h-5 text-primary group-hover:-translate-x-1 transition-transform" />
