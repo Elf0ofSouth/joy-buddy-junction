@@ -12,6 +12,8 @@ import logoAsset from "@/assets/cipher-logo.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 import characterAsset from "@/assets/cipher-character-new.png.asset.json";
 import extensionIconAsset from "@/assets/extension-icon.png.asset.json";
+import { UserNav } from "@/components/auth/user-nav";
+
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -139,10 +141,9 @@ function Index() {
                 <ShoppingCart className="w-4 h-4 mr-2" />
                 Carrinho (0)
              </Button>
-             <Button size="sm" className="bg-primary hover:opacity-90 transition-all font-bold">
-               ENTRAR
-             </Button>
+             <UserNav />
           </div>
+
         </div>
       </nav>
 
