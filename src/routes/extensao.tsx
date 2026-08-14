@@ -59,6 +59,26 @@ const staggerItem = {
   transition: { duration: 0.6, ease: "easeOut" as const }
 };
 
+function FeatureCard({ icon, title, description, offset = 0, isWide = false }: { icon: React.ReactNode, title: string, description: string, offset?: number, isWide?: boolean }) {
+  return (
+    <motion.div 
+      variants={staggerItem}
+      style={{ y: offset }}
+      whileHover={{ y: offset - 5, transition: { duration: 0.3 } }}
+      className={`p-6 rounded-2xl border border-primary/10 bg-white/[0.02] backdrop-blur-md relative overflow-hidden group hover:border-primary/30 transition-all duration-300 ${isWide ? 'flex items-center gap-6' : 'flex flex-col'}`}
+    >
+      <div className={`relative w-10 h-10 rounded-full bg-black/40 border border-primary/20 flex items-center justify-center text-primary mb-4 shrink-0 shadow-[0_0_15px_rgba(139,47,232,0.1)] group-hover:shadow-[0_0_20px_rgba(139,47,232,0.3)] transition-all duration-500`}>
+        <div className="absolute inset-0 bg-primary/10 rounded-full animate-pulse" style={{ animationDuration: '3s' }} />
+        {icon}
+      </div>
+      <div>
+        <h4 className="font-black text-white uppercase tracking-tighter text-sm mb-2 group-hover:text-primary transition-colors">{title}</h4>
+        <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest leading-relaxed opacity-70 group-hover:opacity-100 transition-opacity">{description}</p>
+      </div>
+    </motion.div>
+  );
+}
+
 function ExtensionPage() {
   const [animState, setAnimState] = useState<AnimationState>("limited");
 
