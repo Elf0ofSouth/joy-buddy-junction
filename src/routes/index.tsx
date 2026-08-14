@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ShoppingCart, Shield, Zap, Tag, MessageSquare, ChevronDown, ExternalLink, ArrowRight, Trophy, Crown, Medal, Gift, Lock, Star, Dices, Headset, Puzzle, Infinity, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -129,7 +129,8 @@ function Index() {
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest text-muted-foreground">
-            <a href="#store" className="hover:text-primary transition-colors">Loja</a>
+            <Link to="/loja" className="hover:text-primary transition-colors cursor-pointer">Loja</Link>
+            <a href="#leaderboard" className="hover:text-primary transition-colors">Elite</a>
             <a href="#how-it-works" className="hover:text-primary transition-colors">Processo</a>
           </div>
 
@@ -167,7 +168,7 @@ function Index() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-primary hover:opacity-90 px-8 py-6 text-lg font-bold h-auto min-w-[200px] shadow-[0_0_20px_rgba(139,47,232,0.4)]">
+            <Button size="lg" className="bg-primary hover:opacity-90 px-8 py-6 text-lg font-bold h-auto min-w-[200px] shadow-[0_0_20px_rgba(139,47,232,0.4)]" onClick={() => window.location.href = '/loja'}>
               VER LOJA <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button size="lg" variant="outline" className="border-primary/40 hover:neon-border px-8 py-6 text-lg font-bold h-auto min-w-[200px] glass">
