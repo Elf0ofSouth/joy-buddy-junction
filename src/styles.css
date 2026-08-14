@@ -115,6 +115,38 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    overflow-x: hidden;
+  }
+
+  /* Full-page Scroll Snap Utilities */
+  .snap-container {
+    height: 100vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Only apply snap on desktop/larger viewports */
+  @media (min-width: 1024px) {
+    .snap-section {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .snap-container {
+      height: auto;
+      overflow-y: visible;
+      scroll-snap-type: none;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
