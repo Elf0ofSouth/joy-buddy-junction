@@ -310,7 +310,7 @@ function Store() {
                         <div className="flex flex-col">
                           <span className="text-[9px] text-primary font-black uppercase tracking-[0.2em] italic mb-1">Preço // CIPHER</span>
                           <span className="text-2xl font-black text-white italic tracking-tighter group-hover:chrome-text transition-all">
-                            R$ {product.price_brl.toFixed(2)}
+                            R$ {(product.price_brl || 0).toFixed(2)}
                           </span>
                         </div>
                         <Button className="bg-primary hover:opacity-90 shadow-[0_0_20px_rgba(139,47,232,0.4)] rounded-2xl px-5 h-12 group-hover:scale-105 transition-all text-[10px] font-black uppercase tracking-widest italic border-none text-white">
