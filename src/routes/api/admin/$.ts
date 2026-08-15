@@ -41,8 +41,8 @@ async function handle(request: Request, splat: string): Promise<Response> {
 
   // ---------------- Gerar keys em lote ----------------
   if (route === "keys/generate" && method === "POST") {
-    const b = await readBody(request);
-    const plan = String(b.plan ?? "");
+    const b = await readBody(request) as Record<string, unknown>;
+    const plan = String(b["plan"] ?? "");
     if (!PLANS[plan]) {
       return json(
         { error: "invalid_plan", message: `Plano desconhecido: ${plan}`, plans: Object.keys(PLANS) },
@@ -50,15 +50,15 @@ async function handle(request: Request, splat: string): Promise<Response> {
       );
     }
 
-    const quantity = Math.min(Math.max(parseInt(String(b.quantity ?? "1"), 10) || 1, 1), 500);
+    const quantity = Math.min(Math.max(parseInt(String(b["quantity"] ?? "1"), 10) || 1, 1), 500);
     const def = PLANS[plan];
     const maxDevices = Math.min(
-      Math.max(parseInt(String(b.max_devices ?? ""), 10) || def.maxDevices, 1),
+      Math.max(parseInt(String(b["max_devices"] ?? ""), 10) || (def?.maxDevices ?? 1), 1),
       10,
     );
-    const batch = String(b.batch || `lote-${new Date().toISOString().slice(0, 10)}`).slice(0, 64);
-    const note = b.note ? String(b.note).slice(0, 256) : null;
-    const userName = b.user_name ? String(b.user_name).slice(0, 120) : null;
+    const batch = String(b["batch"] || `lote-${new Date().toISOString().slice(0, 10)}`).slice(0, 64);
+    const note = b["note"] ? String(b["note"]).slice(0, 256) : null;
+    const userName = b["user_name"] ? String(b["user_name"]).slice(0, 120) : null;
 
     const rows = Array.from({ length: quantity }, () => ({
       license_key: generateKey(plan),
@@ -189,9 +189,9 @@ async function handle(request: Request, splat: string): Promise<Response> {
 
     // Estende a validade. Aceita { days } ou { seconds }.
     if (action === "extend" && method === "POST") {
-      const b = await readBody(request);
+      const b = await readBody(request) as Record<string, unknown>;
       const seconds =
-        parseInt(String(b.seconds ?? ""), 10) || (parseFloat(String(b.days ?? "")) || 0) * 86400;
+        parseInt(String(b["seconds"] ?? ""), 10) || (parseFloat(String(b["days"] ?? "")) || 0) * 86400;
       if (!seconds) {
         return json({ error: "invalid_request", message: "Informe days ou seconds." }, 400);
       }
@@ -270,26 +270,26 @@ async function handle(request: Request, splat: string): Promise<Response> {
       return json({ ok: true, packages: data ?? [] });
     }
     if (method === "POST") {
-      const b = await readBody(request);
-      if (!b.id || !b.name || !b.plan) {
+      const b = await readBody(request) as Record<string, unknown>;
+      if (!b["id"] || !b["name"] || !b["plan"]) {
         return json({ error: "invalid_request", message: "id, name e plan são obrigatórios." }, 400);
       }
       const { error } = await sb.from(T.packages).upsert(
         {
-          id: String(b.id),
-          name: String(b.name),
-          description: b.description ? String(b.description) : null,
-          price: Number(b.price) || 0,
-          currency: String(b.currency ?? "BRL"),
-          plan: String(b.plan),
-          checkout_url: b.checkout_url ? String(b.checkout_url) : null,
-          is_active: b.is_active !== false,
-          sort_order: parseInt(String(b.sort_order ?? "0"), 10) || 0,
+          id: String(b["id"]),
+          name: String(b["name"]),
+          description: b["description"] ? String(b["description"]) : null,
+          price: Number(b["price"]) || 0,
+          currency: String(b["currency"] ?? "BRL"),
+          plan: String(b["plan"]),
+          checkout_url: b["checkout_url"] ? String(b["checkout_url"]) : null,
+          is_active: b["is_active"] !== false,
+          sort_order: parseInt(String(b["sort_order"] ?? "0"), 10) || 0,
         },
         { onConflict: "id" },
       );
       if (error) throw new Error(error.message);
-      return json({ ok: true, id: b.id });
+      return json({ ok: true, id: b["id"] });
     }
   }
 

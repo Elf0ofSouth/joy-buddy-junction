@@ -47,12 +47,15 @@ export const Route = createFileRoute("/api/license/$action")({
 
           if (action === "plans") {
             return json(
-              Object.entries(PLANS).map(([id, p]) => ({
-                id,
-                label: p.label,
-                seconds: p.seconds,
-                max_devices: p.maxDevices,
-              })),
+              Object.entries(PLANS).map(([id, p]) => {
+                const plan = p as any;
+                return {
+                  id,
+                  label: plan?.label ?? "Desconhecido",
+                  seconds: plan?.seconds ?? 0,
+                  max_devices: plan?.maxDevices ?? 1,
+                };
+              }),
             );
           }
 
@@ -75,11 +78,11 @@ export const Route = createFileRoute("/api/license/$action")({
             return json({ error: "not_found", message: `Rota desconhecida: POST /api/license/${action}` }, 404);
           }
 
-          const body = await readBody(request);
+          const body = await readBody(request) as Record<string, unknown>;
           const result = await validateLicense(
             sb,
-            body.license_key ?? body.key,
-            body.device_id ?? body.deviceId,
+            body["license_key"] ?? body["key"],
+            body["device_id"] ?? body["deviceId"],
             requestMeta(request),
           );
 

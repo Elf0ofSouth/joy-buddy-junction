@@ -10,8 +10,16 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as ExtensaoRouteImport } from './routes/extensao'
 import { Route as LojaRouteImport } from './routes/loja'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminBannersRouteImport } from './routes/admin/banners'
+import { Route as AdminCarrinhosAbandonadosRouteImport } from './routes/admin/carrinhos-abandonados'
+import { Route as AdminEstoqueRouteImport } from './routes/admin/estoque'
+import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
+import { Route as AdminProdutosRouteImport } from './routes/admin/produtos'
+import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as ApiAdminSplatRouteImport } from './routes/api/admin/$'
 import { Route as ApiLicenseActionRouteImport } from './routes/api/license/$action'
@@ -20,6 +28,11 @@ import { Route as ApiServicesActionRouteImport } from './routes/api/services/$ac
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExtensaoRoute = ExtensaoRouteImport.update({
@@ -31,6 +44,42 @@ const LojaRoute = LojaRouteImport.update({
   id: '/loja',
   path: '/loja',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminBannersRoute = AdminBannersRouteImport.update({
+  id: '/banners',
+  path: '/banners',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminCarrinhosAbandonadosRoute =
+  AdminCarrinhosAbandonadosRouteImport.update({
+    id: '/carrinhos-abandonados',
+    path: '/carrinhos-abandonados',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
+const AdminEstoqueRoute = AdminEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminPedidosRoute = AdminPedidosRouteImport.update({
+  id: '/pedidos',
+  path: '/pedidos',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminProdutosRoute = AdminProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminUsuariosRoute = AdminUsuariosRouteImport.update({
+  id: '/usuarios',
+  path: '/usuarios',
+  getParentRoute: () => AdminRouteRoute,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
@@ -55,9 +104,17 @@ const ApiServicesActionRoute = ApiServicesActionRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/carrinhos-abandonados': typeof AdminCarrinhosAbandonadosRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/produtos': typeof AdminProdutosRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/admin/$': typeof ApiAdminSplatRoute
   '/api/license/$action': typeof ApiLicenseActionRoute
   '/api/services/$action': typeof ApiServicesActionRoute
@@ -66,7 +123,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/carrinhos-abandonados': typeof AdminCarrinhosAbandonadosRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/produtos': typeof AdminProdutosRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin': typeof AdminIndexRoute
   '/api/admin/$': typeof ApiAdminSplatRoute
   '/api/license/$action': typeof ApiLicenseActionRoute
   '/api/services/$action': typeof ApiServicesActionRoute
@@ -74,9 +138,17 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
+  '/admin/banners': typeof AdminBannersRoute
+  '/admin/carrinhos-abandonados': typeof AdminCarrinhosAbandonadosRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
+  '/admin/pedidos': typeof AdminPedidosRoute
+  '/admin/produtos': typeof AdminProdutosRoute
+  '/admin/usuarios': typeof AdminUsuariosRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/admin/$': typeof ApiAdminSplatRoute
   '/api/license/$action': typeof ApiLicenseActionRoute
   '/api/services/$action': typeof ApiServicesActionRoute
@@ -85,9 +157,17 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/extensao'
     | '/loja'
+    | '/admin/banners'
+    | '/admin/carrinhos-abandonados'
+    | '/admin/estoque'
+    | '/admin/pedidos'
+    | '/admin/produtos'
+    | '/admin/usuarios'
     | '/auth/callback'
+    | '/admin/'
     | '/api/admin/$'
     | '/api/license/$action'
     | '/api/services/$action'
@@ -96,16 +176,31 @@ export interface FileRouteTypes {
     | '/'
     | '/extensao'
     | '/loja'
+    | '/admin/banners'
+    | '/admin/carrinhos-abandonados'
+    | '/admin/estoque'
+    | '/admin/pedidos'
+    | '/admin/produtos'
+    | '/admin/usuarios'
     | '/auth/callback'
+    | '/admin'
     | '/api/admin/$'
     | '/api/license/$action'
     | '/api/services/$action'
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/extensao'
     | '/loja'
+    | '/admin/banners'
+    | '/admin/carrinhos-abandonados'
+    | '/admin/estoque'
+    | '/admin/pedidos'
+    | '/admin/produtos'
+    | '/admin/usuarios'
     | '/auth/callback'
+    | '/admin/'
     | '/api/admin/$'
     | '/api/license/$action'
     | '/api/services/$action'
@@ -113,6 +208,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   ExtensaoRoute: typeof ExtensaoRoute
   LojaRoute: typeof LojaRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
@@ -130,6 +226,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/extensao': {
       id: '/extensao'
       path: '/extensao'
@@ -143,6 +246,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/loja'
       preLoaderRoute: typeof LojaRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/banners': {
+      id: '/admin/banners'
+      path: '/banners'
+      fullPath: '/admin/banners'
+      preLoaderRoute: typeof AdminBannersRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/carrinhos-abandonados': {
+      id: '/admin/carrinhos-abandonados'
+      path: '/carrinhos-abandonados'
+      fullPath: '/admin/carrinhos-abandonados'
+      preLoaderRoute: typeof AdminCarrinhosAbandonadosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/estoque': {
+      id: '/admin/estoque'
+      path: '/estoque'
+      fullPath: '/admin/estoque'
+      preLoaderRoute: typeof AdminEstoqueRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/pedidos': {
+      id: '/admin/pedidos'
+      path: '/pedidos'
+      fullPath: '/admin/pedidos'
+      preLoaderRoute: typeof AdminPedidosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/produtos': {
+      id: '/admin/produtos'
+      path: '/produtos'
+      fullPath: '/admin/produtos'
+      preLoaderRoute: typeof AdminProdutosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/admin/usuarios': {
+      id: '/admin/usuarios'
+      path: '/usuarios'
+      fullPath: '/admin/usuarios'
+      preLoaderRoute: typeof AdminUsuariosRouteImport
+      parentRoute: typeof AdminRouteRoute
     }
     '/auth/callback': {
       id: '/auth/callback'
@@ -175,8 +327,33 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminBannersRoute: typeof AdminBannersRoute
+  AdminCarrinhosAbandonadosRoute: typeof AdminCarrinhosAbandonadosRoute
+  AdminEstoqueRoute: typeof AdminEstoqueRoute
+  AdminPedidosRoute: typeof AdminPedidosRoute
+  AdminProdutosRoute: typeof AdminProdutosRoute
+  AdminUsuariosRoute: typeof AdminUsuariosRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminBannersRoute: AdminBannersRoute,
+  AdminCarrinhosAbandonadosRoute: AdminCarrinhosAbandonadosRoute,
+  AdminEstoqueRoute: AdminEstoqueRoute,
+  AdminPedidosRoute: AdminPedidosRoute,
+  AdminProdutosRoute: AdminProdutosRoute,
+  AdminUsuariosRoute: AdminUsuariosRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   ExtensaoRoute: ExtensaoRoute,
   LojaRoute: LojaRoute,
   AuthCallbackRoute: AuthCallbackRoute,

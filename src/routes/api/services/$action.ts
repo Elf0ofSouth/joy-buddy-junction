@@ -49,7 +49,7 @@ Regras:
 - Se o prompt original já estiver bom, faça apenas ajustes pontuais.`;
 
 async function optimizePrompt(request: Request): Promise<Response> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env["ANTHROPIC_API_KEY"];
   if (!apiKey) {
     return json(
       { error: "not_configured", message: "ANTHROPIC_API_KEY não configurada no servidor." },
@@ -57,8 +57,8 @@ async function optimizePrompt(request: Request): Promise<Response> {
     );
   }
 
-  const payload = await readBody(request);
-  const prompt = String(payload.prompt ?? "").trim();
+  const payload = await readBody(request) as Record<string, unknown>;
+  const prompt = String(payload["prompt"] ?? "").trim();
   if (!prompt) return json({ error: "invalid_request", message: "Envie o campo prompt." }, 400);
   if (prompt.length > 20000) {
     return json({ error: "too_long", message: "Prompt muito longo (máx. 20000 caracteres)." }, 413);
@@ -78,7 +78,7 @@ async function optimizePrompt(request: Request): Promise<Response> {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: process.env.CIPHER_AI_MODEL ?? "claude-opus-5",
+        model: process.env["CIPHER_AI_MODEL"] ?? "claude-opus-5",
         max_tokens: 4096,
         // Effort baixo: a tarefa é reescrita, não raciocínio profundo.
         // Manter thinking ligado em effort baixo sai mais barato e mais
@@ -161,13 +161,13 @@ interface StorageLike {
 }
 
 async function uploadImage(request: Request, sb: CipherDb): Promise<Response> {
-  const payload = await readBody(request);
-  const contentType = String(payload.content_type ?? "image/png").toLowerCase();
+  const payload = await readBody(request) as Record<string, unknown>;
+  const contentType = String(payload["content_type"] ?? "image/png").toLowerCase();
   if (!TIPOS_PERMITIDOS.includes(contentType)) {
     return json({ error: "invalid_type", message: `Tipo não permitido: ${contentType}` }, 415);
   }
 
-  const b64 = String(payload.data_base64 ?? payload.base64 ?? "");
+  const b64 = String(payload["data_base64"] ?? payload["base64"] ?? "");
   if (!b64) return json({ error: "invalid_request", message: "Envie data_base64." }, 400);
 
   let bytes: Uint8Array;
@@ -179,7 +179,7 @@ async function uploadImage(request: Request, sb: CipherDb): Promise<Response> {
   if (!bytes.length) return json({ error: "invalid_base64", message: "Base64 vazio." }, 400);
   if (bytes.length > MAX_BYTES) return json({ error: "too_large", message: "Imagem acima de 10 MB." }, 413);
 
-  const ext = contentType.split("/")[1].replace("jpeg", "jpg");
+  const ext = (contentType.split("/")[1] ?? "png").replace("jpeg", "jpg");
   const objectKey = `${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}.${ext}`;
 
   const storage = (sb as unknown as StorageLike).storage.from(BUCKET);
@@ -254,9 +254,9 @@ async function lovableProxy(request: Request, routeName: string): Promise<Respon
     );
   }
 
-  const payload = await readBody(request);
-  const token = String(payload.token ?? payload.token_lovable ?? "").replace(/^Bearer\s+/i, "");
-  const projectId = String(payload.projectId ?? payload.project_id ?? "");
+  const payload = await readBody(request) as Record<string, unknown>;
+  const token = String(payload["token"] ?? payload["token_lovable"] ?? "").replace(/^Bearer\s+/i, "");
+  const projectId = String(payload["projectId"] ?? payload["project_id"] ?? "");
   if (!token || !projectId) {
     return json(
       { success: false, error: "invalid_request", error_display: "Projeto não sincronizado." },
@@ -302,7 +302,7 @@ async function lovableProxy(request: Request, routeName: string): Promise<Respon
           success: false,
           error: "lovable_error",
           status: upstream.status,
-          error_display: (data.message as string) ?? `Lovable retornou ${upstream.status}`,
+          error_display: (data["message"] as string) ?? `Lovable retornou ${upstream.status}`,
           data,
         },
         502,

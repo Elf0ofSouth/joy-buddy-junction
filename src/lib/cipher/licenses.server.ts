@@ -113,7 +113,7 @@ export const T = {
  * nunca quando a key foi gerada. Assim dá para gerar um lote hoje e
  * vender daqui a três meses sem o cliente perder tempo.
  */
-export const PLANS: Record<string, PlanDef> = {
+export const PLANS: Record<string, PlanDef | undefined> = {
   trial15: { tag: "TRL", seconds: 15 * 60, label: "Teste 15 minutos", maxDevices: 1 },
   daily: { tag: "DAY", seconds: 24 * 3600, label: "Diária", maxDevices: 1 },
   weekly: { tag: "WEK", seconds: 7 * 24 * 3600, label: "Semanal", maxDevices: 1 },
@@ -122,7 +122,7 @@ export const PLANS: Record<string, PlanDef> = {
   lifetime: { tag: "LIF", seconds: 0, label: "Vitalícia", maxDevices: 2 },
 };
 
-export const MESSAGES: Record<string, string> = {
+export const MESSAGES: Record<string, string | undefined> = {
   ok: "Key válida. Bem-vindo ao Cipher Project.",
   not_found: "Key inválida. Confira o código e tente novamente.",
   revoked: "Esta key foi revogada. Fale com o suporte.",
@@ -142,13 +142,20 @@ function randomBlock(len: number): string {
   const bytes = new Uint8Array(len);
   crypto.getRandomValues(bytes);
   let out = "";
-  for (let i = 0; i < len; i++) out += ALPHABET[bytes[i] % ALPHABET.length];
+  for (let i = 0; i < len; i++) {
+    const byte = (bytes as Uint8Array)[i];
+    if (byte !== undefined) {
+      const char = ALPHABET[byte % ALPHABET.length];
+      out += char ?? "";
+    }
+  }
   return out;
 }
 
 /** Ex.: CPHR-MTH-K7F2Q-9XA3B-8DNW1 */
 export function generateKey(plan: string): string {
-  const tag = (PLANS[plan] ?? PLANS.monthly).tag;
+  const def = PLANS[plan] ?? PLANS["monthly"];
+  const tag = def?.tag ?? "CPHR";
   return `CPHR-${tag}-${randomBlock(5)}-${randomBlock(5)}-${randomBlock(5)}`;
 }
 
@@ -175,10 +182,11 @@ async function makeSessionId(key: string, deviceId: string): Promise<string> {
 }
 
 function invalid(reason: string, message?: string): ValidationResult {
+  const msg = message ?? MESSAGES[reason] ?? MESSAGES["not_found"];
   return {
     valid: false,
     reason,
-    message: message ?? MESSAGES[reason] ?? MESSAGES.not_found,
+    message: msg ?? "",
     expires_at: null,
     activated_at: null,
     status: reason,
@@ -226,7 +234,7 @@ export async function validateLicense(
   meta: RequestMeta = {},
 ): Promise<ValidationResult> {
   const key = normalizeKey(rawKey);
-  if (!key) return invalid("not_found", MESSAGES.empty);
+  if (!key) return invalid("not_found", MESSAGES["empty"]);
 
   const device = String(deviceId ?? "").trim().slice(0, 128) || "unknown";
   const now = nowIso();
@@ -248,7 +256,7 @@ export async function validateLicense(
     return invalid("revoked");
   }
 
-  const planDef: PlanDef = PLANS[row.plan] ?? {
+  const planDef = PLANS[row.plan] ?? {
     tag: "???",
     seconds: row.duration_seconds,
     label: row.plan,
@@ -344,16 +352,17 @@ export async function validateLicense(
       .order("id", { ascending: true })
       .limit(limit);
 
-    const temVaga = (slots ?? []).some((d) => d.device_id === device);
+    const temVaga = Array.isArray(slots) && slots.some((d: { device_id: string }) => d.device_id === device);
 
     if (!temVaga) {
       await sb.from(T.devices).delete().eq("license_id", row.id).eq("device_id", device);
       await logEvent(sb, "reject", row.id, device, `limite de ${limit} dispositivo(s)`, meta.ip);
 
-      const resetUrl = typeof process !== "undefined" ? (process.env.CIPHER_RESET_PAGE_URL ?? "") : "";
+      const resetUrl = typeof process !== "undefined" ? (process.env["CIPHER_RESET_PAGE_URL"] ?? "") : "";
+      const conflictMsg = MESSAGES["device_conflict"] ?? "Conflito de dispositivo";
       return invalid(
         "device_conflict",
-        resetUrl ? `${MESSAGES.device_conflict} Libere em: ${resetUrl}` : MESSAGES.device_conflict,
+        resetUrl ? `${conflictMsg} Libere em: ${resetUrl}` : conflictMsg,
       );
     }
   }
@@ -378,7 +387,7 @@ export async function validateLicense(
   return {
     valid: true,
     reason: null,
-    message: MESSAGES.ok,
+    message: MESSAGES["ok"] ?? "",
     expires_at: expiresAt,
     activated_at: activatedAt,
     status: "active",
