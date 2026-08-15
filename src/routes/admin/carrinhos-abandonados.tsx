@@ -31,7 +31,7 @@ function AdminAbandonedCarts() {
   const fetchCarts = async () => {
     setLoading(true);
     // Note: We use the abandoned_carts table created in the migration
-    const { data, error } = await supabase
+    const { data, error } = await (supabase as any)
       .from("abandoned_carts")
       .select(`
         *,
@@ -50,7 +50,7 @@ function AdminAbandonedCarts() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    const { error } = await supabase.from("abandoned_carts").delete().eq("id", id);
+    const { error } = await (supabase as any).from("abandoned_carts").delete().eq("id", id);
     if (error) toast.error("Erro ao remover registro");
     else {
       toast.success("Registro removido");

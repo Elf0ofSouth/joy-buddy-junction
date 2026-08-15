@@ -15,6 +15,7 @@ import { Route as ExtensaoRouteImport } from './routes/extensao'
 import { Route as LojaRouteImport } from './routes/loja'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminBannersRouteImport } from './routes/admin/banners'
+import { Route as AdminCarrinhosAbandonadosRouteImport } from './routes/admin/carrinhos-abandonados'
 import { Route as AdminEstoqueRouteImport } from './routes/admin/estoque'
 import { Route as AdminPedidosRouteImport } from './routes/admin/pedidos'
 import { Route as AdminProdutosRouteImport } from './routes/admin/produtos'
@@ -54,6 +55,12 @@ const AdminBannersRoute = AdminBannersRouteImport.update({
   path: '/banners',
   getParentRoute: () => AdminRouteRoute,
 } as any)
+const AdminCarrinhosAbandonadosRoute =
+  AdminCarrinhosAbandonadosRouteImport.update({
+    id: '/carrinhos-abandonados',
+    path: '/carrinhos-abandonados',
+    getParentRoute: () => AdminRouteRoute,
+  } as any)
 const AdminEstoqueRoute = AdminEstoqueRouteImport.update({
   id: '/estoque',
   path: '/estoque',
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/admin/banners': typeof AdminBannersRoute
+  '/admin/carrinhos-abandonados': typeof AdminCarrinhosAbandonadosRoute
   '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/produtos': typeof AdminProdutosRoute
@@ -116,6 +124,7 @@ export interface FileRoutesByTo {
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/admin/banners': typeof AdminBannersRoute
+  '/admin/carrinhos-abandonados': typeof AdminCarrinhosAbandonadosRoute
   '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/produtos': typeof AdminProdutosRoute
@@ -133,6 +142,7 @@ export interface FileRoutesById {
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/admin/banners': typeof AdminBannersRoute
+  '/admin/carrinhos-abandonados': typeof AdminCarrinhosAbandonadosRoute
   '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/pedidos': typeof AdminPedidosRoute
   '/admin/produtos': typeof AdminProdutosRoute
@@ -151,6 +161,7 @@ export interface FileRouteTypes {
     | '/extensao'
     | '/loja'
     | '/admin/banners'
+    | '/admin/carrinhos-abandonados'
     | '/admin/estoque'
     | '/admin/pedidos'
     | '/admin/produtos'
@@ -166,6 +177,7 @@ export interface FileRouteTypes {
     | '/extensao'
     | '/loja'
     | '/admin/banners'
+    | '/admin/carrinhos-abandonados'
     | '/admin/estoque'
     | '/admin/pedidos'
     | '/admin/produtos'
@@ -182,6 +194,7 @@ export interface FileRouteTypes {
     | '/extensao'
     | '/loja'
     | '/admin/banners'
+    | '/admin/carrinhos-abandonados'
     | '/admin/estoque'
     | '/admin/pedidos'
     | '/admin/produtos'
@@ -248,6 +261,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminBannersRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/carrinhos-abandonados': {
+      id: '/admin/carrinhos-abandonados'
+      path: '/carrinhos-abandonados'
+      fullPath: '/admin/carrinhos-abandonados'
+      preLoaderRoute: typeof AdminCarrinhosAbandonadosRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/estoque': {
       id: '/admin/estoque'
       path: '/estoque'
@@ -309,6 +329,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteRouteChildren {
   AdminBannersRoute: typeof AdminBannersRoute
+  AdminCarrinhosAbandonadosRoute: typeof AdminCarrinhosAbandonadosRoute
   AdminEstoqueRoute: typeof AdminEstoqueRoute
   AdminPedidosRoute: typeof AdminPedidosRoute
   AdminProdutosRoute: typeof AdminProdutosRoute
@@ -318,6 +339,7 @@ interface AdminRouteRouteChildren {
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminBannersRoute: AdminBannersRoute,
+  AdminCarrinhosAbandonadosRoute: AdminCarrinhosAbandonadosRoute,
   AdminEstoqueRoute: AdminEstoqueRoute,
   AdminPedidosRoute: AdminPedidosRoute,
   AdminProdutosRoute: AdminProdutosRoute,
