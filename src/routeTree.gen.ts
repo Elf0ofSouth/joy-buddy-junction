@@ -13,6 +13,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExtensaoRouteImport } from './routes/extensao'
 import { Route as LojaRouteImport } from './routes/loja'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
+import { Route as ApiAdminSplatRouteImport } from './routes/api/admin/$'
+import { Route as ApiLicenseActionRouteImport } from './routes/api/license/$action'
+import { Route as ApiServicesActionRouteImport } from './routes/api/services/$action'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +37,39 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminSplatRoute = ApiAdminSplatRouteImport.update({
+  id: '/api/admin/$',
+  path: '/api/admin/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiLicenseActionRoute = ApiLicenseActionRouteImport.update({
+  id: '/api/license/$action',
+  path: '/api/license/$action',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiServicesActionRoute = ApiServicesActionRouteImport.update({
+  id: '/api/services/$action',
+  path: '/api/services/$action',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/api/admin/$': typeof ApiAdminSplatRoute
+  '/api/license/$action': typeof ApiLicenseActionRoute
+  '/api/services/$action': typeof ApiServicesActionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/api/admin/$': typeof ApiAdminSplatRoute
+  '/api/license/$action': typeof ApiLicenseActionRoute
+  '/api/services/$action': typeof ApiServicesActionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +77,38 @@ export interface FileRoutesById {
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/api/admin/$': typeof ApiAdminSplatRoute
+  '/api/license/$action': typeof ApiLicenseActionRoute
+  '/api/services/$action': typeof ApiServicesActionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/extensao' | '/loja' | '/auth/callback'
+  fullPaths:
+    | '/'
+    | '/extensao'
+    | '/loja'
+    | '/auth/callback'
+    | '/api/admin/$'
+    | '/api/license/$action'
+    | '/api/services/$action'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/extensao' | '/loja' | '/auth/callback'
-  id: '__root__' | '/' | '/extensao' | '/loja' | '/auth/callback'
+  to:
+    | '/'
+    | '/extensao'
+    | '/loja'
+    | '/auth/callback'
+    | '/api/admin/$'
+    | '/api/license/$action'
+    | '/api/services/$action'
+  id:
+    | '__root__'
+    | '/'
+    | '/extensao'
+    | '/loja'
+    | '/auth/callback'
+    | '/api/admin/$'
+    | '/api/license/$action'
+    | '/api/services/$action'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +116,9 @@ export interface RootRouteChildren {
   ExtensaoRoute: typeof ExtensaoRoute
   LojaRoute: typeof LojaRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  ApiAdminSplatRoute: typeof ApiAdminSplatRoute
+  ApiLicenseActionRoute: typeof ApiLicenseActionRoute
+  ApiServicesActionRoute: typeof ApiServicesActionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +151,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/$': {
+      id: '/api/admin/$'
+      path: '/api/admin/$'
+      fullPath: '/api/admin/$'
+      preLoaderRoute: typeof ApiAdminSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/license/$action': {
+      id: '/api/license/$action'
+      path: '/api/license/$action'
+      fullPath: '/api/license/$action'
+      preLoaderRoute: typeof ApiLicenseActionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/services/$action': {
+      id: '/api/services/$action'
+      path: '/api/services/$action'
+      fullPath: '/api/services/$action'
+      preLoaderRoute: typeof ApiServicesActionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +180,9 @@ const rootRouteChildren: RootRouteChildren = {
   ExtensaoRoute: ExtensaoRoute,
   LojaRoute: LojaRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  ApiAdminSplatRoute: ApiAdminSplatRoute,
+  ApiLicenseActionRoute: ApiLicenseActionRoute,
+  ApiServicesActionRoute: ApiServicesActionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
