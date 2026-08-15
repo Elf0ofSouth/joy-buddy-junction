@@ -88,11 +88,11 @@ function AdminInventory() {
     
     const newItems = items.map(content => ({
       product_id: targetProductId,
-      item_content: content.trim(),
+      content: content.trim(),
       status: 'available'
     }));
 
-    const { error } = await supabase.from("stock_items").insert(newItems);
+    const { error } = await supabase.from("stock_items").insert(newItems as any);
 
     if (error) {
       toast.error("Erro ao adicionar itens ao estoque");
@@ -115,7 +115,7 @@ function AdminInventory() {
   };
 
   const filteredItems = stockItems.filter(item => {
-    const matchesSearch = item.item_content.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = (item.content || "").toLowerCase().includes(search.toLowerCase());
     const matchesProduct = selectedProduct === "all" || item.product_id === selectedProduct;
     return matchesSearch && matchesProduct;
   });
@@ -265,7 +265,7 @@ function AdminInventory() {
                       <div className="flex items-center gap-2">
                         <Clipboard className="w-3 h-3 text-muted-foreground group-hover:text-primary transition-colors" />
                         <span className="text-[10px] font-mono text-white tracking-widest">
-                          {item.item_content.slice(0, 4)}••••••••{item.item_content.slice(-4)}
+                          {(item.content || "").slice(0, 4)}••••••••{(item.content || "").slice(-4)}
                         </span>
                       </div>
                     </td>

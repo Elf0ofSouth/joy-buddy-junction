@@ -14,6 +14,7 @@ import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as ExtensaoRouteImport } from './routes/extensao'
 import { Route as LojaRouteImport } from './routes/loja'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminEstoqueRouteImport } from './routes/admin/estoque'
 import { Route as AdminProdutosRouteImport } from './routes/admin/produtos'
 import { Route as AdminUsuariosRouteImport } from './routes/admin/usuarios'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
@@ -44,6 +45,11 @@ const LojaRoute = LojaRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminEstoqueRoute = AdminEstoqueRouteImport.update({
+  id: '/estoque',
+  path: '/estoque',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminProdutosRoute = AdminProdutosRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/produtos': typeof AdminProdutosRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/produtos': typeof AdminProdutosRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
+  '/admin/estoque': typeof AdminEstoqueRoute
   '/admin/produtos': typeof AdminProdutosRoute
   '/admin/usuarios': typeof AdminUsuariosRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/extensao'
     | '/loja'
+    | '/admin/estoque'
     | '/admin/produtos'
     | '/admin/usuarios'
     | '/auth/callback'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
     | '/'
     | '/extensao'
     | '/loja'
+    | '/admin/estoque'
     | '/admin/produtos'
     | '/admin/usuarios'
     | '/auth/callback'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/extensao'
     | '/loja'
+    | '/admin/estoque'
     | '/admin/produtos'
     | '/admin/usuarios'
     | '/auth/callback'
@@ -205,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/admin/estoque': {
+      id: '/admin/estoque'
+      path: '/estoque'
+      fullPath: '/admin/estoque'
+      preLoaderRoute: typeof AdminEstoqueRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/admin/produtos': {
       id: '/admin/produtos'
       path: '/produtos'
@@ -251,12 +270,14 @@ declare module '@tanstack/react-router' {
 }
 
 interface AdminRouteRouteChildren {
+  AdminEstoqueRoute: typeof AdminEstoqueRoute
   AdminProdutosRoute: typeof AdminProdutosRoute
   AdminUsuariosRoute: typeof AdminUsuariosRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminEstoqueRoute: AdminEstoqueRoute,
   AdminProdutosRoute: AdminProdutosRoute,
   AdminUsuariosRoute: AdminUsuariosRoute,
   AdminIndexRoute: AdminIndexRoute,
