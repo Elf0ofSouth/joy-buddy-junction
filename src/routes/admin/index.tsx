@@ -16,6 +16,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Route = createFileRoute("/admin/")({
   component: AdminOverview,
@@ -80,8 +81,8 @@ function AdminOverview() {
 
       const [
         { data: allOrders },
-        { data: productsCount },
-        { data: usersCount },
+        { count: productsCount },
+        { count: usersCount },
         { data: recentOrdersData }
       ] = await Promise.all([
         supabase.from("orders").select("total_price, status, created_at"),
@@ -105,8 +106,8 @@ function AdminOverview() {
         totalSales: `R$ ${totalRevenue.toFixed(2)}`,
         ordersToday,
         pendingOrders,
-        activeProducts: productsCount?.count || 0,
-        totalUsers: usersCount?.count || 0
+        activeProducts: productsCount || 0,
+        totalUsers: usersCount || 0
       });
 
       setRecentOrders(recentOrdersData || []);

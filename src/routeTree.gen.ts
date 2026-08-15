@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as ExtensaoRouteImport } from './routes/extensao'
 import { Route as LojaRouteImport } from './routes/loja'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AuthCallbackRouteImport } from './routes/auth/callback'
 import { Route as ApiAdminSplatRouteImport } from './routes/api/admin/$'
 import { Route as ApiLicenseActionRouteImport } from './routes/api/license/$action'
@@ -38,6 +39,11 @@ const LojaRoute = LojaRouteImport.update({
   path: '/loja',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
@@ -61,20 +67,21 @@ const ApiServicesActionRoute = ApiServicesActionRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/admin/$': typeof ApiAdminSplatRoute
   '/api/license/$action': typeof ApiLicenseActionRoute
   '/api/services/$action': typeof ApiServicesActionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRoute
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin': typeof AdminIndexRoute
   '/api/admin/$': typeof ApiAdminSplatRoute
   '/api/license/$action': typeof ApiLicenseActionRoute
   '/api/services/$action': typeof ApiServicesActionRoute
@@ -82,10 +89,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRouteRoute
+  '/admin': typeof AdminRouteRouteWithChildren
   '/extensao': typeof ExtensaoRoute
   '/loja': typeof LojaRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/': typeof AdminIndexRoute
   '/api/admin/$': typeof ApiAdminSplatRoute
   '/api/license/$action': typeof ApiLicenseActionRoute
   '/api/services/$action': typeof ApiServicesActionRoute
@@ -98,16 +106,17 @@ export interface FileRouteTypes {
     | '/extensao'
     | '/loja'
     | '/auth/callback'
+    | '/admin/'
     | '/api/admin/$'
     | '/api/license/$action'
     | '/api/services/$action'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/extensao'
     | '/loja'
     | '/auth/callback'
+    | '/admin'
     | '/api/admin/$'
     | '/api/license/$action'
     | '/api/services/$action'
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/extensao'
     | '/loja'
     | '/auth/callback'
+    | '/admin/'
     | '/api/admin/$'
     | '/api/license/$action'
     | '/api/services/$action'
@@ -125,7 +135,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRouteRoute: typeof AdminRouteRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
   ExtensaoRoute: typeof ExtensaoRoute
   LojaRoute: typeof LojaRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
@@ -164,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LojaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/auth/callback': {
       id: '/auth/callback'
       path: '/auth/callback'
@@ -195,9 +212,21 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRouteRoute: AdminRouteRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
   ExtensaoRoute: ExtensaoRoute,
   LojaRoute: LojaRoute,
   AuthCallbackRoute: AuthCallbackRoute,
