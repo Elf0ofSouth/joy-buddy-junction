@@ -43,7 +43,7 @@ export async function readBody(request: Request): Promise<Record<string, unknown
 export function requestMeta(request: Request) {
   const forwarded = request.headers.get("x-forwarded-for") ?? "";
   return {
-    ip: forwarded.split(",")[0].trim() || null,
+    ip: (forwarded.split(",")[0] || "").trim() || null,
     country: request.headers.get("x-vercel-ip-country") ?? null,
     userAgent: request.headers.get("user-agent") ?? null,
   };
@@ -62,7 +62,7 @@ export function safeEqual(a: string, b: string): boolean {
 export function isAdmin(request: Request): boolean {
   const header = request.headers.get("authorization") ?? "";
   const token = header.startsWith("Bearer ") ? header.slice(7) : "";
-  const expected = process.env.CIPHER_ADMIN_TOKEN ?? "";
+  const expected = process.env["CIPHER_ADMIN_TOKEN"] ?? "";
   if (!expected) return false;
   return safeEqual(token, expected);
 }

@@ -75,11 +75,11 @@ export const Route = createFileRoute("/api/license/$action")({
             return json({ error: "not_found", message: `Rota desconhecida: POST /api/license/${action}` }, 404);
           }
 
-          const body = await readBody(request);
+          const body = await readBody(request) as Record<string, unknown>;
           const result = await validateLicense(
             sb,
-            body.license_key ?? body.key,
-            body.device_id ?? body.deviceId,
+            body["license_key"] ?? body["key"],
+            body["device_id"] ?? body["deviceId"],
             requestMeta(request),
           );
 
