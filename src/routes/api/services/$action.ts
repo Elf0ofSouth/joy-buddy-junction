@@ -203,25 +203,41 @@ async function uploadImage(request: Request, sb: CipherDb): Promise<Response> {
 /* ------------------------------------------------------------
  * 3) Proxies do Lovable
  *
- * >>> LEIA ANTES DE USAR <<<
- * Estes três repassam a chamada para a API do Lovable usando o token
- * do PRÓPRIO cliente. O caminho exato de cada um era código privado do
- * dono anterior, então os valores abaixo são a melhor inferência a
- * partir do formato das outras chamadas da extensão.
+ * Repassam a chamada para a API do Lovable usando o token do PRÓPRIO
+ * cliente. Os caminhos eram código privado do dono anterior; foram
+ * descobertos sondando a API e comparando o código de resposta com um
+ * token inválido:
  *
- * Para confirmar: abra o lovable.dev, use o recurso equivalente na
- * interface nativa e olhe a aba Network do DevTools. Copie o caminho
- * real para o mapa abaixo. Enquanto estiver `null`, o endpoint responde
- * 501 com uma mensagem clara em vez de dar erro feio.
+ *   401 Invalid token  -> o caminho existe e aceita esse método
+ *   405                -> o caminho existe, mas não com esse método
+ *   404 page not found -> o caminho não existe
+ *
+ * Resultado da sondagem:
+ *   /projects/{id}/chat         401  <- envio de prompt (confirmado)
+ *   /projects/{id}/deployments  401  <- publicar (confirmado)
+ *   /projects/{id}/messages     405  <- era o chute antigo; existe mas não aceita POST
+ *   /projects/{id}/publish      404
  * ---------------------------------------------------------- */
 const LOVABLE_API = "https://api.lovable.dev";
 
 type RouteBuilder = ((projectId: string) => string) | null;
 
 const LOVABLE_ROUTES: Record<string, RouteBuilder> = {
-  "send-prompt": (projectId) => `${LOVABLE_API}/projects/${projectId}/messages`,
-  "publish-project": null, // ex.: (id) => `${LOVABLE_API}/projects/${id}/publish`
-  "remove-watermark": null, // ex.: (id) => `${LOVABLE_API}/projects/${id}/settings`
+  "send-prompt": (projectId) => `${LOVABLE_API}/projects/${projectId}/chat`,
+  "publish-project": (projectId) => `${LOVABLE_API}/projects/${projectId}/deployments`,
+
+  // Marca d'água: continua desligado de propósito.
+  //
+  // A sondagem descartou /settings, /badge, /watermark, /remove-badge e
+  // /branding (todos 404). O caminho provável é PUT /projects/{id}, que
+  // respondeu 401 — mas esse endpoint ALTERA o projeto, e eu não sei o
+  // nome do campo. Mandar um corpo errado ali pode bagunçar o projeto do
+  // seu cliente, então prefiro devolver 501 com mensagem clara.
+  //
+  // Para ligar: no lovable.dev, F12 -> Network, desative a marca d'água
+  // pela interface nativa, copie o corpo exato da requisição e escreva
+  // um proxy específico para ela (o genérico abaixo só faz POST).
+  "remove-watermark": null,
 };
 
 async function lovableProxy(request: Request, routeName: string): Promise<Response> {
