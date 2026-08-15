@@ -43,7 +43,7 @@ function AdminBanners() {
     subtitle: "",
     image_url: "",
     link_url: "",
-    position: 0,
+    sort_order: 0,
     is_active: true
   });
 
@@ -52,7 +52,7 @@ function AdminBanners() {
     const { data, error } = await supabase
       .from("banners")
       .select("*")
-      .order("position", { ascending: true });
+      .order("sort_order", { ascending: true });
 
     if (error) toast.error("Erro ao carregar banners");
     else setBanners(data || []);
@@ -70,7 +70,7 @@ function AdminBanners() {
     }
 
     setIsSubmitting(true);
-    const { error } = await supabase.from("banners").insert([formData]);
+    const { error } = await supabase.from("banners").insert([formData as any]);
 
     if (error) {
       toast.error("Erro ao criar banner");
@@ -82,7 +82,7 @@ function AdminBanners() {
         subtitle: "",
         image_url: "",
         link_url: "",
-        position: banners.length,
+        sort_order: banners.length,
         is_active: true
       });
       fetchBanners();
@@ -176,11 +176,11 @@ function AdminBanners() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[9px] font-black uppercase tracking-widest italic text-primary">Posição</label>
+                  <label className="text-[9px] font-black uppercase tracking-widest italic text-primary">Ordem</label>
                   <Input 
                     type="number"
-                    value={formData.position}
-                    onChange={(e) => setFormData({...formData, position: parseInt(e.target.value)})}
+                    value={formData.sort_order}
+                    onChange={(e) => setFormData({...formData, sort_order: parseInt(e.target.value)})}
                     className="bg-white/5 border-primary/20 rounded-xl h-11 text-[10px] font-bold uppercase tracking-widest italic"
                   />
                 </div>
@@ -249,7 +249,7 @@ function AdminBanners() {
                </div>
                <div className="absolute top-4 left-4">
                   <Badge className="bg-black/60 backdrop-blur-md text-[8px] font-black tracking-widest uppercase italic border border-primary/20">
-                    POS: {banner.position}
+                    POS: {banner.sort_order}
                   </Badge>
                </div>
                {!banner.is_active && (
