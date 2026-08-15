@@ -56,8 +56,8 @@ export function safeEqual(a: string, b: string): boolean {
   if (ea.length !== eb.length) return false;
   let diff = 0;
   for (let i = 0; i < ea.length; i++) {
-    const charA = ea[i];
-    const charB = eb[i];
+    const charA = (ea as Uint8Array)[i];
+    const charB = (eb as Uint8Array)[i];
     if (charA !== undefined && charB !== undefined) {
       diff |= charA ^ charB;
     }

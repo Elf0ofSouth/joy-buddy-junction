@@ -47,12 +47,15 @@ export const Route = createFileRoute("/api/license/$action")({
 
           if (action === "plans") {
             return json(
-              Object.entries(PLANS).map(([id, p]) => ({
-                id,
-                label: p?.label ?? "Desconhecido",
-                seconds: p?.seconds ?? 0,
-                max_devices: p?.maxDevices ?? 1,
-              })),
+              Object.entries(PLANS).map(([id, p]) => {
+                const plan = p as any;
+                return {
+                  id,
+                  label: plan?.label ?? "Desconhecido",
+                  seconds: plan?.seconds ?? 0,
+                  max_devices: plan?.maxDevices ?? 1,
+                };
+              }),
             );
           }
 
