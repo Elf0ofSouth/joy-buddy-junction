@@ -113,7 +113,7 @@ export const T = {
  * nunca quando a key foi gerada. Assim dá para gerar um lote hoje e
  * vender daqui a três meses sem o cliente perder tempo.
  */
-export const PLANS: Record<string, PlanDef> = {
+export const PLANS: Record<string, PlanDef | undefined> = {
   trial15: { tag: "TRL", seconds: 15 * 60, label: "Teste 15 minutos", maxDevices: 1 },
   daily: { tag: "DAY", seconds: 24 * 3600, label: "Diária", maxDevices: 1 },
   weekly: { tag: "WEK", seconds: 7 * 24 * 3600, label: "Semanal", maxDevices: 1 },
@@ -122,7 +122,7 @@ export const PLANS: Record<string, PlanDef> = {
   lifetime: { tag: "LIF", seconds: 0, label: "Vitalícia", maxDevices: 2 },
 };
 
-export const MESSAGES: Record<string, string> = {
+export const MESSAGES: Record<string, string | undefined> = {
   ok: "Key válida. Bem-vindo ao Cipher Project.",
   not_found: "Key inválida. Confira o código e tente novamente.",
   revoked: "Esta key foi revogada. Fale com o suporte.",
@@ -253,7 +253,7 @@ export async function validateLicense(
     return invalid("revoked");
   }
 
-  const planDef: PlanDef = PLANS[row.plan] ?? {
+  const planDef = PLANS[row.plan] ?? {
     tag: "???",
     seconds: row.duration_seconds,
     label: row.plan,
