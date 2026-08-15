@@ -1,7 +1,9 @@
-# Segredos — NUNCA versionar
-.env
-.env.*
-!.env.example
+# ATENCAO: o .env E versionado de proposito — o Lovable le as
+# credenciais do Supabase dele. Só coloque ali valores PUBLICOS.
+# Segredo de verdade (service_role, tokens de API) vai nas variaveis
+# de ambiente da Vercel, ou num .env.local, que fica bloqueado abaixo.
+.env.local
+.env.*.local
 
 # Logs
 logs
