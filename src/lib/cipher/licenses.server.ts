@@ -143,8 +143,11 @@ function randomBlock(len: number): string {
   crypto.getRandomValues(bytes);
   let out = "";
   for (let i = 0; i < len; i++) {
-    const char = ALPHABET[bytes[i] % ALPHABET.length];
-    out += char ?? "";
+    const byte = bytes[i];
+    if (byte !== undefined) {
+      const char = ALPHABET[byte % ALPHABET.length];
+      out += char ?? "";
+    }
   }
   return out;
 }
