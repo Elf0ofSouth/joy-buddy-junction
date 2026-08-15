@@ -205,7 +205,12 @@ async function handle(request: Request, splat: string): Promise<Response> {
 
   // ---------------- Estatísticas ----------------
   if (route === "stats" && method === "GET") {
-    const { data } = await sb.from(T.licenses).select("status, plan");
+    const { data, error } = await sb.from(T.licenses).select("status, plan");
+    // Checar o erro aqui não é detalhe: é a primeira chamada que o painel
+    // faz ao entrar. Se engolir o erro, o painel abre mostrando "0 keys" e
+    // o problema real (tabela faltando, por exemplo) só aparece depois, na
+    // hora de gerar uma key — com uma mensagem genérica.
+    if (error) throw new Error(error.message);
     const all = (data ?? []) as unknown as Array<{ status: string; plan: string }>;
 
     const byStatus: Record<string, number> = {};
@@ -295,8 +300,22 @@ async function safeHandle(request: Request, splat: string): Promise<Response> {
   try {
     return await handle(request, splat);
   } catch (err) {
+    const detalhe = (err as Error)?.message ?? String(err);
     console.error("[cipher/admin]", err);
-    return json({ error: "server_error", message: "Erro interno no painel." }, 500);
+
+    // Esta rota já exige o token de admin, então mostrar a causa real aqui
+    // não vaza nada para terceiros — e evita ficar caçando log na Vercel.
+    let message = `Erro interno no painel: ${detalhe}`;
+
+    // A causa mais provável na primeira vez que se usa o painel.
+    if (/Could not find the table|does not exist|schema cache/i.test(detalhe)) {
+      message =
+        "As tabelas de licença ainda não existem no Supabase. " +
+        "Rode a migration supabase/migrations/20260815000000_cipher_licensing.sql " +
+        "no SQL Editor do Supabase e tente de novo.";
+    }
+
+    return json({ error: "server_error", message }, 500);
   }
 }
 
