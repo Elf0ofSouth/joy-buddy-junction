@@ -206,7 +206,7 @@ function AdminLayout() {
                 <DropdownMenuLabel className="text-[9px] font-black uppercase tracking-widest p-3 text-muted-foreground">Administração</DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-primary/10" />
                 <DropdownMenuItem className="focus:bg-primary/10 cursor-pointer p-3 gap-3">
-                  <User className="w-4 h-4 text-primary" />
+                  <Users className="w-4 h-4 text-primary" />
                   <span className="text-[10px] font-black uppercase tracking-widest italic">Perfil Admin</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem 
