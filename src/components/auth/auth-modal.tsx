@@ -5,7 +5,7 @@ import { useAuthModal } from "@/hooks/use-auth-modal";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import logoAsset from "@/assets/cipher-logo.png.asset.json";
+import { logoUrl } from "@/lib/assets";
 import { useAuthStore } from "@/hooks/use-auth-store";
 
 export function AuthModal() {
@@ -44,7 +44,7 @@ export function AuthModal() {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <img src={logoAsset.url} alt="Cipher Logo" className="w-12 h-12 object-contain drop-shadow-[0_0_10px_rgba(139,47,232,0.5)]" />
+            <img src={logoUrl} alt="Cipher Logo" className="w-12 h-12 object-contain drop-shadow-[0_0_10px_rgba(139,47,232,0.5)]" />
           </motion.div>
           
           <DialogTitle className="text-2xl font-black chrome-text uppercase tracking-tighter">

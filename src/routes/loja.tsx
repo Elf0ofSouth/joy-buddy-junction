@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import logoAsset from "@/assets/cipher-logo.png.asset.json";
+import { logoUrl } from "@/lib/assets";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -110,7 +110,7 @@ function Store() {
       {/* Sidebar - Desktop */}
       <aside className="hidden md:flex flex-col w-64 glass border-r border-primary/20 sticky top-0 h-screen z-20 p-6 overflow-y-auto">
         <div className="flex items-center gap-2 mb-10 group cursor-pointer" onClick={() => window.location.href = '/'}>
-          <img src={logoAsset.url} alt="Logo" className="w-8 h-8 group-hover:scale-110 transition-transform" />
+          <img src={logoUrl} alt="Logo" className="w-8 h-8 group-hover:scale-110 transition-transform" />
           <span className="font-bold text-lg tracking-tighter chrome-text">CIPHER STORE</span>
         </div>
 
@@ -159,7 +159,7 @@ function Store() {
       <div className="md:hidden sticky top-0 z-50 glass border-b border-primary/20 p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2" onClick={() => window.location.href = '/'}>
-            <img src={logoAsset.url} alt="Logo" className="w-6 h-6" />
+            <img src={logoUrl} alt="Logo" className="w-6 h-6" />
             <span className="font-bold text-sm tracking-tighter chrome-text uppercase">CIPHER STORE</span>
           </div>
           <div className="flex items-center gap-2">
@@ -369,7 +369,7 @@ function Store() {
             >
                <div className="flex items-center justify-between mb-12">
                 <div className="flex items-center gap-3">
-                  <img src={logoAsset.url} alt="Logo" className="w-10 h-10" />
+                  <img src={logoUrl} alt="Logo" className="w-10 h-10" />
                   <span className="font-bold text-xl tracking-tighter chrome-text uppercase italic">CIPHER STORE</span>
                 </div>
                 <Button variant="ghost" size="sm" onClick={() => setMobileMenuOpen(false)} className="rounded-full border border-primary/10">

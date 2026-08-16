@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import logoAsset from "@/assets/cipher-logo.png.asset.json";
+import { logoUrl } from "@/lib/assets";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -140,7 +140,7 @@ function AdminLayout() {
       >
         <div className="p-6 flex items-center justify-between">
           <div className={`flex items-center gap-3 ${!isSidebarOpen && "hidden"}`}>
-            <img src={logoAsset.url} alt="Logo" className="w-8 h-8" />
+            <img src={logoUrl} alt="Logo" className="w-8 h-8" />
             <span className="font-black text-lg tracking-tighter chrome-text italic uppercase">CIPHER ADMIN</span>
           </div>
           <Button 

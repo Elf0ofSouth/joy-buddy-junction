@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import logoAsset from "@/assets/cipher-logo.png.asset.json";
+import { logoUrl } from "@/lib/assets";
 
 export const Route = createFileRoute("/extensao")({
   component: ExtensionPage,
@@ -264,7 +264,7 @@ function ExtensionPage() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 group cursor-pointer">
             <ChevronLeft className="w-5 h-5 text-primary group-hover:-translate-x-1 transition-transform" />
-            <img src={logoAsset.url} alt="Cipher Project" className="w-8 h-8 object-contain" />
+            <img src={logoUrl} alt="Cipher Project" className="w-8 h-8 object-contain" />
             <span className="font-bold text-xl tracking-tighter chrome-text hidden sm:block">CIPHER PROJECT</span>
           </Link>
           
@@ -651,7 +651,7 @@ function ExtensionPage() {
       <footer className="border-t border-primary/20 bg-black py-12">
         <div className="container mx-auto px-4 text-center">
           <div className="flex justify-center items-center gap-2 mb-6">
-            <img src={logoAsset.url} alt="Cipher Project" className="w-5 h-5 object-contain" />
+            <img src={logoUrl} alt="Cipher Project" className="w-5 h-5 object-contain" />
             <span className="font-bold text-sm chrome-text uppercase tracking-widest">CIPHER PROJECT</span>
           </div>
           <div className="text-[9px] text-muted-foreground uppercase tracking-[0.4em] opacity-40">

@@ -8,10 +8,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
-import logoAsset from "@/assets/cipher-logo.png.asset.json";
+import { logoUrl, characterUrl, extensionIconUrl } from "@/lib/assets";
 import { supabase } from "@/integrations/supabase/client";
-import characterAsset from "@/assets/cipher-character-new.png.asset.json";
-import extensionIconAsset from "@/assets/extension-icon.png.asset.json";
 import { UserNav } from "@/components/auth/user-nav";
 
 
@@ -126,7 +124,7 @@ function Index() {
       <nav className="sticky top-0 z-50 glass border-b border-primary/20">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 group cursor-pointer">
-            <img src={logoAsset.url} alt="Cipher Project" className="w-8 h-8 object-contain" />
+            <img src={logoUrl} alt="Cipher Project" className="w-8 h-8 object-contain" />
             <span className="font-bold text-xl tracking-tighter chrome-text">CIPHER PROJECT</span>
           </div>
           
@@ -155,7 +153,7 @@ function Index() {
           <div className="mb-8 flex justify-center">
             <div className="relative">
               <div className="w-32 h-32 flex items-center justify-center group">
-                 <img src={logoAsset.url} alt="Cipher Project" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-[0_0_15px_rgba(139,47,232,0.5)]" />
+                 <img src={logoUrl} alt="Cipher Project" className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 drop-shadow-[0_0_15px_rgba(139,47,232,0.5)]" />
               </div>
               <div className="absolute -inset-4 border border-primary/10 rounded-full animate-[spin_10s_linear_infinite]" />
             </div>
@@ -339,7 +337,7 @@ function Index() {
                 
                 {/* Character Illustration */}
                 <img 
-                  src={characterAsset.url} 
+                  src={characterUrl} 
                   alt="Cipher Character" 
                   className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_20px_rgba(139,47,232,0.3)]"
                 />
@@ -376,7 +374,7 @@ function Index() {
                     <div className="absolute inset-0 bg-primary/20 rounded-full blur-[60px] opacity-40 mix-blend-screen" />
                     
                     <img 
-                      src={extensionIconAsset.url} 
+                      src={extensionIconUrl} 
                       alt="Extension Character" 
                       className="w-full h-full object-contain relative z-10 drop-shadow-[0_0_15px_rgba(139,47,232,0.4)] transition-transform duration-500 group-hover:scale-105"
                     />
@@ -449,7 +447,7 @@ function Index() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-12">
             <div className="flex items-center gap-2">
-              <img src={logoAsset.url} alt="Cipher Project" className="w-6 h-6 object-contain" />
+              <img src={logoUrl} alt="Cipher Project" className="w-6 h-6 object-contain" />
               <span className="font-bold text-lg chrome-text">CIPHER PROJECT</span>
             </div>
             <div className="flex gap-6">
