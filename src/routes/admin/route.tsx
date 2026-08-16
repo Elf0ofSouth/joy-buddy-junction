@@ -1,4 +1,10 @@
-import { createFileRoute, Outlet, redirect, useRouter } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useNavigate,
+  useRouterState,
+} from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/hooks/use-auth-store";
 import { supabase } from "@/integrations/supabase/client";
@@ -20,7 +26,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuthModal } from "@/hooks/use-auth-modal";
 import logoAsset from "@/assets/cipher-logo.png.asset.json";
 import {
   DropdownMenu,
@@ -31,32 +36,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+// A sessão do Supabase vive apenas no localStorage do navegador, então um guard em
+// `beforeLoad` roda no servidor durante o SSR sem sessão nenhuma e redireciona todo
+// mundo para "/". A verificação precisa acontecer no cliente. A segurança de verdade
+// está nas policies de RLS do banco (is_admin), não aqui.
 export const Route = createFileRoute("/admin")({
-  beforeLoad: async ({ location }) => {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
-      throw redirect({
-        to: "/",
-        search: {
-          redirect: location.href,
-        },
-      });
-    }
-
-    // Check if user is admin
-    const { data: profile } = await supabase
-      .from("user_profiles")
-      .select("is_admin")
-      .eq("id", session.user.id)
-      .single();
-
-    if (!profile?.is_admin) {
-      throw redirect({
-        to: "/",
-      });
-    }
-  },
   component: AdminLayout,
 });
 
@@ -68,20 +52,80 @@ const menuItems = [
   { id: "orders", label: "Pedidos", icon: <ShoppingBag className="w-4 h-4" />, path: "/admin/pedidos" },
   { id: "carts", label: "Carrinhos Abandonados", icon: <ShoppingCart className="w-4 h-4" />, path: "/admin/carrinhos-abandonados" },
   { id: "users", label: "Usuários", icon: <Users className="w-4 h-4" />, path: "/admin/usuarios" },
-];
+] as const;
+
+type AccessState = "checking" | "granted" | "denied";
+
+function useAdminGuard(): AccessState {
+  const [access, setAccess] = useState<AccessState>("checking");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function verify() {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        if (!cancelled) setAccess("denied");
+        return;
+      }
+
+      const { data: profile } = await supabase
+        .from("user_profiles")
+        .select("is_admin")
+        .eq("id", session.user.id)
+        .single();
+
+      if (cancelled) return;
+      setAccess(profile?.is_admin ? "granted" : "denied");
+    }
+
+    verify();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (access === "denied") navigate({ to: "/" });
+  }, [access, navigate]);
+
+  return access;
+}
+
+function AdminGate({ label }: { label: string }) {
+  return (
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4 font-mono">
+      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      <span className="text-[10px] font-black uppercase tracking-widest italic text-muted-foreground animate-pulse">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 function AdminLayout() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const { user, setUser } = useAuthStore();
-  const router = useRouter();
+  const navigate = useNavigate();
+  const access = useAdminGuard();
+
+  const activePath = useRouterState({ select: (s) => s.location.pathname });
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setUser(null);
-    window.location.href = "/";
+    navigate({ to: "/" });
   };
 
-  const activePath = router.state.location.pathname;
+  if (access !== "granted") {
+    return (
+      <AdminGate
+        label={access === "checking" ? "Verificando credenciais..." : "Acesso negado. Redirecionando..."}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-foreground selection:bg-primary selection:text-primary-foreground font-mono flex">
@@ -115,25 +159,27 @@ function AdminLayout() {
             return (
               <Button
                 key={item.id}
+                asChild
                 variant="ghost"
                 className={`w-full group rounded-2xl transition-all duration-300 px-4 py-6 relative flex items-center ${
                   isSidebarOpen ? "justify-start gap-4" : "justify-center"
                 } ${
-                  isActive 
-                    ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_20px_rgba(139,47,232,0.1)]" 
+                  isActive
+                    ? "bg-primary/20 text-primary border border-primary/30 shadow-[0_0_20px_rgba(139,47,232,0.1)]"
                     : "text-muted-foreground hover:text-foreground hover:bg-white/5 border border-transparent"
                 }`}
-                onClick={() => window.location.href = item.path}
               >
-                <span className={`${isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"} transition-colors`}>
-                  {item.icon}
-                </span>
-                {isSidebarOpen && (
-                  <span className="text-[11px] font-black uppercase tracking-widest italic">{item.label}</span>
-                )}
-                {isActive && isSidebarOpen && (
-                  <div className="absolute left-0 w-1 h-6 bg-primary rounded-full shadow-[0_0_10px_#8B2FE8]" />
-                )}
+                <Link to={item.path}>
+                  <span className={`${isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary"} transition-colors`}>
+                    {item.icon}
+                  </span>
+                  {isSidebarOpen && (
+                    <span className="text-[11px] font-black uppercase tracking-widest italic">{item.label}</span>
+                  )}
+                  {isActive && isSidebarOpen && (
+                    <div className="absolute left-0 w-1 h-6 bg-primary rounded-full shadow-[0_0_10px_#8B2FE8]" />
+                  )}
+                </Link>
               </Button>
             );
           })}
@@ -171,12 +217,14 @@ function AdminLayout() {
           </div>
 
           <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
+            <Button
+              asChild
+              variant="ghost"
               className="text-muted-foreground hover:text-primary gap-2 hidden lg:flex rounded-full text-[10px] font-black uppercase tracking-widest italic"
-              onClick={() => window.location.href = "/"}
             >
-              <ArrowLeft className="w-4 h-4" /> Voltar ao site
+              <Link to="/">
+                <ArrowLeft className="w-4 h-4" /> Voltar ao site
+              </Link>
             </Button>
             
             <div className="w-[1px] h-6 bg-primary/20 mx-2 hidden lg:block" />
