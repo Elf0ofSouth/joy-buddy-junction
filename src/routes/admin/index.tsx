@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { 
   TrendingUp, 
@@ -28,7 +28,15 @@ const fadeInUp = {
   transition: { duration: 0.5, ease: "easeOut" }
 };
 
-function StatCard({ label, value, icon, trend, trendValue, color = "primary" }: any) {
+/**
+ * `delta` e a variacao real em relacao a ontem. Quando nao existe comparacao
+ * que faca sentido (produtos ativos, pedidos pendentes) passamos `undefined` e
+ * o rodape do card simplesmente nao aparece -- antes havia numeros fixos
+ * escritos no codigo ("+12.5%", "+3") que nao vinham do banco.
+ */
+function StatCard({ label, value, icon, delta, deltaSufixo = "" }: any) {
+  const temDelta = typeof delta === "number" && Number.isFinite(delta);
+  const subiu = temDelta && delta >= 0;
   return (
     <motion.div 
       variants={fadeInUp}
@@ -45,15 +53,17 @@ function StatCard({ label, value, icon, trend, trendValue, color = "primary" }: 
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
-        <div className={`flex items-center gap-1 text-[10px] font-black italic px-2 py-0.5 rounded-full ${
-          trend === 'up' ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"
-        }`}>
-          {trend === 'up' ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
-          {trendValue}
+      {temDelta && (
+        <div className="flex items-center gap-2">
+          <div className={`flex items-center gap-1 text-[10px] font-black italic px-2 py-0.5 rounded-full ${
+            subiu ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"
+          }`}>
+            {subiu ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
+            {subiu ? "+" : ""}{deltaSufixo === "%" ? delta.toFixed(1) : delta}{deltaSufixo}
+          </div>
+          <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">vs ontem</span>
         </div>
-        <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">vs ontem</span>
-      </div>
+      )}
 
       <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-transparent via-primary/20 to-transparent group-hover:via-primary/40 transition-all" />
     </motion.div>
@@ -66,7 +76,9 @@ function AdminOverview() {
     ordersToday: 0,
     pendingOrders: 0,
     activeProducts: 0,
-    totalUsers: 0
+    totalUsers: 0,
+    deltaPedidos: undefined as number | undefined,
+    deltaVendas: undefined as number | undefined,
   });
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -98,16 +110,34 @@ function AdminOverview() {
           .limit(5)
       ]);
 
-      const totalRevenue = allOrders?.filter(o => o.status === 'completed').reduce((acc, o) => acc + o.total_price, 0) || 0;
-      const ordersToday = allOrders?.filter(o => new Date(o.created_at!) >= today).length || 0;
-      const pendingOrders = allOrders?.filter(o => o.status === 'pending').length || 0;
+      const ontem = new Date(today);
+      ontem.setDate(ontem.getDate() - 1);
+
+      const pedidos = allOrders ?? [];
+      const emitidoEm = (o: any) => new Date(o.created_at!);
+      const concluido = (o: any) => o.status === "completed";
+
+      const totalRevenue = pedidos.filter(concluido).reduce((acc, o) => acc + o.total_price, 0);
+      const ordersToday = pedidos.filter((o) => emitidoEm(o) >= today).length;
+      const ordersOntem = pedidos.filter((o) => emitidoEm(o) >= ontem && emitidoEm(o) < today).length;
+      const pendingOrders = pedidos.filter((o) => o.status === "pending").length;
+
+      const vendasHoje = pedidos
+        .filter((o) => concluido(o) && emitidoEm(o) >= today)
+        .reduce((acc, o) => acc + o.total_price, 0);
+      const vendasOntem = pedidos
+        .filter((o) => concluido(o) && emitidoEm(o) >= ontem && emitidoEm(o) < today)
+        .reduce((acc, o) => acc + o.total_price, 0);
 
       setStats({
         totalSales: `R$ ${totalRevenue.toFixed(2)}`,
         ordersToday,
         pendingOrders,
         activeProducts: productsCount || 0,
-        totalUsers: usersCount || 0
+        totalUsers: usersCount || 0,
+        deltaPedidos: ordersToday - ordersOntem,
+        // Sem faturamento ontem nao existe base de comparacao percentual.
+        deltaVendas: vendasOntem > 0 ? ((vendasHoje - vendasOntem) / vendasOntem) * 100 : undefined,
       });
 
       setRecentOrders(recentOrdersData || []);
@@ -144,40 +174,33 @@ function AdminOverview() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-        <StatCard 
-          label="Total de Vendas" 
-          value={stats.totalSales} 
+        <StatCard
+          label="Total de Vendas"
+          value={stats.totalSales}
           icon={<TrendingUp className="w-6 h-6" />}
-          trend="up"
-          trendValue="+12.5%"
+          delta={stats.deltaVendas}
+          deltaSufixo="%"
         />
-        <StatCard 
-          label="Pedidos Hoje" 
-          value={stats.ordersToday} 
+        <StatCard
+          label="Pedidos Hoje"
+          value={stats.ordersToday}
           icon={<ShoppingBag className="w-6 h-6" />}
-          trend="up"
-          trendValue="+3"
+          delta={stats.deltaPedidos}
         />
-        <StatCard 
-          label="Pedidos Pendentes" 
-          value={stats.pendingOrders} 
+        <StatCard
+          label="Pedidos Pendentes"
+          value={stats.pendingOrders}
           icon={<Clock className="w-6 h-6" />}
-          trend="down"
-          trendValue="-2"
         />
-        <StatCard 
-          label="Produtos Ativos" 
-          value={stats.activeProducts} 
+        <StatCard
+          label="Produtos Ativos"
+          value={stats.activeProducts}
           icon={<Package className="w-6 h-6" />}
-          trend="up"
-          trendValue="+1"
         />
-        <StatCard 
-          label="Usuários" 
-          value={stats.totalUsers} 
+        <StatCard
+          label="Usuários"
+          value={stats.totalUsers}
           icon={<Users className="w-6 h-6" />}
-          trend="up"
-          trendValue="+4"
         />
       </div>
 
@@ -193,8 +216,10 @@ function AdminOverview() {
                <div className="w-1.5 h-4 bg-primary rounded-full shadow-[0_0_10px_#8B2FE8]" />
                <h2 className="text-sm font-black uppercase tracking-[0.2em] italic text-white">Últimos Pedidos</h2>
             </div>
-            <Button variant="ghost" size="sm" className="text-[9px] font-black uppercase tracking-widest italic text-primary hover:bg-primary/5">
-              Ver tudo <ChevronRight className="w-3 h-3 ml-1" />
+            <Button asChild variant="ghost" size="sm" className="text-[9px] font-black uppercase tracking-widest italic text-primary hover:bg-primary/5">
+              <Link to="/admin/pedidos">
+                Ver tudo <ChevronRight className="w-3 h-3 ml-1" />
+              </Link>
             </Button>
           </div>
 

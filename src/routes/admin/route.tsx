@@ -8,13 +8,11 @@ import {
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/hooks/use-auth-store";
 import { supabase } from "@/integrations/supabase/client";
-import { 
-  LayoutDashboard, 
-  Package, 
-  Database, 
-  Image as ImageIcon, 
-  ShoppingBag, 
-  ShoppingCart, 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingBag,
+  ShoppingCart,
   Users,
   ArrowLeft,
   Menu,
@@ -44,11 +42,11 @@ export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
+// Banners e Estoque foram absorvidos pela aba Produtos: banner, desconto,
+// entrega e chaves de estoque agora sao configurados no proprio produto.
 const menuItems = [
   { id: "overview", label: "Visão Geral", icon: <LayoutDashboard className="w-4 h-4" />, path: "/admin" },
   { id: "products", label: "Produtos", icon: <Package className="w-4 h-4" />, path: "/admin/produtos" },
-  { id: "inventory", label: "Estoque", icon: <Database className="w-4 h-4" />, path: "/admin/estoque" },
-  { id: "banners", label: "Banners", icon: <ImageIcon className="w-4 h-4" />, path: "/admin/banners" },
   { id: "orders", label: "Pedidos", icon: <ShoppingBag className="w-4 h-4" />, path: "/admin/pedidos" },
   { id: "carts", label: "Carrinhos Abandonados", icon: <ShoppingCart className="w-4 h-4" />, path: "/admin/carrinhos-abandonados" },
   { id: "users", label: "Usuários", icon: <Users className="w-4 h-4" />, path: "/admin/usuarios" },

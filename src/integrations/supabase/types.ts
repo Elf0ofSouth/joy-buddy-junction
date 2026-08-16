@@ -96,34 +96,52 @@ export type Database = {
       }
       products: {
         Row: {
+          banner_url: string | null
           category: string | null
           created_at: string | null
+          delivery_type: string
           description: string | null
+          discount_percent: number
           icon: string | null
           id: string
+          image_url: string | null
           is_available: boolean | null
           name: string
           price_brl: number
+          purchase_count: number | null
+          updated_at: string | null
         }
         Insert: {
+          banner_url?: string | null
           category?: string | null
           created_at?: string | null
+          delivery_type?: string
           description?: string | null
+          discount_percent?: number
           icon?: string | null
           id?: string
+          image_url?: string | null
           is_available?: boolean | null
           name: string
           price_brl: number
+          purchase_count?: number | null
+          updated_at?: string | null
         }
         Update: {
+          banner_url?: string | null
           category?: string | null
           created_at?: string | null
+          delivery_type?: string
           description?: string | null
+          discount_percent?: number
           icon?: string | null
           id?: string
+          image_url?: string | null
           is_available?: boolean | null
           name?: string
           price_brl?: number
+          purchase_count?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }

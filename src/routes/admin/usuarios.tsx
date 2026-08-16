@@ -18,6 +18,13 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -37,6 +44,25 @@ function AdminUsers() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [adminToggleUser, setAdminToggleUser] = useState<any | null>(null);
+  const [historicoDe, setHistoricoDe] = useState<any | null>(null);
+  const [historico, setHistorico] = useState<any[]>([]);
+  const [carregandoHistorico, setCarregandoHistorico] = useState(false);
+
+  const abrirHistorico = async (usuario: any) => {
+    setHistoricoDe(usuario);
+    setCarregandoHistorico(true);
+    setHistorico([]);
+
+    const { data, error } = await supabase
+      .from("orders")
+      .select("id, total_price, status, created_at, products(name)")
+      .eq("user_id", usuario.id)
+      .order("created_at", { ascending: false });
+
+    if (error) toast.error(`Erro ao carregar histórico: ${error.message}`);
+    else setHistorico(data ?? []);
+    setCarregandoHistorico(false);
+  };
 
   const fetchUsers = async () => {
     setLoading(true);
@@ -168,7 +194,13 @@ function AdminUsers() {
                         >
                           {u.is_admin ? <ShieldAlert className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
                         </Button>
-                        <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary rounded-xl" title="Histórico de Pedidos">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground hover:text-primary rounded-xl"
+                          title="Histórico de Pedidos"
+                          onClick={() => abrirHistorico(u)}
+                        >
                           <History className="w-4 h-4" />
                         </Button>
                       </div>
@@ -214,6 +246,60 @@ function AdminUsers() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={!!historicoDe} onOpenChange={(o) => !o && setHistoricoDe(null)}>
+        <DialogContent className="glass border-primary/20 bg-black/95 rounded-3xl max-w-2xl max-h-[85vh] overflow-y-auto no-scrollbar">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-black chrome-text italic uppercase tracking-tighter">
+              Histórico — {historicoDe?.username || "Usuário"}
+            </DialogTitle>
+            <DialogDescription className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest italic">
+              Todos os pedidos registrados para esta conta.
+            </DialogDescription>
+          </DialogHeader>
+
+          {carregandoHistorico ? (
+            <div className="p-12 flex justify-center">
+              <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : historico.length === 0 ? (
+            <p className="p-12 text-center text-[10px] font-bold uppercase tracking-widest italic text-muted-foreground opacity-50">
+              Nenhum pedido encontrado
+            </p>
+          ) : (
+            <table className="w-full text-left">
+              <tbody>
+                {historico.map((o) => (
+                  <tr key={o.id} className="border-b border-primary/5">
+                    <td className="px-2 py-3 text-[10px] font-bold text-white uppercase tracking-wider">
+                      {o.products?.name || "Item digital"}
+                    </td>
+                    <td className="px-2 py-3 text-[10px] font-black text-primary italic">
+                      R$ {(o.total_price ?? 0).toFixed(2)}
+                    </td>
+                    <td className="px-2 py-3">
+                      <Badge
+                        className={`text-[8px] font-black tracking-widest px-2 py-0.5 rounded-full uppercase italic border-none ${
+                          o.status === "completed"
+                            ? "bg-green-500/10 text-green-500"
+                            : o.status === "pending"
+                              ? "bg-yellow-500/10 text-yellow-500"
+                              : "bg-red-500/10 text-red-500"
+                        }`}
+                      >
+                        {o.status === "completed" ? "Finalizado" : o.status === "pending" ? "Pendente" : "Cancelado"}
+                      </Badge>
+                    </td>
+                    <td className="px-2 py-3 text-[9px] text-muted-foreground font-bold tracking-widest italic text-right">
+                      {o.created_at ? new Date(o.created_at).toLocaleDateString("pt-BR") : "—"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

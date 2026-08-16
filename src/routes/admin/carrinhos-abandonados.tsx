@@ -145,11 +145,16 @@ function AdminAbandonedCarts() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Button 
-                          variant="ghost" 
-                          size="icon" 
+                        <Button
+                          variant="ghost"
+                          size="icon"
                           className="text-muted-foreground hover:text-primary rounded-xl"
-                          title="Tentar Contato"
+                          title={c.user_profiles?.discord_id ? "Copiar Discord ID para contato" : "Sem Discord ID cadastrado"}
+                          disabled={!c.user_profiles?.discord_id}
+                          onClick={() => {
+                            navigator.clipboard.writeText(c.user_profiles.discord_id);
+                            toast.success(`Discord ID copiado: ${c.user_profiles.discord_id}`);
+                          }}
                         >
                           <MessageSquare className="w-4 h-4" />
                         </Button>
