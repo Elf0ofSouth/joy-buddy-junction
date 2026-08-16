@@ -236,11 +236,11 @@ function AdminProducts() {
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
                           <span className="text-[10px] font-black text-primary italic">
-                            {formatarBRL(precoComDesconto(p.price_brl, desconto))}
+                            {formatarBRL(precoComDesconto(p.price, desconto))}
                           </span>
                           {desconto > 0 && (
                             <span className="text-[8px] font-bold text-muted-foreground line-through italic mt-0.5">
-                              {formatarBRL(p.price_brl)} · -{desconto}%
+                              {formatarBRL(p.price)} · -{desconto}%
                             </span>
                           )}
                         </div>

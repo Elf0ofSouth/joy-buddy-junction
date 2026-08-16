@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { buscarPedidos } from "@/lib/pedidos";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -40,24 +41,12 @@ function AdminOrders() {
 
   const fetchOrders = async () => {
     setLoading(true);
-    let query = supabase
-      .from("orders")
-      .select(`
-        *,
-        user_profiles(username, avatar_url, discord_id),
-        products(name, price_brl)
-      `)
-      .order("created_at", { ascending: false });
-
-    if (statusFilter !== "all") {
-      query = query.eq("status", statusFilter);
-    }
-
-    const { data, error } = await query;
-    if (error) {
-      toast.error("Erro ao carregar pedidos");
+    const { pedidos, erro } = await buscarPedidos({ status: statusFilter });
+    if (erro) {
+      toast.error(`Erro ao carregar pedidos: ${erro}`);
+      setOrders([]);
     } else {
-      setOrders(data || []);
+      setOrders(pedidos);
     }
     setLoading(false);
   };
@@ -94,7 +83,7 @@ function AdminOrders() {
       o.id,
       o.user_profiles?.username || "N/A",
       o.products?.name || "N/A",
-      o.total_price.toFixed(2),
+      o.amount.toFixed(2),
       o.status,
       new Date(o.created_at).toLocaleDateString('pt-BR')
     ]);
@@ -202,7 +191,7 @@ function AdminOrders() {
                       <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest italic">{o.products?.name || "Item Digital"}</span>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="text-[10px] font-black text-primary italic">R$ {o.total_price.toFixed(2)}</span>
+                      <span className="text-[10px] font-black text-primary italic">R$ {o.amount.toFixed(2)}</span>
                     </td>
                     <td className="px-6 py-4">
                       <Badge className={`text-[8px] font-black tracking-widest px-2 py-0.5 rounded-full uppercase italic border-none ${
@@ -303,12 +292,12 @@ function AdminOrders() {
                     <div className="p-4 bg-white/[0.02] border border-primary/5 rounded-2xl space-y-4">
                       <div className="flex justify-between items-center">
                         <span className="text-[10px] font-bold text-muted-foreground uppercase italic">{selectedOrder.products?.name}</span>
-                        <span className="text-[10px] font-black text-white italic">R$ {selectedOrder.total_price.toFixed(2)}</span>
+                        <span className="text-[10px] font-black text-white italic">R$ {selectedOrder.amount.toFixed(2)}</span>
                       </div>
                       <div className="h-[1px] bg-primary/10" />
                       <div className="flex justify-between items-center">
                         <span className="text-[11px] font-black text-primary uppercase italic">Total</span>
-                        <span className="text-[11px] font-black text-primary italic">R$ {selectedOrder.total_price.toFixed(2)}</span>
+                        <span className="text-[11px] font-black text-primary italic">R$ {selectedOrder.amount.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>

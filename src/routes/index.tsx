@@ -73,32 +73,32 @@ function Index() {
 
       try {
         // Attempt to fetch real orders if they exist
-        const { data: realOrders } = await supabase
-          .from('orders')
-          .select(`
-            total_price,
-            user_id,
-            user_profiles (
-              username,
-              avatar_url
-            )
-          `);
-        
+        // Sem join embutido: este banco nao tem a foreign key orders -> user_profiles
+        // que o PostgREST exigiria para `user_profiles(...)`.
+        const [{ data: realOrders }, { data: perfis }] = await Promise.all([
+          supabase.from('orders').select('amount, user_id, status'),
+          supabase.from('user_profiles').select('id, username, avatar_url'),
+        ]);
+
+        const porId = new Map((perfis ?? []).map((u) => [u.id, u]));
+
         if (realOrders && realOrders.length > 0) {
           // Aggregate spent amount per user
           const aggregated = realOrders.reduce((acc: any, order: any) => {
             const userId = order.user_id;
-            if (!userId || !order.user_profiles) return acc;
-            
+            const perfil = userId ? porId.get(userId) : undefined;
+            // Só compra concluída conta para o ranking.
+            if (!userId || !perfil || order.status !== 'completed') return acc;
+
             if (!acc[userId]) {
               acc[userId] = {
                 id: userId,
-                username: order.user_profiles.username,
-                avatar_url: order.user_profiles.avatar_url,
+                username: perfil.username,
+                avatar_url: perfil.avatar_url,
                 total_spent: 0
               };
             }
-            acc[userId].total_spent += order.total_price;
+            acc[userId].total_spent += order.amount ?? 0;
             return acc;
           }, {});
 

@@ -76,7 +76,9 @@ function Store() {
   useEffect(() => {
     async function fetchProducts() {
       setLoading(true);
-      let query = supabase.from("products").select("*");
+      // A policy publica de SELECT nao filtra por is_available, entao o filtro
+      // precisa vir na consulta -- sem isso, produto inativo apareceria na loja.
+      let query = supabase.from("products").select("*").eq("is_available", true);
 
       if (activeCategory !== "all") {
         // `ilike` sem curinga = igualdade sem diferenciar maiuscula/minuscula.
@@ -104,9 +106,9 @@ function Store() {
         );
 
         if (sortBy === "price_asc") {
-          filtered.sort((a, b) => a.price_brl - b.price_brl);
+          filtered.sort((a, b) => a.price - b.price);
         } else if (sortBy === "price_desc") {
-          filtered.sort((a, b) => b.price_brl - a.price_brl);
+          filtered.sort((a, b) => b.price - a.price);
         } else if (sortBy === "recent") {
           filtered.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
         }
@@ -340,11 +342,11 @@ function Store() {
                           <span className="text-[9px] text-primary font-black uppercase tracking-[0.2em] italic mb-1">Preço // CIPHER</span>
                           <div className="flex items-baseline gap-2">
                             <span className="text-2xl font-black text-white italic tracking-tighter group-hover:chrome-text transition-all">
-                              {formatarBRL(precoComDesconto(product.price_brl, product.discount_percent ?? 0))}
+                              {formatarBRL(precoComDesconto(product.price, product.discount_percent ?? 0))}
                             </span>
                             {(product.discount_percent ?? 0) > 0 && (
                               <span className="text-[10px] font-bold text-muted-foreground line-through italic">
-                                {formatarBRL(product.price_brl)}
+                                {formatarBRL(product.price)}
                               </span>
                             )}
                           </div>

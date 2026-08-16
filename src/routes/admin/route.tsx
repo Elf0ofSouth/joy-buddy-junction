@@ -12,7 +12,6 @@ import {
   LayoutDashboard,
   Package,
   ShoppingBag,
-  ShoppingCart,
   Users,
   ArrowLeft,
   Menu,
@@ -48,7 +47,6 @@ const menuItems = [
   { id: "overview", label: "Visão Geral", icon: <LayoutDashboard className="w-4 h-4" />, path: "/admin" },
   { id: "products", label: "Produtos", icon: <Package className="w-4 h-4" />, path: "/admin/produtos" },
   { id: "orders", label: "Pedidos", icon: <ShoppingBag className="w-4 h-4" />, path: "/admin/pedidos" },
-  { id: "carts", label: "Carrinhos Abandonados", icon: <ShoppingCart className="w-4 h-4" />, path: "/admin/carrinhos-abandonados" },
   { id: "users", label: "Usuários", icon: <Users className="w-4 h-4" />, path: "/admin/usuarios" },
 ] as const;
 

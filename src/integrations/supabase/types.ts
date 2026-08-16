@@ -1,3 +1,5 @@
+// Espelha o schema real do banco (conferido via information_schema em
+// 2026-08-16). As migrations antigas do repositorio nao descrevem este banco.
 export type Json =
   | string
   | number
@@ -14,85 +16,32 @@ export type Database = {
   }
   public: {
     Tables: {
-      banners: {
-        Row: {
-          created_at: string | null
-          end_date: string | null
-          id: string
-          image_url: string
-          is_active: boolean | null
-          link_url: string | null
-          sort_order: number | null
-          start_date: string | null
-          subtitle: string | null
-          title: string
-          updated_at: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          end_date?: string | null
-          id?: string
-          image_url: string
-          is_active?: boolean | null
-          link_url?: string | null
-          sort_order?: number | null
-          start_date?: string | null
-          subtitle?: string | null
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          end_date?: string | null
-          id?: string
-          image_url?: string
-          is_active?: boolean | null
-          link_url?: string | null
-          sort_order?: number | null
-          start_date?: string | null
-          subtitle?: string | null
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       orders: {
         Row: {
+          amount: number
           created_at: string | null
           id: string
-          pix_code: string | null
           product_id: string | null
           status: string | null
-          total_price: number
           user_id: string | null
         }
         Insert: {
+          amount: number
           created_at?: string | null
           id?: string
-          pix_code?: string | null
           product_id?: string | null
           status?: string | null
-          total_price: number
           user_id?: string | null
         }
         Update: {
+          amount?: number
           created_at?: string | null
           id?: string
-          pix_code?: string | null
           product_id?: string | null
           status?: string | null
-          total_price?: number
           user_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "orders_product_id_fkey"
-            columns: ["product_id"]
-            isOneToOne: false
-            referencedRelation: "products"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       products: {
         Row: {
@@ -102,12 +51,11 @@ export type Database = {
           delivery_type: string
           description: string | null
           discount_percent: number
-          icon: string | null
           id: string
           image_url: string | null
-          is_available: boolean | null
+          is_available: boolean
           name: string
-          price_brl: number
+          price: number
           purchase_count: number | null
           updated_at: string | null
         }
@@ -118,12 +66,11 @@ export type Database = {
           delivery_type?: string
           description?: string | null
           discount_percent?: number
-          icon?: string | null
           id?: string
           image_url?: string | null
-          is_available?: boolean | null
+          is_available?: boolean
           name: string
-          price_brl: number
+          price: number
           purchase_count?: number | null
           updated_at?: string | null
         }
@@ -134,12 +81,11 @@ export type Database = {
           delivery_type?: string
           description?: string | null
           discount_percent?: number
-          icon?: string | null
           id?: string
           image_url?: string | null
-          is_available?: boolean | null
+          is_available?: boolean
           name?: string
-          price_brl?: number
+          price?: number
           purchase_count?: number | null
           updated_at?: string | null
         }
@@ -153,7 +99,7 @@ export type Database = {
           order_id: string | null
           product_id: string
           sold_at: string | null
-          status: string | null
+          status: string
         }
         Insert: {
           content: string
@@ -162,7 +108,7 @@ export type Database = {
           order_id?: string | null
           product_id: string
           sold_at?: string | null
-          status?: string | null
+          status?: string
         }
         Update: {
           content?: string
@@ -171,16 +117,9 @@ export type Database = {
           order_id?: string | null
           product_id?: string
           sold_at?: string | null
-          status?: string | null
+          status?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "stock_items_order_id_fkey"
-            columns: ["order_id"]
-            isOneToOne: false
-            referencedRelation: "orders"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "stock_items_product_id_fkey"
             columns: ["product_id"]
@@ -197,6 +136,7 @@ export type Database = {
           discord_id: string | null
           id: string
           is_admin: boolean | null
+          total_spent: number | null
           username: string | null
         }
         Insert: {
@@ -205,6 +145,7 @@ export type Database = {
           discord_id?: string | null
           id: string
           is_admin?: boolean | null
+          total_spent?: number | null
           username?: string | null
         }
         Update: {
@@ -213,25 +154,8 @@ export type Database = {
           discord_id?: string | null
           id?: string
           is_admin?: boolean | null
+          total_spent?: number | null
           username?: string | null
-        }
-        Relationships: []
-      }
-      user_roles: {
-        Row: {
-          id: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          role: Database["public"]["Enums"]["app_role"]
-          user_id: string
-        }
-        Update: {
-          id?: string
-          role?: Database["public"]["Enums"]["app_role"]
-          user_id?: string
         }
         Relationships: []
       }
@@ -240,10 +164,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      has_role: { Args: { _role: string; _user_id: string }; Returns: boolean }
+      current_user_is_admin: { Args: Record<string, never>; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never

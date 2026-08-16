@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
+import { buscarPedidos } from "@/lib/pedidos";
 import {
   Dialog,
   DialogContent,
@@ -53,14 +54,10 @@ function AdminUsers() {
     setCarregandoHistorico(true);
     setHistorico([]);
 
-    const { data, error } = await supabase
-      .from("orders")
-      .select("id, total_price, status, created_at, products(name)")
-      .eq("user_id", usuario.id)
-      .order("created_at", { ascending: false });
+    const { pedidos, erro } = await buscarPedidos({ userId: usuario.id });
 
-    if (error) toast.error(`Erro ao carregar histórico: ${error.message}`);
-    else setHistorico(data ?? []);
+    if (erro) toast.error(`Erro ao carregar histórico: ${erro}`);
+    else setHistorico(pedidos);
     setCarregandoHistorico(false);
   };
 
@@ -275,7 +272,7 @@ function AdminUsers() {
                       {o.products?.name || "Item digital"}
                     </td>
                     <td className="px-2 py-3 text-[10px] font-black text-primary italic">
-                      R$ {(o.total_price ?? 0).toFixed(2)}
+                      R$ {(o.amount ?? 0).toFixed(2)}
                     </td>
                     <td className="px-2 py-3">
                       <Badge

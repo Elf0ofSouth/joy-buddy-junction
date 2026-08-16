@@ -28,10 +28,9 @@ export type ProdutoRow = {
   name: string;
   description: string | null;
   category: string | null;
-  icon: string | null;
   image_url: string | null;
   banner_url: string | null;
-  price_brl: number;
+  price: number;
   discount_percent: number | null;
   delivery_type: string | null;
   is_available: boolean | null;
@@ -41,10 +40,9 @@ type FormState = {
   name: string;
   description: string;
   category: string;
-  icon: string;
   image_url: string;
   banner_url: string;
-  price_brl: string;
+  price: string;
   discount_percent: string;
   delivery_type: TipoEntrega;
   is_available: boolean;
@@ -55,10 +53,9 @@ const VAZIO: FormState = {
   name: "",
   description: "",
   category: "discord",
-  icon: "",
   image_url: "",
   banner_url: "",
-  price_brl: "",
+  price: "",
   discount_percent: "0",
   delivery_type: "manual",
   is_available: true,
@@ -70,10 +67,9 @@ function paraFormulario(p: ProdutoRow): FormState {
     name: p.name ?? "",
     description: p.description ?? "",
     category: p.category ?? "perk",
-    icon: p.icon ?? "",
     image_url: p.image_url ?? "",
     banner_url: p.banner_url ?? "",
-    price_brl: String(p.price_brl ?? ""),
+    price: String(p.price ?? ""),
     discount_percent: String(p.discount_percent ?? 0),
     delivery_type: p.delivery_type === "automatic" ? "automatic" : "manual",
     is_available: p.is_available ?? true,
@@ -128,7 +124,7 @@ export function ProductDialog({
   const set = <K extends keyof FormState>(chave: K, valor: FormState[K]) =>
     setForm((f) => ({ ...f, [chave]: valor }));
 
-  const preco = Number(form.price_brl) || 0;
+  const preco = Number(form.price) || 0;
   const desconto = Number(form.discount_percent) || 0;
   const precoFinal = precoComDesconto(preco, desconto);
 
@@ -142,7 +138,7 @@ export function ProductDialog({
       toast.error("Informe o nome do produto");
       return;
     }
-    if (!form.price_brl.trim() || Number.isNaN(preco) || preco < 0) {
+    if (!form.price.trim() || Number.isNaN(preco) || preco < 0) {
       toast.error("Informe um preço válido");
       return;
     }
@@ -157,10 +153,9 @@ export function ProductDialog({
       name: form.name.trim(),
       description: form.description.trim() || null,
       category: form.category.trim() || "others",
-      icon: form.icon.trim() || null,
       image_url: form.image_url.trim() || null,
       banner_url: form.banner_url.trim() || null,
-      price_brl: preco,
+      price: preco,
       discount_percent: Math.round(desconto),
       delivery_type: form.delivery_type,
       is_available: form.is_available,
@@ -249,7 +244,7 @@ export function ProductDialog({
                 className="bg-white/5 border-primary/20 rounded-xl min-h-[90px] text-[11px] p-4"
               />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div className="space-y-2">
                 <label className={rotulo}>Categoria</label>
                 <Select value={form.category} onValueChange={(v) => set("category", v)}>
@@ -281,15 +276,6 @@ export function ProductDialog({
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <label className={rotulo}>Ícone</label>
-                <Input
-                  value={form.icon}
-                  onChange={(e) => set("icon", e.target.value)}
-                  placeholder="Shield"
-                  className={campo}
-                />
-              </div>
             </div>
           </Secao>
 
@@ -301,8 +287,8 @@ export function ProductDialog({
                   type="number"
                   min="0"
                   step="0.01"
-                  value={form.price_brl}
-                  onChange={(e) => set("price_brl", e.target.value)}
+                  value={form.price}
+                  onChange={(e) => set("price", e.target.value)}
                   placeholder="15.00"
                   className={campo}
                 />

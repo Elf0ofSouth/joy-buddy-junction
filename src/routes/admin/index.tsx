@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { buscarPedidos, type PedidoEnriquecido } from "@/lib/pedidos";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,7 +25,7 @@ export const Route = createFileRoute("/admin/")({
 });
 
 type PedidoResumo = {
-  total_price: number | null;
+  amount: number | null;
   status: string | null;
   created_at: string | null;
   products: { name: string | null } | null;
@@ -106,32 +108,32 @@ function AdminOverview() {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      const [
-        { data: allOrders },
-        { count: productsCount },
-        { count: usersCount },
-        { data: recentOrdersData }
-      ] = await Promise.all([
-        supabase.from("orders").select("total_price, status, created_at, products(name)"),
-        supabase.from("products").select("id", { count: "exact", head: true }).eq("is_available", true),
-        supabase.from("user_profiles").select("id", { count: "exact", head: true }),
-        supabase.from("orders")
-          .select(`
-            *,
-            user_profiles(username, avatar_url),
-            products(name)
-          `)
-          .order("created_at", { ascending: false })
-          .limit(5)
-      ]);
+      const [{ pedidos: todosPedidos, erro }, { count: productsCount }, { count: usersCount }] =
+        await Promise.all([
+          buscarPedidos(),
+          supabase
+            .from("products")
+            .select("id", { count: "exact", head: true })
+            .eq("is_available", true),
+          supabase.from("user_profiles").select("id", { count: "exact", head: true }),
+        ]);
+
+      if (erro) {
+        toast.error(`Erro ao carregar o painel: ${erro}`);
+        setLoading(false);
+        return;
+      }
+
+      const allOrders = todosPedidos;
+      const recentOrdersData = todosPedidos.slice(0, 5);
 
       const ontem = new Date(today);
       ontem.setDate(ontem.getDate() - 1);
 
-      const pedidos = (allOrders ?? []) as PedidoResumo[];
-      const emitidoEm = (o: PedidoResumo) => new Date(o.created_at ?? 0);
-      const concluido = (o: PedidoResumo) => o.status === "completed";
-      const somar = (lista: PedidoResumo[]) => lista.reduce((acc, o) => acc + (o.total_price ?? 0), 0);
+      const pedidos = allOrders;
+      const emitidoEm = (o: PedidoEnriquecido) => new Date(o.created_at ?? 0);
+      const concluido = (o: PedidoEnriquecido) => o.status === "completed";
+      const somar = (lista: PedidoEnriquecido[]) => lista.reduce((acc, o) => acc + (o.amount ?? 0), 0);
 
       const totalRevenue = somar(pedidos.filter(concluido));
       const ordersToday = pedidos.filter((o) => emitidoEm(o) >= today).length;
@@ -317,7 +319,7 @@ function AdminOverview() {
                              <span className="text-[10px] font-medium text-muted-foreground uppercase tracking-widest">{order.products?.name || "Item Digital"}</span>
                           </td>
                           <td className="px-6 py-4">
-                             <span className="text-[10px] font-black text-primary italic">R$ {order.total_price.toFixed(2)}</span>
+                             <span className="text-[10px] font-black text-primary italic">R$ {order.amount.toFixed(2)}</span>
                           </td>
                           <td className="px-6 py-4">
                              <Badge variant="outline" className={`text-[8px] font-black tracking-widest px-2 py-0.5 rounded-full uppercase italic border-none ${
