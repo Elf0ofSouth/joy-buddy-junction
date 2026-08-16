@@ -10,7 +10,7 @@ import {
   ArrowDownRight,
   ChevronRight,
   Calendar,
-  CreditCard
+  MessageCircle
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -21,6 +21,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 export const Route = createFileRoute("/admin/")({
   component: AdminOverview,
 });
+
+type PedidoResumo = {
+  total_price: number | null;
+  status: string | null;
+  created_at: string | null;
+  products: { name: string | null } | null;
+};
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -82,6 +89,14 @@ function AdminOverview() {
   });
   const [recentOrders, setRecentOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [rendimento, setRendimento] = useState({
+    hoje: 0,
+    semana: 0,
+    mes: 0,
+    ticketMedio: 0,
+    serie: [] as { dia: string; total: number }[],
+    topProduto: null as { nome: string; quantidade: number } | null,
+  });
 
   useEffect(() => {
     async function fetchDashboardData() {
@@ -97,7 +112,7 @@ function AdminOverview() {
         { count: usersCount },
         { data: recentOrdersData }
       ] = await Promise.all([
-        supabase.from("orders").select("total_price, status, created_at"),
+        supabase.from("orders").select("total_price, status, created_at, products(name)"),
         supabase.from("products").select("id", { count: "exact", head: true }).eq("is_available", true),
         supabase.from("user_profiles").select("id", { count: "exact", head: true }),
         supabase.from("orders")
@@ -113,21 +128,20 @@ function AdminOverview() {
       const ontem = new Date(today);
       ontem.setDate(ontem.getDate() - 1);
 
-      const pedidos = allOrders ?? [];
-      const emitidoEm = (o: any) => new Date(o.created_at!);
-      const concluido = (o: any) => o.status === "completed";
+      const pedidos = (allOrders ?? []) as PedidoResumo[];
+      const emitidoEm = (o: PedidoResumo) => new Date(o.created_at ?? 0);
+      const concluido = (o: PedidoResumo) => o.status === "completed";
+      const somar = (lista: PedidoResumo[]) => lista.reduce((acc, o) => acc + (o.total_price ?? 0), 0);
 
-      const totalRevenue = pedidos.filter(concluido).reduce((acc, o) => acc + o.total_price, 0);
+      const totalRevenue = somar(pedidos.filter(concluido));
       const ordersToday = pedidos.filter((o) => emitidoEm(o) >= today).length;
       const ordersOntem = pedidos.filter((o) => emitidoEm(o) >= ontem && emitidoEm(o) < today).length;
       const pendingOrders = pedidos.filter((o) => o.status === "pending").length;
 
-      const vendasHoje = pedidos
-        .filter((o) => concluido(o) && emitidoEm(o) >= today)
-        .reduce((acc, o) => acc + o.total_price, 0);
-      const vendasOntem = pedidos
-        .filter((o) => concluido(o) && emitidoEm(o) >= ontem && emitidoEm(o) < today)
-        .reduce((acc, o) => acc + o.total_price, 0);
+      const vendasHoje = somar(pedidos.filter((o) => concluido(o) && emitidoEm(o) >= today));
+      const vendasOntem = somar(
+        pedidos.filter((o) => concluido(o) && emitidoEm(o) >= ontem && emitidoEm(o) < today),
+      );
 
       setStats({
         totalSales: `R$ ${totalRevenue.toFixed(2)}`,
@@ -138,6 +152,46 @@ function AdminOverview() {
         deltaPedidos: ordersToday - ordersOntem,
         // Sem faturamento ontem nao existe base de comparacao percentual.
         deltaVendas: vendasOntem > 0 ? ((vendasHoje - vendasOntem) / vendasOntem) * 100 : undefined,
+      });
+
+      // --- Rendimento -------------------------------------------------------
+      // So pedido concluido conta como faturamento; pendente e cancelado nao.
+      const vendas = pedidos.filter(concluido);
+      const desde = (dias: number) => {
+        const d = new Date(today);
+        d.setDate(d.getDate() - dias);
+        return d;
+      };
+
+      const vendas7 = vendas.filter((o) => emitidoEm(o) >= desde(6));
+      const vendas30 = vendas.filter((o) => emitidoEm(o) >= desde(29));
+
+      // Sete baldes diarios, do mais antigo para hoje.
+      const serie: { dia: string; total: number }[] = [];
+      for (let i = 6; i >= 0; i--) {
+        const inicio = desde(i);
+        const fim = new Date(inicio);
+        fim.setDate(fim.getDate() + 1);
+        serie.push({
+          dia: inicio.toLocaleDateString("pt-BR", { weekday: "short" }).slice(0, 3),
+          total: somar(vendas.filter((o) => emitidoEm(o) >= inicio && emitidoEm(o) < fim)),
+        });
+      }
+
+      const porProduto = new Map<string, number>();
+      for (const o of vendas30) {
+        const nome = o.products?.name ?? "Item digital";
+        porProduto.set(nome, (porProduto.get(nome) ?? 0) + 1);
+      }
+      const top = [...porProduto.entries()].sort((a, b) => b[1] - a[1])[0];
+
+      setRendimento({
+        hoje: vendasHoje,
+        semana: somar(vendas7),
+        mes: somar(vendas30),
+        ticketMedio: vendas.length > 0 ? totalRevenue / vendas.length : 0,
+        serie,
+        topProduto: top ? { nome: top[0], quantidade: top[1] } : null,
       });
 
       setRecentOrders(recentOrdersData || []);
@@ -165,10 +219,16 @@ function AdminOverview() {
         </div>
 
         <div className="flex gap-3">
-           <Button variant="outline" className="border-primary/20 hover:neon-border rounded-2xl h-12 px-6 text-[10px] font-black uppercase tracking-widest italic glass">
-             <Calendar className="w-4 h-4 mr-2" />
-             Relatório Semanal
-           </Button>
+          <Button
+            asChild
+            variant="outline"
+            className="border-primary/20 hover:neon-border rounded-2xl h-12 px-6 text-[10px] font-black uppercase tracking-widest italic glass"
+          >
+            <Link to="/admin/pedidos">
+              <Calendar className="w-4 h-4 mr-2" />
+              Ver Pedidos
+            </Link>
+          </Button>
         </div>
       </header>
 
@@ -284,44 +344,87 @@ function AdminOverview() {
           </div>
         </motion.div>
 
-        {/* System Health / Shortcuts */}
-        <motion.div 
+        {/* Rendimento. Substitui o antigo painel "Status do Sistema", que exibia
+            "Operacional" fixo no codigo, sem checar servico nenhum. */}
+        <motion.div
           variants={fadeInUp}
           className="glass rounded-3xl border border-primary/10 p-6 flex flex-col gap-6"
         >
           <div className="flex items-center gap-3 mb-2">
-             <div className="w-1.5 h-4 bg-primary rounded-full shadow-[0_0_10px_#8B2FE8]" />
-             <h2 className="text-sm font-black uppercase tracking-[0.2em] italic text-white">Status do Sistema</h2>
+            <div className="w-1.5 h-4 bg-primary rounded-full shadow-[0_0_10px_#8B2FE8]" />
+            <h2 className="text-sm font-black uppercase tracking-[0.2em] italic text-white">Rendimento</h2>
           </div>
 
-          <div className="space-y-4">
-             {[
-               { label: "Banco de Dados", status: "Operacional", color: "green" },
-               { label: "Gateway de Pagamento", status: "Operacional", color: "green" },
-               { label: "Serviço Discord", status: "Operacional", color: "green" },
-               { label: "Entrega Digital", status: "Atenção", color: "yellow" }
-             ].map((item, i) => (
-               <div key={i} className="flex items-center justify-between p-4 bg-white/[0.02] border border-primary/5 rounded-2xl">
-                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest italic">{item.label}</span>
-                 <div className="flex items-center gap-2">
-                    <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${
-                      item.color === 'green' ? 'bg-green-500 shadow-[0_0_8px_#22C55E]' : 'bg-yellow-500 shadow-[0_0_8px_#EAB308]'
-                    }`} />
-                    <span className={`text-[9px] font-black uppercase tracking-widest italic ${
-                      item.color === 'green' ? 'text-green-500' : 'text-yellow-500'
-                    }`}>{item.status}</span>
-                 </div>
-               </div>
-             ))}
+          <div className="space-y-3">
+            {[
+              { label: "Hoje", valor: rendimento.hoje },
+              { label: "Últimos 7 dias", valor: rendimento.semana },
+              { label: "Últimos 30 dias", valor: rendimento.mes },
+              { label: "Ticket médio", valor: rendimento.ticketMedio },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="flex items-center justify-between p-4 bg-white/[0.02] border border-primary/5 rounded-2xl"
+              >
+                <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest italic">
+                  {item.label}
+                </span>
+                <span className="text-[12px] font-black text-primary italic tracking-tighter">
+                  R$ {item.valor.toFixed(2)}
+                </span>
+              </div>
+            ))}
           </div>
 
-          <div className="mt-auto space-y-3">
-            <Button className="w-full bg-primary hover:opacity-90 rounded-2xl h-12 text-[10px] font-black uppercase tracking-widest italic text-white shadow-[0_0_20px_rgba(139,47,232,0.3)]">
-              <CreditCard className="w-4 h-4 mr-2" />
-              Retirar Saldo
-            </Button>
-            <Button variant="outline" className="w-full border-primary/20 hover:neon-border rounded-2xl h-12 text-[10px] font-black uppercase tracking-widest italic glass">
-              Suporte Técnico
+          <div>
+            <span className="text-[9px] font-black uppercase tracking-widest italic text-muted-foreground opacity-70">
+              Faturamento por dia (7 dias)
+            </span>
+            <div className="flex items-end gap-1.5 h-24 mt-3">
+              {rendimento.serie.map((d) => {
+                const teto = Math.max(...rendimento.serie.map((x) => x.total), 1);
+                return (
+                  <div key={d.dia} className="flex-1 flex flex-col items-center gap-1.5 group">
+                    <div className="w-full flex-1 flex items-end">
+                      <div
+                        className="w-full bg-primary/30 group-hover:bg-primary rounded-t transition-all min-h-[2px]"
+                        style={{ height: `${(d.total / teto) * 100}%` }}
+                        title={`${d.dia}: R$ ${d.total.toFixed(2)}`}
+                      />
+                    </div>
+                    <span className="text-[7px] font-black uppercase text-muted-foreground opacity-60">
+                      {d.dia}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {rendimento.topProduto && (
+            <div className="p-4 bg-primary/5 border border-primary/20 rounded-2xl">
+              <span className="text-[9px] font-black uppercase tracking-widest italic text-muted-foreground block mb-1">
+                Mais vendido (30 dias)
+              </span>
+              <span className="text-[11px] font-black text-white uppercase italic tracking-tight">
+                {rendimento.topProduto.nome}
+              </span>
+              <span className="text-[9px] font-bold text-primary italic ml-2">
+                {rendimento.topProduto.quantidade}x
+              </span>
+            </div>
+          )}
+
+          <div className="mt-auto">
+            <Button
+              asChild
+              variant="outline"
+              className="w-full border-primary/20 hover:neon-border rounded-2xl h-12 text-[10px] font-black uppercase tracking-widest italic glass"
+            >
+              <a href="https://discord.gg/kmcX2EyFGz" target="_blank" rel="noreferrer">
+                <MessageCircle className="w-4 h-4 mr-2" />
+                Suporte no Discord
+              </a>
             </Button>
           </div>
         </motion.div>

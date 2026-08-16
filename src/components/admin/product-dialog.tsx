@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { formatarBRL, precoComDesconto, type TipoEntrega } from "@/lib/produto";
+import { CATEGORIAS, formatarBRL, precoComDesconto, type TipoEntrega } from "@/lib/produto";
 
 export type ProdutoRow = {
   id: string;
@@ -54,7 +54,7 @@ type FormState = {
 const VAZIO: FormState = {
   name: "",
   description: "",
-  category: "perk",
+  category: "discord",
   icon: "",
   image_url: "",
   banner_url: "",
@@ -156,7 +156,7 @@ export function ProductDialog({
     const payload = {
       name: form.name.trim(),
       description: form.description.trim() || null,
-      category: form.category.trim() || "perk",
+      category: form.category.trim() || "others",
       icon: form.icon.trim() || null,
       image_url: form.image_url.trim() || null,
       banner_url: form.banner_url.trim() || null,
@@ -252,12 +252,34 @@ export function ProductDialog({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className={rotulo}>Categoria</label>
-                <Input
-                  value={form.category}
-                  onChange={(e) => set("category", e.target.value)}
-                  placeholder="perk"
-                  className={campo}
-                />
+                <Select value={form.category} onValueChange={(v) => set("category", v)}>
+                  <SelectTrigger className={campo}>
+                    <SelectValue placeholder="SELECIONE..." />
+                  </SelectTrigger>
+                  <SelectContent className="glass border-primary/20 bg-black/95">
+                    {CATEGORIAS.map((c) => (
+                      <SelectItem
+                        key={c.id}
+                        value={c.id}
+                        className="text-[10px] font-bold uppercase tracking-widest italic"
+                      >
+                        {c.label}
+                      </SelectItem>
+                    ))}
+                    {/* Produtos antigos podem ter uma categoria fora da lista
+                        (o schema criava tudo como "perk"). Mantemos a opcao
+                        visivel para nao apagar o valor sem querer ao salvar. */}
+                    {form.category !== "" &&
+                      !CATEGORIAS.some((c) => c.id === form.category) && (
+                        <SelectItem
+                          value={form.category}
+                          className="text-[10px] font-bold uppercase tracking-widest italic opacity-60"
+                        >
+                          {form.category} (atual)
+                        </SelectItem>
+                      )}
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
                 <label className={rotulo}>Ícone</label>

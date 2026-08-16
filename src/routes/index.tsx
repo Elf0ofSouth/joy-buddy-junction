@@ -167,8 +167,10 @@ function Index() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="bg-primary hover:opacity-90 px-8 py-6 text-lg font-bold h-auto min-w-[200px] shadow-[0_0_20px_rgba(139,47,232,0.4)]" onClick={() => window.location.href = '/loja'}>
-              VER LOJA <ArrowRight className="ml-2 w-5 h-5" />
+            <Button asChild size="lg" className="bg-primary hover:opacity-90 px-8 py-6 text-lg font-bold h-auto min-w-[200px] shadow-[0_0_20px_rgba(139,47,232,0.4)]">
+              <Link to="/loja">
+                VER LOJA <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
             </Button>
             <Button size="lg" variant="outline" className="border-primary/40 hover:neon-border px-8 py-6 text-lg font-bold h-auto min-w-[200px] glass" onClick={() => window.open('https://discord.gg/kmcX2EyFGz', '_blank')}>
               ENTRAR NO DISCORD

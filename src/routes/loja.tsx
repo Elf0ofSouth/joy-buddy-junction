@@ -1,5 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 import { 
   Search, 
   Shield, 
@@ -30,6 +31,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { logoUrl } from "@/lib/assets";
+import { formatarBRL, precoComDesconto, rotuloCategoria } from "@/lib/produto";
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -77,12 +79,26 @@ function Store() {
       let query = supabase.from("products").select("*");
 
       if (activeCategory !== "all") {
-        query = query.eq("category", activeCategory.toUpperCase());
+        // `ilike` sem curinga = igualdade sem diferenciar maiuscula/minuscula.
+        // Antes era `.eq(categoria.toUpperCase())`, que nunca casava com o
+        // valor gravado pelo admin e deixava toda aba de categoria vazia.
+        query = query.ilike("category", activeCategory);
       }
 
       const { data, error } = await query;
-      if (!error && data) {
-        let filtered = data.filter(p => 
+
+      if (error) {
+        // Antes o erro era engolido e a loja mostrava "nenhum produto",
+        // escondendo falha de conexao ou de permissao.
+        console.error("[loja] falha ao carregar produtos", error);
+        toast.error("Não foi possível carregar os produtos. Tente novamente.");
+        setProducts([]);
+        setLoading(false);
+        return;
+      }
+
+      if (data) {
+        const filtered = data.filter(p =>
           p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()))
         );
@@ -109,10 +125,10 @@ function Store() {
       
       {/* Sidebar - Desktop */}
       <aside className="hidden md:flex flex-col w-64 glass border-r border-primary/20 sticky top-0 h-screen z-20 p-6 overflow-y-auto">
-        <div className="flex items-center gap-2 mb-10 group cursor-pointer" onClick={() => window.location.href = '/'}>
+        <Link to="/" className="flex items-center gap-2 mb-10 group cursor-pointer">
           <img src={logoUrl} alt="Logo" className="w-8 h-8 group-hover:scale-110 transition-transform" />
           <span className="font-bold text-lg tracking-tighter chrome-text">CIPHER STORE</span>
-        </div>
+        </Link>
 
         <div className="mb-4">
           <span className="text-[10px] font-bold text-primary/60 uppercase tracking-[0.2em] mb-4 block">CATEGORIAS</span>
@@ -158,10 +174,10 @@ function Store() {
       {/* Mobile Header */}
       <div className="md:hidden sticky top-0 z-50 glass border-b border-primary/20 p-4">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2" onClick={() => window.location.href = '/'}>
+          <Link to="/" className="flex items-center gap-2">
             <img src={logoUrl} alt="Logo" className="w-6 h-6" />
             <span className="font-bold text-sm tracking-tighter chrome-text uppercase">CIPHER STORE</span>
-          </div>
+          </Link>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="relative p-2 rounded-full border border-primary/10">
               <ShoppingCart className="w-5 h-5 text-primary" />
@@ -196,7 +212,7 @@ function Store() {
         <header className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-12">
           <div className="space-y-1">
             <div className="flex items-center gap-2 text-[10px] font-bold text-primary/60 uppercase tracking-[0.2em] mb-2">
-              <span className="hover:text-primary cursor-pointer transition-colors" onClick={() => window.location.href = '/'}>Início</span>
+              <Link to="/" className="hover:text-primary cursor-pointer transition-colors">Início</Link>
               <ChevronRight className="w-3 h-3" />
               <span className="text-foreground">Loja</span>
             </div>
@@ -277,17 +293,30 @@ function Store() {
                       
                       {/* Category Badge */}
                       <Badge className="absolute top-4 left-4 z-20 bg-primary text-black border-none text-[8px] font-black tracking-widest px-3 py-1 rounded-full uppercase italic">
-                        {product.category || "GERAL"}
+                        {rotuloCategoria(product.category)}
                       </Badge>
 
-                      {/* Icon/Image Placeholder */}
-                      <div className="relative z-10 transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-700">
-                         {product.icon ? (
-                           <div dangerouslySetInnerHTML={{ __html: product.icon }} className="w-20 h-20 text-primary drop-shadow-[0_0_15px_rgba(139,47,232,0.6)]" />
-                         ) : (
-                           <Shield className="w-20 h-20 text-primary drop-shadow-[0_0_15px_rgba(139,47,232,0.6)]" />
-                         )}
-                      </div>
+                      {(product.discount_percent ?? 0) > 0 && (
+                        <Badge className="absolute top-4 right-4 z-20 bg-red-500 text-white border-none text-[8px] font-black tracking-widest px-3 py-1 rounded-full uppercase italic">
+                          -{product.discount_percent}%
+                        </Badge>
+                      )}
+
+                      {/* Imagem do produto; sem imagem, cai no icone da marca.
+                          O campo `icon` guarda um NOME de icone ("Shield"), nao
+                          SVG -- injeta-lo como HTML imprimia a palavra na tela
+                          e ainda era uma porta de XSS. */}
+                      {product.image_url ? (
+                        <img
+                          src={product.image_url}
+                          alt={product.name}
+                          className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                        />
+                      ) : (
+                        <div className="relative z-10 transform group-hover:scale-110 group-hover:rotate-3 transition-transform duration-700">
+                          <Shield className="w-20 h-20 text-primary drop-shadow-[0_0_15px_rgba(139,47,232,0.6)]" />
+                        </div>
+                      )}
                       
                       {/* Ambient Glow */}
                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-primary/20 rounded-full blur-[50px] group-hover:bg-primary/30 transition-all duration-500" />
@@ -309,9 +338,16 @@ function Store() {
                       <div className="mt-auto flex items-center justify-between pt-6 border-t border-primary/10">
                         <div className="flex flex-col">
                           <span className="text-[9px] text-primary font-black uppercase tracking-[0.2em] italic mb-1">Preço // CIPHER</span>
-                          <span className="text-2xl font-black text-white italic tracking-tighter group-hover:chrome-text transition-all">
-                            R$ {(product.price_brl || 0).toFixed(2)}
-                          </span>
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-2xl font-black text-white italic tracking-tighter group-hover:chrome-text transition-all">
+                              {formatarBRL(precoComDesconto(product.price_brl, product.discount_percent ?? 0))}
+                            </span>
+                            {(product.discount_percent ?? 0) > 0 && (
+                              <span className="text-[10px] font-bold text-muted-foreground line-through italic">
+                                {formatarBRL(product.price_brl)}
+                              </span>
+                            )}
+                          </div>
                         </div>
                         <Button className="bg-primary hover:opacity-90 shadow-[0_0_20px_rgba(139,47,232,0.4)] rounded-2xl px-5 h-12 group-hover:scale-105 transition-all text-[10px] font-black uppercase tracking-widest italic border-none text-white">
                           DETALHES <ArrowRight className="ml-2 w-4 h-4" />
